@@ -3,12 +3,13 @@ package com.chace.serverManagement.resource;
 import com.chace.serverManagement.Model.Response;
 import com.chace.serverManagement.Model.Server;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
-import jakarta.validation.Valid;
+//import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,7 +25,7 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 @RequestMapping(path = "api/v2/server")    // used to map the web requests
 @RequiredArgsConstructor // generates constructor for all final & @NonNull fields. Thus handle with dependency injection
 public class ServerResource {
-    @Autowired
+//    @Autowired
     private final ServerServiceImplementation serverService;    /* this wil be dependency injected cause of @RequiredArgsConstructor */
 
     /* "ResponseEntity<T>" Generic type that represents the whole HTTP response: status code, headers, and body.
