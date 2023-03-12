@@ -6,7 +6,6 @@ import com.chace.serverManagement.repository.ServerRepo;
 import com.chace.serverManagement.service.ServerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,8 +15,8 @@ import java.net.InetAddress;
 import java.util.Collection;
 import java.util.Random;
 
-import static java.lang.Boolean.*;
-import static org.springframework.data.domain.PageRequest.*;
+import static java.lang.Boolean.TRUE;
+import static org.springframework.data.domain.PageRequest.of;
 
 // RequiredArgsConstructor annot. will create a constructor, add the serverRepo property in it
 // and that will be our dependency injection
@@ -26,7 +25,6 @@ import static org.springframework.data.domain.PageRequest.*;
 @Transactional
 @Slf4j
 public class ServerServiceImplementation implements ServerService {
-
     private final ServerRepo serverRepo;
 
     /* this method is going to be called for each server save, it will:

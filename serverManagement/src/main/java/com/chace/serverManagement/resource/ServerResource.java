@@ -2,11 +2,10 @@ package com.chace.serverManagement.resource;
 
 import com.chace.serverManagement.Model.Response;
 import com.chace.serverManagement.Model.Server;
-import com.chace.serverManagement.enumeration.Status;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,18 +13,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 import static com.chace.serverManagement.enumeration.Status.SERVER_UP;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @RestController // show that class is going to serve rest endpoints api-s, mostly used with @RequestMapping.
 @RequestMapping(path = "api/v2/server")    // used to map the web requests
 @RequiredArgsConstructor // generates constructor for all final & @NonNull fields. Thus handle with dependency injection
 public class ServerResource {
-
+    @Autowired
     private final ServerServiceImplementation serverService;    /* this wil be dependency injected cause of @RequiredArgsConstructor */
 
     /* "ResponseEntity<T>" Generic type that represents the whole HTTP response: status code, headers, and body.
@@ -90,7 +89,9 @@ public class ServerResource {
     /* api that will handle the setting of a server image */
     /* produces : says that this handler will return NOT A JSON but an IMAGE */
     @GetMapping(path="/image/{fileName}", produces = IMAGE_PNG_VALUE)
-    public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
+    // Or : public @ResponseBody byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
+     public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
+        /* Returning byte arrays allows us to return almost anything (images or files) */
         return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "SpringBoot_Projects\\images" + fileName));
     }
 
