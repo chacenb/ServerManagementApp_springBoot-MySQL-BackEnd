@@ -10,7 +10,6 @@
 ## show messages in responses
 ##server.error.include-message = always
 
-
 spring:
   datasource:
     password:
