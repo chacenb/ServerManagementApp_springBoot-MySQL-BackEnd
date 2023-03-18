@@ -3,12 +3,14 @@ package com.chace.serverManagement.Model;
 import com.chace.serverManagement.enumeration.Status;
 //import jakarta.persistence.*;
 //import jakarta.validation.constraints.NotEmpty;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+//import javax.persistence.*;
+//import javax.validation.constraints.NotEmpty;
 
 @Entity //(name="t_server") in order to map this student class to the database : used by hibernate
 @Data   // helps autoInsert getters & setters

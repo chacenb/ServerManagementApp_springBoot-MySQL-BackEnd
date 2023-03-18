@@ -4,13 +4,13 @@ package com.chace.serverManagement.repository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 
 //@Repository
 @Component
 public class Testclass {
-    @PostConstruct
-    public void init(){
-        System.out.println("!!!!!!!!!! Test Repo class");
-    }
+//    @PostConstruct
+//    public void init(){
+//        System.out.println("!!!!!!!!!! Test Repo class");
+//    }
 }

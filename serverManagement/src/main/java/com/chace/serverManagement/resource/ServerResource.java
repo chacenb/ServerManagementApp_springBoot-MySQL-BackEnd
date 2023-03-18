@@ -4,12 +4,13 @@ import com.chace.serverManagement.Model.Response;
 import com.chace.serverManagement.Model.Server;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
 //import jakarta.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+//import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -41,6 +42,17 @@ public class ServerResource {
                 .build());
     }
 
+    @GetMapping(path="/get/{id}")
+    public ResponseEntity<Response> getServer(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(Response.builder()
+                .timeStamp(LocalDateTime.now())
+                .statusCode(OK.value())
+                .status(OK)
+                .message("Server retrieved successfully")
+                .data(Map.of("Server", serverService.get(id)))
+                .build());
+    }
+
     @GetMapping(path="/ping/{ipAddress}")
     public ResponseEntity<Response> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
         Server server = serverService.ping(ipAddress); /* ping the server and get the result*/
@@ -64,18 +76,6 @@ public class ServerResource {
                 .build());
     }
 
-    @GetMapping(path="/get/{id}")
-    public ResponseEntity<Response> getServer(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(Response.builder()
-                .timeStamp(LocalDateTime.now())
-                .statusCode(OK.value())
-                .status(OK)
-                .message("Server retrieved successfully")
-                .data(Map.of("Server", serverService.get(id)))
-                .build());
-    }
-
-
     @DeleteMapping(path="/delete/{id}")
     public ResponseEntity<Response> deleteServer(@PathVariable("id") Long id) {
         return ResponseEntity.ok(Response.builder()
@@ -88,12 +88,12 @@ public class ServerResource {
     }
 
     /* api that will handle the setting of a server image */
-    /* produces : says that this handler will return NOT A JSON but an IMAGE */
+    /* produces : says that this handler will return NOT A JSON but an IMAGE of the mentioned type */
     @GetMapping(path="/image/{fileName}", produces = IMAGE_PNG_VALUE)
     // Or : public @ResponseBody byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
      public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
         /* Returning byte arrays allows us to return almost anything (images or files) */
-        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "SpringBoot_Projects\\images" + fileName));
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "\\SpringBoot_Projects\\images\\" + fileName));
     }
 
 

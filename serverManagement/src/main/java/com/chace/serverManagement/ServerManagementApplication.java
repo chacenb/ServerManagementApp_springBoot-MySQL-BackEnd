@@ -19,11 +19,10 @@ import static com.chace.serverManagement.enumeration.Status.SERVER_UP;
 //@EnableTransactionManagement
 //@ComponentScan("com.chace.serverManagement")
 public class ServerManagementApplication {
-	public static void main(String[] args) {
-		System.out.println(">>>>>>>>>>>> ");
-		SpringApplication.run(ServerManagementApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ServerManagementApplication.class, args);
+    }
 
-	/* STOPPED AT 00:55:55 */
+    /* STOPPED AT 00:55:55 */
 
 }
