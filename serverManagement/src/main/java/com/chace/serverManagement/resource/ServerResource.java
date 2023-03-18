@@ -6,7 +6,6 @@ import com.chace.serverManagement.service.implementation.ServerServiceImplementa
 //import jakarta.validation.Valid;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -93,7 +92,7 @@ public class ServerResource {
     // Or : public @ResponseBody byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
      public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
         /* Returning byte arrays allows us to return almost anything (images or files) */
-        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "\\SpringBoot_Projects\\images\\" + fileName));
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/SpringBoot_Projects/images/" + fileName));
     }
 
 
