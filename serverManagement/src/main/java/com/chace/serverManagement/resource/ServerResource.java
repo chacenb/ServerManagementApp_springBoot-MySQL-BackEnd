@@ -3,13 +3,11 @@ package com.chace.serverManagement.resource;
 import com.chace.serverManagement.Model.Response;
 import com.chace.serverManagement.Model.Server;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
-//import jakarta.validation.Valid;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-//import javax.validation.Valid;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -25,13 +23,14 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 @RequestMapping(path = "api/v2/server")    // used to map the web requests
 @RequiredArgsConstructor // generates constructor for all final & @NonNull fields. Thus handle with dependency injection
 public class ServerResource {
-//    @Autowired
+    //    @Autowired
     private final ServerServiceImplementation serverService;    /* this wil be dependency injected cause of @RequiredArgsConstructor */
 
     /* "ResponseEntity<T>" Generic type that represents the whole HTTP response: status code, headers, and body.
-    * We then use it to fully configure HTTP responses */
-    @GetMapping(path="/list")
-    public ResponseEntity<Response> getAllServers() {
+     * We then use it to fully configure HTTP responses */
+//    @CrossOrigin
+    @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
+    public ResponseEntity<Response> getAllServers() throws InterruptedException {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
                 .statusCode(OK.value())
@@ -41,7 +40,7 @@ public class ServerResource {
                 .build());
     }
 
-    @GetMapping(path="/get/{id}")
+    @GetMapping(path = "/get/{id}")
     public ResponseEntity<Response> getServer(@PathVariable("id") Long id) {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
@@ -52,19 +51,19 @@ public class ServerResource {
                 .build());
     }
 
-    @GetMapping(path="/ping/{ipAddress}")
+    @GetMapping(path = "/ping/{ipAddress}")
     public ResponseEntity<Response> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
         Server server = serverService.ping(ipAddress); /* ping the server and get the result*/
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
                 .statusCode(OK.value())
                 .status(OK)
-                .message( server.getStatus() == SERVER_UP ? "Ping success" : "Ping failed")
+                .message(server.getStatus() == SERVER_UP ? "Ping success" : "Ping failed")
                 .data(Map.of("Server", server))
                 .build());
     }
 
-    @PostMapping(path="/save")
+    @PostMapping(path = "/save")
     public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
@@ -75,7 +74,7 @@ public class ServerResource {
                 .build());
     }
 
-    @DeleteMapping(path="/delete/{id}")
+    @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<Response> deleteServer(@PathVariable("id") Long id) {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
@@ -88,9 +87,9 @@ public class ServerResource {
 
     /* api that will handle the setting of a server image */
     /* produces : says that this handler will return NOT A JSON but an IMAGE of the mentioned type */
-    @GetMapping(path="/image/{fileName}", produces = IMAGE_PNG_VALUE)
+    @GetMapping(path = "/image/{fileName}", produces = IMAGE_PNG_VALUE)
     // Or : public @ResponseBody byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
-     public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
+    public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
         /* Returning byte arrays allows us to return almost anything (images or files) */
         return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/SpringBoot_Projects/images/" + fileName));
     }

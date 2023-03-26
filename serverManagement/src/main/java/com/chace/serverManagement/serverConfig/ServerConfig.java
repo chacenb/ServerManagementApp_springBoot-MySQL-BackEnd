@@ -22,5 +22,4 @@ public class ServerConfig {
             serverRepo.saveAll(List.of(serv1, serv2, serv3));
         };
     }
-
 }
