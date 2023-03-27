@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static com.chace.serverManagement.enumeration.Status.SERVER_UP;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -30,13 +31,15 @@ public class ServerResource {
      * We then use it to fully configure HTTP responses */
 //    @CrossOrigin
     @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
+
     public ResponseEntity<Response> getAllServers() throws InterruptedException {
+//        TimeUnit.SECONDS.sleep(3);
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
                 .statusCode(OK.value())
                 .status(OK)
                 .message("Servers fetched successfully !")
-                .data(Map.of("Servers", serverService.list(30)))
+                .data(Map.of("servers", serverService.list(30)))
                 .build());
     }
 
@@ -47,7 +50,7 @@ public class ServerResource {
                 .statusCode(OK.value())
                 .status(OK)
                 .message("Server retrieved successfully")
-                .data(Map.of("Server", serverService.get(id)))
+                .data(Map.of("server", serverService.get(id)))
                 .build());
     }
 
@@ -59,7 +62,7 @@ public class ServerResource {
                 .statusCode(OK.value())
                 .status(OK)
                 .message(server.getStatus() == SERVER_UP ? "Ping success" : "Ping failed")
-                .data(Map.of("Server", server))
+                .data(Map.of("server", server))
                 .build());
     }
 
@@ -69,7 +72,7 @@ public class ServerResource {
                 .timeStamp(LocalDateTime.now())
                 .status(CREATED)
                 .statusCode(CREATED.value())
-                .data(Map.of("Server", serverService.create(server)))
+                .data(Map.of("server", serverService.create(server)))
                 .message("Server created")
                 .build());
     }
