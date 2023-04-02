@@ -12,7 +12,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Random;
 
 import static java.lang.Boolean.TRUE;
@@ -41,17 +43,30 @@ public class ServerServiceImplementation implements ServerService {
     @Override
     public Server ping(String ipAddress) throws IOException {
         log.info("pinging server w/ ip : {}", ipAddress);
+
+        /* first way without using an optional variable */
         Server server = serverRepo.findByIpAddress(ipAddress);
         InetAddress address = InetAddress.getByName(ipAddress);
         server.setStatus(address.isReachable(10000) ? Status.SERVER_UP : Status.SERVER_DOWN);
         serverRepo.save(server);
         return server;
+
+        /*  NOT FIGURED OUT */
+//        Optional<Server> server = serverRepo.findByIpAddress(ipAddress);
+//        if (!(server.isPresent())) throw new IllegalStateException("ERR : this email is already taken");
+//        else {
+//            InetAddress address = InetAddress.getByName(ipAddress);
+//            server.setStatus(address.isReachable(10000) ? Status.SERVER_UP : Status.SERVER_DOWN);
+//            serverRepo.save(server);
+//            return server;
+//        }
     }
 
     @Override
     public Collection<Server> list(int limit) {
         log.info("fetching all servers ");
-        return serverRepo.findAll(of(0, limit)).toList();
+//        return serverRepo.findAll(of(0, limit)).toList();
+        return serverRepo.findAllByOrderByIdDesc();
     }
 
     @Override
@@ -74,9 +89,9 @@ public class ServerServiceImplementation implements ServerService {
     }
 
     public String setServerImageUrl() {
-        String[] imageNames = {"serv0.png", "serv1.png", "serv2.png", "serv3.jpg", "serv4.jpg"};
+        String[] imageNames = {"serv0.png", "serv1.png", "serv2.png", "serv3.png", "serv4.png"};
         return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("api/v2/server/image/"+ imageNames[new Random().nextInt(5)])
+                .path("api/v2/server/image/" + imageNames[new Random().nextInt(5)])
                 .toUriString();
     }
 }
