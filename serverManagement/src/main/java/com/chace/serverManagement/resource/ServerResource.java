@@ -68,7 +68,7 @@ public class ServerResource {
 
     @PostMapping(path = "/save")
     public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) throws InterruptedException {
-        TimeUnit.SECONDS.sleep(3);
+//        TimeUnit.SECONDS.sleep(3);
 
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
