@@ -23,8 +23,8 @@ public interface ServerRepo extends JpaRepository<Server, Long> {
 //    Optional<Server> findByIpAddress(String ipAddress);
 
     /**
-     * custom find all servers and order by Id Descending
-     * @return
+     * Custom find all servers and order by Id Descending
+     * @return a List of Servers
      */
     List<Server> findAllByOrderByIdDesc();
 
