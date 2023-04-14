@@ -1,0 +1,162 @@
+{
+	"info": {
+		"_postman_id": "1ab61227-59f0-43ef-9057-6974bab129cf",
+		"name": "serverManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "server",
+			"item": [
+				{
+					"name": "get all servers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ping server using its IP Address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/ping/:ipaddr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								"ping",
+								":ipaddr"
+							],
+							"variable": [
+								{
+									"key": "ipaddr",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save server",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ipAddress\":\"192.168.0.1 **\",\r\n    \"name\":\"testpostman serv **\",\r\n    \"memory\":\"32GB **\",\r\n    \"type\":\"test **\",\r\n    \"status\":\"SERVER_DOWN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/save",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update server",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ipAddress\":\"192.168.0.1 **\",\r\n    \"name\":\"testpostman serv **\",\r\n    \"memory\":\"32GB **\",\r\n    \"type\":\"test **\",\r\n    \"status\":\"SERVER_DOWN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/:serverId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								":serverId"
+							],
+							"variable": [
+								{
+									"key": "serverId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get server by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/get/:serverId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								"get",
+								":serverId"
+							],
+							"variable": [
+								{
+									"key": "serverId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
