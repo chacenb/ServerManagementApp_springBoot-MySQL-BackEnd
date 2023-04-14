@@ -4,6 +4,7 @@ import com.chace.serverManagement.Model.Response;
 import com.chace.serverManagement.Model.Server;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,13 +14,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static com.chace.serverManagement.enumeration.Status.SERVER_UP;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
+@Slf4j
 @RestController // show that class is going to serve rest endpoints api-s, mostly used with @RequestMapping.
 @RequestMapping(path = "api/v2/server")    // used to map the web requests
 @RequiredArgsConstructor // generates constructor for all final & @NonNull fields. Thus handle with dependency injection
@@ -31,7 +32,6 @@ public class ServerResource {
      * We then use it to fully configure HTTP responses */
 //    @CrossOrigin
     @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
-
     public ResponseEntity<Response> getAllServers() throws InterruptedException {
 //        TimeUnit.SECONDS.sleep(3);
         return ResponseEntity.ok(Response.builder()
@@ -45,12 +45,13 @@ public class ServerResource {
 
     @GetMapping(path = "/get/{id}")
     public ResponseEntity<Response> getServer(@PathVariable("id") Long id) {
+        Server serverFetchedByID = serverService.get(id);
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
                 .statusCode(OK.value())
                 .status(OK)
                 .message("Server retrieved successfully")
-                .data(Map.of("server", serverService.get(id)))
+                .data(Map.of("server", serverFetchedByID))
                 .build());
     }
 
@@ -66,10 +67,20 @@ public class ServerResource {
                 .build());
     }
 
-    @PostMapping(path = "/save")
-    public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) throws InterruptedException {
-//        TimeUnit.SECONDS.sleep(3);
+    @PutMapping(path = "/{serverId}") //ResponseEntity<Response>
+    public ResponseEntity<Response> updateServer(@PathVariable("serverId") Long serverId, @RequestBody(required = true) @Valid Server serverUpdates) {
+        Server updatedServer = serverService.update(serverId, serverUpdates);
+        return ResponseEntity.ok(Response.builder()
+                .timeStamp(LocalDateTime.now())
+                .status(OK)
+                .statusCode(OK.value())
+                .data(Map.of("server", (updatedServer.getId() == null) ? "" : updatedServer))
+                .message((updatedServer.getId() == null) ? "No server found with this id" : "Server updated")
+                .build());
+    }
 
+    @PostMapping(path = "/save")
+    public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
                 .status(CREATED)
@@ -78,6 +89,7 @@ public class ServerResource {
                 .message("Server created")
                 .build());
     }
+
 
     @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<Response> deleteServer(@PathVariable("id") Long id) {

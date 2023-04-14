@@ -12,13 +12,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Random;
 
 import static java.lang.Boolean.TRUE;
-import static org.springframework.data.domain.PageRequest.of;
 
 // RequiredArgsConstructor annot. will create a constructor, add the serverRepo property in it
 // and that will be our dependency injection
@@ -35,55 +33,61 @@ public class ServerServiceImplementation implements ServerService {
      * - save the server to the DB and return it */
     @Override
     public Server create(Server server) {
-        log.info("saving new server {}", server.getName());
+        log.info("[SI] saving new server {}", server.getName());
         server.setImageUrl(setServerImageUrl());
         return serverRepo.save(server);
     }
 
     @Override
     public Server ping(String ipAddress) throws IOException {
-        log.info("pinging server w/ ip : {}", ipAddress);
+        log.info("[SI] pinging server w/ ip : {}", ipAddress);
 
-        /* first way without using an optional variable */
         Server server = serverRepo.findByIpAddress(ipAddress);
         InetAddress address = InetAddress.getByName(ipAddress);
         server.setStatus(address.isReachable(10000) ? Status.SERVER_UP : Status.SERVER_DOWN);
         serverRepo.save(server);
         return server;
-
-        /*  NOT FIGURED OUT */
-//        Optional<Server> server = serverRepo.findByIpAddress(ipAddress);
-//        if (!(server.isPresent())) throw new IllegalStateException("ERR : this email is already taken");
-//        else {
-//            InetAddress address = InetAddress.getByName(ipAddress);
-//            server.setStatus(address.isReachable(10000) ? Status.SERVER_UP : Status.SERVER_DOWN);
-//            serverRepo.save(server);
-//            return server;
-//        }
     }
 
     @Override
     public Collection<Server> list(int limit) {
-        log.info("fetching all servers ");
+        log.info("[SI] fetching all servers ");
 //        return serverRepo.findAll(of(0, limit)).toList();
         return serverRepo.findAllByOrderByIdDesc();
     }
 
     @Override
     public Server get(Long id) {
-        log.info("fetching server w/ id : {}", id);
+        log.info("[SI] fetching server w/ id : {}", id);
         return serverRepo.findById(id).get();
     }
 
     @Override
-    public Server update(Server server) {
-        log.info("updating server {}", server.getName());
-        return serverRepo.save(server);
+    public Optional<Server> getOptional(Long id) {
+        log.info("[SI] fetching <optional> server w/ id : {}", id);
+        return serverRepo.findById(id).isPresent() ? serverRepo.findById(id) : Optional.of(new Server());
+    }
+
+    @Override
+    @Transactional
+    public Server update(Long id, Server serverUpdate) {
+        Optional<Server> oldServerOptional = serverRepo.findById(id);
+        log.info("[SI] old server <Optional> to update is : {}", oldServerOptional);
+        if (oldServerOptional.isEmpty()) return new Server();
+        else {
+            Server oldServer = oldServerOptional.get();
+            oldServer.setName(serverUpdate.getName());
+            oldServer.setStatus(serverUpdate.getStatus());
+            oldServer.setMemory(serverUpdate.getMemory());
+            oldServer.setType(serverUpdate.getType());
+            oldServer.setIpAddress(serverUpdate.getIpAddress());
+            return this.create(oldServer);
+        }
     }
 
     @Override
     public Boolean delete(Long id) {
-        log.info("deleting server w/ id : {}", id);
+        log.info("[SI] deleting server w/ id : {}", id);
         serverRepo.deleteById(id); /* if this line fails, it will throw an exception and we'll never reach the next line */
         return TRUE;
     }
