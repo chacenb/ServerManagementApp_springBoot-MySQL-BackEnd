@@ -5,6 +5,7 @@ import com.chace.serverManagement.Model.Server;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,102 +15,111 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.chace.serverManagement.enumeration.Status.SERVER_UP;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
-@Slf4j
-@RestController // show that class is going to serve rest endpoints api-s, mostly used with @RequestMapping.
-@RequestMapping(path = "api/v2/server")    // used to map the web requests
-@RequiredArgsConstructor // generates constructor for all final & @NonNull fields. Thus handle with dependency injection
+@Slf4j /* Slf4j: Simple Logging Facade for Java : see codeBlocks */
+@RestController /* show that class is going to serve rest endpoints api-s, mostly used with @RequestMapping. */
+@RequestMapping(path = "api/v2/server")  /* used to map the web requests */
+@RequiredArgsConstructor /* generates constructor for all final & @NonNull fields. Thus handles dependency injection */
 public class ServerResource {
-    //    @Autowired
-    private final ServerServiceImplementation serverService;    /* this wil be dependency injected cause of @RequiredArgsConstructor */
 
-    /* "ResponseEntity<T>" Generic type that represents the whole HTTP response: status code, headers, and body.
-     * We then use it to fully configure HTTP responses */
-//    @CrossOrigin
-    @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
-    public ResponseEntity<Response> getAllServers() throws InterruptedException {
-//        TimeUnit.SECONDS.sleep(3);
-        return ResponseEntity.ok(Response.builder()
-                .timeStamp(LocalDateTime.now())
-                .statusCode(OK.value())
-                .status(OK)
-                .message("Servers fetched successfully !")
-                .data(Map.of("servers", serverService.list(30)))
-                .build());
-    }
+  /* this wil be dependency injected cause of @RequiredArgsConstructor */
+  private final ServerServiceImplementation serverService;
 
-    @GetMapping(path = "/get/{id}")
-    public ResponseEntity<Response> getServer(@PathVariable("id") Long id) {
-        Server serverFetchedByID = serverService.get(id);
-        return ResponseEntity.ok(Response.builder()
-                .timeStamp(LocalDateTime.now())
-                .statusCode(OK.value())
-                .status(OK)
-                .message("Server retrieved successfully")
-                .data(Map.of("server", serverFetchedByID))
-                .build());
-    }
-
-    @GetMapping(path = "/ping/{ipAddress}")
-    public ResponseEntity<Response> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
-        Server server = serverService.ping(ipAddress); /* ping the server and get the result*/
-        return ResponseEntity.ok(Response.builder()
-                .timeStamp(LocalDateTime.now())
-                .statusCode(OK.value())
-                .status(OK)
-                .message(server.getStatus() == SERVER_UP ? "Ping success" : "Ping failed")
-                .data(Map.of("server", server))
-                .build());
-    }
-
-    @PutMapping(path = "/{serverId}") //ResponseEntity<Response>
-    public ResponseEntity<Response> updateServer(@PathVariable("serverId") Long serverId, @RequestBody(required = true) @Valid Server serverUpdates) {
-        Server updatedServer = serverService.update(serverId, serverUpdates);
-        return ResponseEntity.ok(Response.builder()
-                .timeStamp(LocalDateTime.now())
-                .status(OK)
-                .statusCode(OK.value())
-                .data(Map.of("server", (updatedServer.getId() == null) ? "" : updatedServer))
-                .message((updatedServer.getId() == null) ? "No server found with this id" : "Server updated")
-                .build());
-    }
-
-    @PostMapping(path = "/save")
-    public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) {
-        return ResponseEntity.ok(Response.builder()
-                .timeStamp(LocalDateTime.now())
-                .status(CREATED)
-                .statusCode(CREATED.value())
-                .data(Map.of("server", serverService.create(server)))
-                .message("Server created")
-                .build());
-    }
+  /* ResponseEntity<Response> : cf code blocks */
+  @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
+  public ResponseEntity<Response> getAllServers() {
+    return ResponseEntity.ok(
+      Response.builder()
+        .timeStamp(LocalDateTime.now())
+        .statusCode(HttpStatus.OK.value())
+        .status(HttpStatus.OK)
+        .message("Servers fetched successfully !")
+        .data(Map.of("servers", serverService.list(30)))
+        .build());
+  }
 
 
-    @DeleteMapping(path = "/delete/{id}")
-    public ResponseEntity<Response> deleteServer(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(Response.builder()
-                .timeStamp(LocalDateTime.now())
-                .data(Map.of("deleted", serverService.delete(id)))
-                .message("Server deleted successfully")
-                .statusCode(OK.value())
-                .status(OK)
-                .build());
-    }
+  @GetMapping(path = "/get/{id}")
+  public ResponseEntity<Response> getServer(@PathVariable("id") Long id) {
+    Server serverFetchedByID = serverService.get(id);
+    return ResponseEntity.ok(
+      Response.builder()
+        .timeStamp(LocalDateTime.now())
+        .statusCode(HttpStatus.OK.value())
+        .status(HttpStatus.OK)
+        .message("Server retrieved successfully")
+        .data(Map.of("server", serverFetchedByID))
+        .build());
+  }
 
-    /* api that will handle the setting of a server image */
-    /* produces : says that this handler will return NOT A JSON but an IMAGE of the mentioned type */
-    @GetMapping(path = "/image/{fileName}", produces = IMAGE_PNG_VALUE)
-    // Or : public @ResponseBody byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
-    public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
-        /* Returning byte arrays allows us to return almost anything (images or files) */
-        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/SpringBoot_Projects/images/" + fileName));
-    }
+
+  @GetMapping(path = "/ping/{ipAddress}")
+  public ResponseEntity<Response> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
+    Optional<Server> serv_ = serverService.pingIfExists(ipAddress); /* ping the server and get the result */
+
+    return ResponseEntity.ok(Response.builder()
+      .timeStamp(LocalDateTime.now())
+      .statusCode((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST.value() : HttpStatus.OK.value())
+      .status((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST : HttpStatus.OK)
+      .message((serv_.isEmpty()) ? "No server found with this IP Address" : (serv_.get().getStatus() == SERVER_UP ? "Ping success" : "Ping failed"))
+      .data((serv_.isEmpty()) ? Map.of() : Map.of("server", serv_.get()))
+      .build());
+  }
+
+
+  @PutMapping(path = "/{serverId}")
+  public ResponseEntity<Response> updateServer(@PathVariable("serverId") Long serverId, @RequestBody(required = true) @Valid Server serverUpdates) {
+    Optional<Server> serv_ = serverService.updateIfExists(serverId, serverUpdates);
+
+    return ResponseEntity.ok(Response.builder()
+      .timeStamp(LocalDateTime.now())
+      .statusCode((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST.value() : HttpStatus.OK.value())
+      .status((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST : HttpStatus.OK)
+      .data((serv_.isEmpty()) ? Map.of() : Map.of("server", serv_.get()))
+      .message((serv_.isEmpty() ? "No server found with this id" : "Server updated"))
+      .build());
+  }
+
+  @PostMapping(path = "/save")
+  public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) {
+    return ResponseEntity.ok(Response.builder()
+      .timeStamp(LocalDateTime.now())
+      .status(HttpStatus.CREATED)
+      .statusCode(HttpStatus.CREATED.value())
+      .data(Map.of("server", serverService.create(server)))
+      .message("Server created")
+      .build());
+  }
+
+
+  @DeleteMapping(path = "/delete/{id}")
+  public ResponseEntity<Response> deleteServer(@PathVariable("id") Long id) {
+    Boolean deleteResult = serverService.delete(id);
+    return ResponseEntity.ok(Response.builder()
+      .timeStamp(LocalDateTime.now())
+      .data(Map.of("deleted", deleteResult))
+      .message(deleteResult ? "Server deleted successfully" : "No server found for this id")
+      .statusCode(deleteResult ? HttpStatus.OK.value() : HttpStatus.BAD_REQUEST.value())
+      .status(deleteResult ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+      .build());
+  }
+
+  /**
+   * api that will handle the setting of a server image.
+   * "Produces" means that this handler will NOT return JSON but an IMAGE of the mentioned type
+   *
+   * @param fileName
+   * @return byte[] Returning byte arrays allows us to return almost anything (images or files)
+   * @throws IOException because we are accessing filesystem structure
+   */
+  @GetMapping(path = "/image/{fileName}", produces = IMAGE_PNG_VALUE)
+  public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
+    return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/SpringBoot_Projects/images/" + fileName));
+  }
 
 
 }

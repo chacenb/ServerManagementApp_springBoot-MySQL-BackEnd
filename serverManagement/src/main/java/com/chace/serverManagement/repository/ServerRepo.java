@@ -15,12 +15,16 @@ import java.util.Optional;
 @Repository
 public interface ServerRepo extends JpaRepository<Server, Long> {
 
-    /* Method that will extend JpaRepository:
-    * The ipAddress is unique, and we want to search by it
-    * Just by the name format of the method, it will be translated into a JPA Query
-    * thus extend JpaRepository */
-    Server findByIpAddress(String ipAddress);
-//    Optional<Server> findByIpAddress(String ipAddress);
+    /**
+     * This method will extend JpaRepository:
+     * The ipAddress is unique, and we want to search by it.
+     * Just by the name format of the method, it will be translated into a JPA Query
+     * @param ipAddress
+     * @return Optional<Server>
+     */
+    Optional<Server> findByIpAddress(String ipAddress);
+//    Server findByIpAddress(String ipAddress);
+
 
     /**
      * Custom find all servers and order by Id Descending
