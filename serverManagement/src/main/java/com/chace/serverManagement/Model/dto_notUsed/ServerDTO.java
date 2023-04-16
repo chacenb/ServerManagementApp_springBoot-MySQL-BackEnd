@@ -14,8 +14,7 @@ import javax.validation.constraints.NotEmpty;
 public class ServerDTO {
 
   @Column(unique = true)  // creates unique Constraint on this ipAddress Field
-  @NotEmpty(message = "IP Address can't be empty or null")
-  // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  @NotEmpty(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private String ipAddress;
   private String name;
   private String memory;
