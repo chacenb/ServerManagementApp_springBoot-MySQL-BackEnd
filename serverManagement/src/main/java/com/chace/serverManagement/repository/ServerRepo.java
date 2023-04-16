@@ -1,10 +1,9 @@
 package com.chace.serverManagement.repository;
 
-import com.chace.serverManagement.Model.Server;
+import com.chace.serverManagement.Model.entity.Server;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package com.chace.serverManagement.enumeration;
+package com.chace.serverManagement.Model.enumeration;
 
 public enum Status {
     SERVER_UP("SERVER _UP"),

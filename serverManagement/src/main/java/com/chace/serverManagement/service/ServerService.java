@@ -1,7 +1,6 @@
 package com.chace.serverManagement.service;
 
-import com.chace.serverManagement.Model.Server;
-import org.springframework.transaction.annotation.Transactional;
+import com.chace.serverManagement.Model.entity.Server;
 
 import java.io.IOException;
 import java.util.Collection;

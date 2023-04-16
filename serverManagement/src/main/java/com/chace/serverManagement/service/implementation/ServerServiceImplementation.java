@@ -1,14 +1,12 @@
 package com.chace.serverManagement.service.implementation;
 
-import com.chace.serverManagement.Model.Server;
-import com.chace.serverManagement.enumeration.Status;
+import com.chace.serverManagement.Model.entity.Server;
+import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.repository.ServerRepo;
 import com.chace.serverManagement.service.ServerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

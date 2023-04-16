@@ -1,15 +1,6 @@
 package com.chace.serverManagement.serverConfig;
 
-import com.chace.serverManagement.Model.Server;
-import com.chace.serverManagement.repository.ServerRepo;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
-
-import static com.chace.serverManagement.enumeration.Status.SERVER_DOWN;
-import static com.chace.serverManagement.enumeration.Status.SERVER_UP;
 
 @Configuration
 public class ServerConfig {

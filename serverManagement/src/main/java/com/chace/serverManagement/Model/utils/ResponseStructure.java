@@ -1,4 +1,4 @@
-package com.chace.serverManagement.Model;
+package com.chace.serverManagement.Model.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

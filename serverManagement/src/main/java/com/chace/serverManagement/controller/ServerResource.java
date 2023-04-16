@@ -1,7 +1,7 @@
-package com.chace.serverManagement.resource;
+package com.chace.serverManagement.controller;
 
-import com.chace.serverManagement.Model.ResponseStructure;
-import com.chace.serverManagement.Model.Server;
+import com.chace.serverManagement.Model.utils.ResponseStructure;
+import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.chace.serverManagement.enumeration.Status.SERVER_UP;
+import static com.chace.serverManagement.Model.enumeration.Status.SERVER_UP;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @Slf4j /* Slf4j: Simple Logging Facade for Java : see codeBlocks */
