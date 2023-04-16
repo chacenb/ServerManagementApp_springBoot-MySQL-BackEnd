@@ -123,11 +123,9 @@ public class ServerServiceImplementation implements ServerService {
   @Transactional
   public Boolean delete(Long id) {
     log.info("[SI] deleting server w/ id : {}", id);
-    try {
-      serverRepo.deleteById(id); /* if this line fails, it will throw an exception and we'll never reach the next line */
-    } catch (EmptyResultDataAccessException | UnexpectedRollbackException e) {
-      return FALSE;
-    }
+    Optional<Server> serverToDelete = serverRepo.findById(id);
+    if (serverToDelete.isEmpty()) return FALSE;
+    serverRepo.deleteById(id);
     return TRUE;
   }
 
