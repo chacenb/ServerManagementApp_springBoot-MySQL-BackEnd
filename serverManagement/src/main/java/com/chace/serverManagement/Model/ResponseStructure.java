@@ -11,9 +11,9 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 /* This class will be used as the structure of all the responses sent back to the frontEnd */
 @Data // combines @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor annots in the class
-@SuperBuilder // generates code required to be able to instantiable class with code such as: Person.builder().name("Adam Savage").gender("M").build();
+@SuperBuilder // generates code required to be able to instantiable "Obj" this way : Obj.builder().gender("M").build();
 @JsonInclude(NON_NULL)  // for The output Obj to include only the properties that are not null **
-public class Response {
+public class ResponseStructure {
     protected LocalDateTime timeStamp;
     protected int statusCode;   /* will hold the actual number of the status : 200, 404, 500, ... */
     protected HttpStatus status;

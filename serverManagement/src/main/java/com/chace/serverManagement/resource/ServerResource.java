@@ -1,6 +1,6 @@
 package com.chace.serverManagement.resource;
 
-import com.chace.serverManagement.Model.Response;
+import com.chace.serverManagement.Model.ResponseStructure;
 import com.chace.serverManagement.Model.Server;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +31,9 @@ public class ServerResource {
 
   /* ResponseEntity<Response> : cf code blocks */
   @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
-  public ResponseEntity<Response> getAllServers() {
+  public ResponseEntity<ResponseStructure> getAllServers() {
     return ResponseEntity.ok(
-      Response.builder()
+      ResponseStructure.builder()
         .timeStamp(LocalDateTime.now())
         .statusCode(HttpStatus.OK.value())
         .status(HttpStatus.OK)
@@ -44,10 +44,10 @@ public class ServerResource {
 
 
   @GetMapping(path = "/get/{id}")
-  public ResponseEntity<Response> getServer(@PathVariable("id") Long id) {
+  public ResponseEntity<ResponseStructure> getServer(@PathVariable("id") Long id) {
     Server serverFetchedByID = serverService.get(id);
     return ResponseEntity.ok(
-      Response.builder()
+      ResponseStructure.builder()
         .timeStamp(LocalDateTime.now())
         .statusCode(HttpStatus.OK.value())
         .status(HttpStatus.OK)
@@ -58,10 +58,10 @@ public class ServerResource {
 
 
   @GetMapping(path = "/ping/{ipAddress}")
-  public ResponseEntity<Response> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
+  public ResponseEntity<ResponseStructure> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
     Optional<Server> serv_ = serverService.pingIfExists(ipAddress); /* ping the server and get the result */
 
-    return ResponseEntity.ok(Response.builder()
+    return ResponseEntity.ok(ResponseStructure.builder()
       .timeStamp(LocalDateTime.now())
       .statusCode((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST.value() : HttpStatus.OK.value())
       .status((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST : HttpStatus.OK)
@@ -72,10 +72,10 @@ public class ServerResource {
 
 
   @PutMapping(path = "/{serverId}")
-  public ResponseEntity<Response> updateServer(@PathVariable("serverId") Long serverId, @RequestBody(required = true) @Valid Server serverUpdates) {
+  public ResponseEntity<ResponseStructure> updateServer(@PathVariable("serverId") Long serverId, @RequestBody(required = true) @Valid Server serverUpdates) {
     Optional<Server> serv_ = serverService.updateIfExists(serverId, serverUpdates);
 
-    return ResponseEntity.ok(Response.builder()
+    return ResponseEntity.ok(ResponseStructure.builder()
       .timeStamp(LocalDateTime.now())
       .statusCode((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST.value() : HttpStatus.OK.value())
       .status((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST : HttpStatus.OK)
@@ -85,8 +85,8 @@ public class ServerResource {
   }
 
   @PostMapping(path = "/save")
-  public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) {
-    return ResponseEntity.ok(Response.builder()
+  public ResponseEntity<ResponseStructure> saveServer(@RequestBody @Valid Server server) {
+    return ResponseEntity.ok(ResponseStructure.builder()
       .timeStamp(LocalDateTime.now())
       .status(HttpStatus.CREATED)
       .statusCode(HttpStatus.CREATED.value())
@@ -97,15 +97,17 @@ public class ServerResource {
 
 
   @DeleteMapping(path = "/delete/{id}")
-  public ResponseEntity<Response> deleteServer(@PathVariable("id") Long id) {
+  public ResponseEntity<ResponseStructure> deleteServer(@PathVariable("id") Long id) {
     Boolean deleteResult = serverService.delete(id);
-    return ResponseEntity.ok(Response.builder()
-      .timeStamp(LocalDateTime.now())
-      .data(Map.of("deleted", deleteResult))
-      .message(deleteResult ? "Server deleted successfully" : "No server found with id " + id)
-      .statusCode(deleteResult ? HttpStatus.OK.value() : HttpStatus.BAD_REQUEST.value())
-      .status(deleteResult ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
-      .build());
+    return ResponseEntity.ok(
+      ResponseStructure.builder()
+        .timeStamp(LocalDateTime.now())
+        .data(Map.of("deleted", deleteResult))
+        .message(deleteResult ? "Server deleted successfully" : "No server found with id " + id)
+        .statusCode(deleteResult ? HttpStatus.OK.value() : HttpStatus.BAD_REQUEST.value())
+        .status(deleteResult ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+        .build()
+    );
   }
 
   /**
