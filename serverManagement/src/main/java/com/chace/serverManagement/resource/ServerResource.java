@@ -102,7 +102,7 @@ public class ServerResource {
     return ResponseEntity.ok(Response.builder()
       .timeStamp(LocalDateTime.now())
       .data(Map.of("deleted", deleteResult))
-      .message(deleteResult ? "Server deleted successfully" : "No server found for this id")
+      .message(deleteResult ? "Server deleted successfully" : "No server found with id " + id)
       .statusCode(deleteResult ? HttpStatus.OK.value() : HttpStatus.BAD_REQUEST.value())
       .status(deleteResult ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
       .build());
