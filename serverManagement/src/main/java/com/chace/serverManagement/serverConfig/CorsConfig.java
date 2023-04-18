@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 //@EnableWebMvc
 @Configuration
-public class CorsConfig { //  extends WebSecurityConfigurerAdapter
+public class CorsConfig implements  WebMvcConfigurer{ //  extends WebSecurityConfigurerAdapter
 
   @Bean
   public WebMvcConfigurer corsConfigurer() {
