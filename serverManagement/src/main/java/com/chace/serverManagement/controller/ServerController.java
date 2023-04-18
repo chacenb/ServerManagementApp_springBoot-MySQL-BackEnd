@@ -24,7 +24,7 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 @RestController /* show that class is going to serve rest endpoints api-s, mostly used with @RequestMapping. */
 @RequestMapping(path = "api/v2/server")  /* used to map the web requests */
 @RequiredArgsConstructor /* generates constructor for all final & @NonNull fields. Thus handles dependency injection */
-public class ServerResource {
+public class ServerController {
 
   /* this wil be dependency injected cause of @RequiredArgsConstructor */
   private final ServerServiceImplementation serverService;
