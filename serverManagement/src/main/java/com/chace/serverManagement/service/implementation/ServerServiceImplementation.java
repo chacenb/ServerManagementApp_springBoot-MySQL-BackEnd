@@ -5,7 +5,9 @@ import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.repository.ServerRepo;
 import com.chace.serverManagement.service.ServerService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,9 +26,10 @@ import static java.lang.Boolean.TRUE;
 @RequiredArgsConstructor
 @Service
 @Transactional
-@Slf4j
+//@Slf4j
 public class ServerServiceImplementation implements ServerService {
   private final ServerRepo serverRepo;
+  private static final Logger log = LoggerFactory.getLogger(ServerServiceImplementation.class);
 
   /* this method is going to be called for each server save, it will:
    * - log the server to save
@@ -34,7 +37,7 @@ public class ServerServiceImplementation implements ServerService {
    * - save the server to the DB and return it */
   @Override
   public Server create(Server server) {
-    log.info("[SI] saving new server {}", server.getName());
+    log.info("[SI] creating new server {}", server.getName());
     server.setImageUrl(setServerImageUrl());
     return serverRepo.save(server);
   }
@@ -53,13 +56,17 @@ public class ServerServiceImplementation implements ServerService {
   @Override
   public Optional<Server> pingIfExists(String ipAddress) throws IOException {
     Optional<Server> server = serverRepo.findByIpAddress(ipAddress);
-    log.info("[SI] pinging Optional<server> w/ ipAddress : {}", ipAddress);
+    log.info("[SI] pinging [ if exists ] server w/ ipAddress : {}", ipAddress);
 
     if (server.isPresent()) {
       InetAddress address = InetAddress.getByName(ipAddress);
       server.get().setStatus(address.isReachable(10000) ? Status.SERVER_UP : Status.SERVER_DOWN);
+      log.info("[SI] server {} pinged successfully within timeout", ipAddress);
       return Optional.of(serverRepo.save(server.get()));
-    } else return server;
+    } else {
+      log.info("[SI] server {} ping timed out", ipAddress);
+      return server;
+    }
   }
 
 
@@ -78,7 +85,7 @@ public class ServerServiceImplementation implements ServerService {
 
   @Override
   public Optional<Server> getOptional(Long id) {
-    log.info("[SI] fetching <optional> server w/ id : {}", id);
+    log.info("[SI] fetching [ if exists ] server w/ id : {}", id);
     return serverRepo.findById(id).isPresent() ? serverRepo.findById(id) : Optional.of(new Server());
   }
 
@@ -86,15 +93,18 @@ public class ServerServiceImplementation implements ServerService {
   @Transactional
   public Server update_old(Long id, Server serverUpdate) {
     Optional<Server> oldServerOptional = serverRepo.findById(id);
-    log.info("[SI] old server <Optional> to update is : {}", oldServerOptional);
-    if (oldServerOptional.isEmpty()) return new Server();
-    else {
+    log.info("[SI] old server [ if exists ] to update is : {}", oldServerOptional);
+    if (oldServerOptional.isEmpty()) {
+      log.info("[SI] server w/ id : {} doesn't exist", id);
+      return new Server();
+    } else {
       Server oldServer = oldServerOptional.get();
       oldServer.setName(serverUpdate.getName());
       oldServer.setStatus(serverUpdate.getStatus());
       oldServer.setMemory(serverUpdate.getMemory());
       oldServer.setType(serverUpdate.getType());
       oldServer.setIpAddress(serverUpdate.getIpAddress());
+      log.info("[SI] server w/ id : {} updated successfully => {}", id, oldServer);
       return this.create(oldServer);
     }
   }
@@ -103,7 +113,7 @@ public class ServerServiceImplementation implements ServerService {
   @Transactional
   public Optional<Server> updateIfExists(Long id, Server serverUpdate) {
     Optional<Server> oldServerOptional = serverRepo.findById(id);
-    log.info("[SI] old server <Optional> to update is : {}", oldServerOptional);
+    log.info("[SI] old server [ if exists ] to update is : {}", oldServerOptional);
     if (oldServerOptional.isPresent()) {
       Server oldServer = oldServerOptional.get();
       oldServer.setName(serverUpdate.getName());
@@ -111,8 +121,12 @@ public class ServerServiceImplementation implements ServerService {
       oldServer.setMemory(serverUpdate.getMemory());
       oldServer.setType(serverUpdate.getType());
       oldServer.setIpAddress(serverUpdate.getIpAddress());
+      log.info("[SI] server w/ id : {} updated successfully => {}", id, oldServer);
       return Optional.of(this.create(oldServer));
-    } else return oldServerOptional;
+    } else {
+      log.info("[SI] server w/ id : {} doesn't exist", id);
+      return oldServerOptional;
+    }
   }
 
 
@@ -122,8 +136,12 @@ public class ServerServiceImplementation implements ServerService {
   public Boolean delete(Long id) {
     log.info("[SI] deleting server w/ id : {}", id);
     Optional<Server> serverToDelete = serverRepo.findById(id);
-    if (serverToDelete.isEmpty()) return FALSE;
+    if (serverToDelete.isEmpty()) {
+      log.info("[SI] server w/ id : {} doesn't exist", id);
+      return FALSE;
+    }
     serverRepo.deleteById(id);
+    log.info("[SI] server w/ id : {} deleted successfully", id);
     return TRUE;
   }
 

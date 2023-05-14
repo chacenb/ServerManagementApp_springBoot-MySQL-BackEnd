@@ -1,0 +1,6 @@
+2023-05-14T01:16:03.983+0100 INFO Starting ServerManagementApplication using Java 17.0.6 on CCOM with PID 452 (C:\Data\Docs\Projects\Spring boot\springBoot-Back-MySQL-Front-Angular\ServerManagementApp_springBoot-MySQL-BackEnd\serverManagement\target\classes started by Chace in C:\Data\Docs\Projects\Spring boot\springBoot-Back-MySQL-Front-Angular\ServerManagementApp_springBoot-MySQL-BackEnd\serverManagement)
+2023-05-14T01:16:03.987+0100 INFO No active profile set, falling back to 1 default profile: "default"
+2023-05-14T01:16:07.326+0100 INFO Started ServerManagementApplication in 3.734 seconds (JVM running for 4.519)
+2023-05-14T01:18:51.385+0100 -- INFO -- Starting ServerManagementApplication using Java 17.0.6 on CCOM with PID 22764 (C:\Data\Docs\Projects\Spring boot\springBoot-Back-MySQL-Front-Angular\ServerManagementApp_springBoot-MySQL-BackEnd\serverManagement\target\classes started by Chace in C:\Data\Docs\Projects\Spring boot\springBoot-Back-MySQL-Front-Angular\ServerManagementApp_springBoot-MySQL-BackEnd\serverManagement)
+2023-05-14T01:18:51.391+0100 -- INFO -- No active profile set, falling back to 1 default profile: "default"
+2023-05-14T01:18:54.654+0100 -- INFO -- Started ServerManagementApplication in 3.66 seconds (JVM running for 4.41)

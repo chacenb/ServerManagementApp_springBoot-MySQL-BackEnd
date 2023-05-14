@@ -16,12 +16,19 @@ spring:
     url: jdbc:mysql://localhost:3306/serverdb
     username: root
   jpa:
-    show-sql: true
+    show-sql: false # false, true
     hibernate:
-#      ddl-auto: create-drop
-      ddl-auto: update
+      ddl-auto: update # create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
     open-in-view: false
+
+# set logging level of core loggers (tomcat, springBoot itself, hibernate) ONLY to debug an upwards
+#debug: true
+
+# set the whole application root log level
+logging:
+  level:
+    root: INFO # TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
