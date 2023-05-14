@@ -1,3 +1,7 @@
+/*
+inside project folder, type "mvn dependency:tree" command to see the project dependency tree structure
+ */
+
 
 /* Logging in springBoot application (Logback & log4j2)
  * link : https://www.youtube.com/playlist?list=PLmCsXDGbJHdhRdnwX3UQE4EcaErBTYqC8

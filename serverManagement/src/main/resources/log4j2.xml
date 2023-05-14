@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="30">
     <Properties>
-        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} -- %p -- %m%n</Property>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%-5p] %c{1}:%M:%L: %m%n</Property>
         <Property name="APP_LOG_ROOT">C:/Data/Docs/Projects/Spring boot/springBoot-Back-MySQL-Front-Angular/ServerManagementApp_springBoot-MySQL-BackEnd/serverManagement/logs</Property>
     </Properties>
     <Appenders>
@@ -27,7 +27,7 @@
             <AppenderRef ref="Console" />
         </Logger>
 
-        <Root level="debug">
+        <Root level="info">
             <AppenderRef ref="Console" />
         </Root>
     </Loggers>
