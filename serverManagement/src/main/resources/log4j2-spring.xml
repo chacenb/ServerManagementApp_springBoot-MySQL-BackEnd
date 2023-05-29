@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="30">
+
     <Properties>
-        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%-5p] %c{1}:%M:%L: %m%n</Property>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%-5p] %c{1.}:%M:%L :: %msg%n%throwable</Property>
+<!--        <Property name="LOG_PATTERN">%style{%d{ISO8601}}{black} - %highlight{%-5level } - [%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable</Property>-->
         <Property name="APP_LOG_ROOT">C:/Data/Docs/Projects/Spring boot/springBoot-Back-MySQL-Front-Angular/ServerManagementApp_springBoot-MySQL-BackEnd/serverManagement/logs</Property>
     </Properties>
+
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${LOG_PATTERN}" />
@@ -13,9 +16,14 @@
                      fileName="${APP_LOG_ROOT}/chaceTestLogs.log"
                      filePattern="${APP_LOG_ROOT}/serverManagement-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="${LOG_PATTERN}" />
+
             <Policies>
-                <SizeBasedTriggeringPolicy size="19500KB" />
+                <!-- rollover on startup && daily && when the file reaches 10 MegaBytes -->
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+                <TimeBasedTriggeringPolicy />
             </Policies>
+
             <DefaultRolloverStrategy max="1" />
         </RollingFile>
 
@@ -27,6 +35,7 @@
             <AppenderRef ref="Console" />
         </Logger>
 
+        <!-- LOG everything at INFO level -->
         <Root level="info">
             <AppenderRef ref="Console" />
         </Root>

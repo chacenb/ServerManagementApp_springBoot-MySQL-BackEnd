@@ -1,4 +1,9 @@
 /*
+* The <scope> element can take 6 values: compile, provided, runtime, test, system and import.
+* url: https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope
+* */
+
+/*
 inside project folder, type "mvn dependency:tree" command to see the project dependency tree structure
  */
 

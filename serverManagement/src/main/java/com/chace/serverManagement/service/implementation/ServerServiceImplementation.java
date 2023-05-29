@@ -6,6 +6,7 @@ import com.chace.serverManagement.repository.ServerRepo;
 import com.chace.serverManagement.service.ServerService;
 import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,11 @@ import static java.lang.Boolean.TRUE;
 @RequiredArgsConstructor
 @Service
 @Transactional
-//@Slf4j
+@Slf4j /* @Slf4j auto adds a field named 'log' that uses the underlying logging implementation (Log4j2 in this case) */
 public class ServerServiceImplementation implements ServerService {
   private final ServerRepo serverRepo;
-  private static final Logger log = LoggerFactory.getLogger(ServerServiceImplementation.class);
+  /* either use this declaration or insert @Slf4j annotation (better way) */
+//  private static final Logger log = LoggerFactory.getLogger(ServerServiceImplementation.class);
 
   /* this method is going to be called for each server save, it will:
    * - log the server to save
