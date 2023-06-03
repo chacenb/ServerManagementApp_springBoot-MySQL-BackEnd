@@ -5,12 +5,17 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.5</version>
+        <version>3.0.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.chace</groupId>
     <artifactId>serverManagement</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.1</version>
+
+    <!-- for wildfly deployment -->
+    <packaging>war</packaging>
+    <!-- END for wildfly deployment -->
+
     <name>serverManagement</name>
     <description>Servers Status Management System</description>
     <properties>
@@ -21,23 +26,48 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-            <!-- exclude the default logger (Logback) in order to use another logger (log4j2) for instance -->
+
+            <!-- for wildfly deployment -->
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
+
+<!--                <exclusion>-->
+<!--                    <groupId>ch.qos.logback</groupId>-->
+<!--                    <artifactId>logback-classic</artifactId>-->
+<!--                </exclusion>-->
             </exclusions>
+            <!-- END for wildfly deployment -->
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
 
+            <!-- for wildfly deployment -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+            <!-- END for wildfly deployment -->
+
         </dependency>
+
+        <!-- wildfly deploy : SINCE wildfly 28 USES JAKARTA  -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- end wildfly deploy -->
 
         <!--  use  log4j2 logger    -->
         <dependency>
@@ -50,11 +80,13 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -63,7 +95,18 @@
     </dependencies>
 
     <build>
+        <finalName>manageServers</finalName>
+
         <plugins>
+
+            <!--wildfly deploy -->
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>4.0.0.Final</version>
+            </plugin>
+            <!-- end wildfly deploy -->
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

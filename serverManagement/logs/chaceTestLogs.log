@@ -1,3 +1,14 @@
-2023-05-26T19:39:43.526+0100 [INFO ] c.c.s.ServerManagementApplication:logStarting:55 :: Starting ServerManagementApplication using Java 17.0.6 on CCOM with PID 23072 (C:\Data\Docs\Projects\Spring boot\springBoot-Back-MySQL-Front-Angular\ServerManagementApp_springBoot-MySQL-BackEnd\serverManagement\target\classes started by Chace in C:\Data\Docs\Projects\Spring boot\springBoot-Back-MySQL-Front-Angular\ServerManagementApp_springBoot-MySQL-BackEnd\serverManagement)
-2023-05-26T19:39:43.530+0100 [INFO ] c.c.s.ServerManagementApplication:logStartupProfileInfo:634 :: No active profile set, falling back to 1 default profile: "default"
-2023-05-26T19:39:45.975+0100 [INFO ] c.c.s.ServerManagementApplication:logStarted:61 :: Started ServerManagementApplication in 2.885 seconds (JVM running for 3.49)
+2023-06-03T12:12:00.189+0100 [INFO ] c.c.s.ServerManagementApplication:logStarting:51 :: Starting ServerManagementApplication using Java 17.0.6 with PID 13588 (started by Chace in C:\Users\Chace\wildfly-28.0.0.Final Instances\wildfly-28.0.0.Final-Only-User-Configured\bin)
+2023-06-03T12:12:00.193+0100 [INFO ] c.c.s.ServerManagementApplication:logStartupProfileInfo:632 :: No active profile set, falling back to 1 default profile: "default"
+2023-06-03T12:12:02.905+0100 [INFO ] c.c.s.ServerManagementApplication:logStarted:57 :: Started ServerManagementApplication in 3.006 seconds (process running for 803.089)
+2023-06-03T12:12:02.908+0100 [INFO ] c.c.s.ServletInitializer:createRootApplicationContext:133 :: Root context already created (using as parent).
+2023-06-03T12:12:02.938+0100 [INFO ] c.c.s.ServletInitializer:logStartupProfileInfo:632 :: No active profile set, falling back to 1 default profile: "default"
+2023-06-03T12:12:03.084+0100 [INFO ] c.c.s.ServletInitializer:logStarted:57 :: Started ServletInitializer in 0.174 seconds (process running for 803.268)
+2023-06-03T12:12:54.731+0100 [INFO ] c.c.s.s.i.ServerServiceImplementation:list:77 :: [SI] fetching all servers 
+2023-06-03T12:13:27.663+0100 [INFO ] c.c.s.s.i.ServerServiceImplementation:list:77 :: [SI] fetching all servers 
+2023-06-03T12:13:28.356+0100 [INFO ] c.c.s.s.i.ServerServiceImplementation:list:77 :: [SI] fetching all servers 
+2023-06-03T12:13:29.284+0100 [INFO ] c.c.s.s.i.ServerServiceImplementation:list:77 :: [SI] fetching all servers 
+2023-06-03T12:13:29.917+0100 [INFO ] c.c.s.s.i.ServerServiceImplementation:list:77 :: [SI] fetching all servers 
+2023-06-03T12:13:30.485+0100 [INFO ] c.c.s.s.i.ServerServiceImplementation:list:77 :: [SI] fetching all servers 
+2023-06-03T12:13:30.997+0100 [INFO ] c.c.s.s.i.ServerServiceImplementation:list:77 :: [SI] fetching all servers 
+2023-06-03T12:14:26.003+0100 [INFO ] c.c.s.s.i.ServerServiceImplementation:get:84 :: [SI] fetching server w/ id : 20

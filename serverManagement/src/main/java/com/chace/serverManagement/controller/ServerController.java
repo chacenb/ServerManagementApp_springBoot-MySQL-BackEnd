@@ -3,13 +3,14 @@ package com.chace.serverManagement.controller;
 import com.chace.serverManagement.Model.utils.ResponseStructure;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+//import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

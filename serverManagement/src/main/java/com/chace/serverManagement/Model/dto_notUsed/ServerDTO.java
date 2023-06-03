@@ -1,12 +1,14 @@
 package com.chace.serverManagement.Model.dto_notUsed;
 
 import com.chace.serverManagement.Model.enumeration.Status;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotEmpty;
+//import javax.persistence.Column;
+//import javax.validation.constraints.NotEmpty;
 
 @Data   // helps autoInsert getters & setters
 @NoArgsConstructor // helps autoInsert NoArgsConstructor

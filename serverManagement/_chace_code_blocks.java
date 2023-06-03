@@ -1,4 +1,21 @@
 /*
+*  * How to Deploy Spring Boot (2.X or 3.X) Application in Wildfly Application Server (JAKARTA 8- or JAKARTA 10+)
+ * link : https://www.mastertheboss.com/jboss-frameworks/spring/spring-boot-hello-world-on-wildfly/
+ */
+
+
+/*
+ * How to install WildFly on Ubuntu 20.04 && Deploy Java Hello World Application on WildFly
+ * ***** yt link : https://youtu.be/ULXt-G_-2ws
+ * steps document link : https://docs.google.com/document/d/1nDqrJPErhaF6YJEtKuoauEPTv4Mx6ALN/edit
+ * steps document also inside materials folder
+ * -----------------------------------------------------------------------------
+ * How to Deploy Spring Boot Application in Wildfly Application Server
+ * url : https://medium.com/swlh/how-to-deploy-spring-boot-application-in-wildfly-application-server-b3670c031ad4
+ */
+
+
+/*
 * The <scope> element can take 6 values: compile, provided, runtime, test, system and import.
 * url: https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope
 * */
@@ -12,12 +29,6 @@ inside project folder, type "mvn dependency:tree" command to see the project dep
  * link : https://www.youtube.com/playlist?list=PLmCsXDGbJHdhRdnwX3UQE4EcaErBTYqC8
  */
 
-/*
- * How to install WildFly on Ubuntu 20.04 && Deploy Java Hello World Application on WildFly
- * ***** yt link : https://youtu.be/ULXt-G_-2ws
- * steps document link : https://docs.google.com/document/d/1nDqrJPErhaF6YJEtKuoauEPTv4Mx6ALN/edit
- * steps document also inside materials folder
- */
 
 /*
  * Formatting http responses
