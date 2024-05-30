@@ -1,4 +1,10 @@
 /*
+See all java versions installed on linux ?
+update-alternatives --config java // After that we will be prompted to select the version to use
+*/
+
+
+/*
 *  * How to Deploy Spring Boot (2.X or 3.X) Application in Wildfly Application Server (JAKARTA 8- or JAKARTA 10+)
  * link : https://www.mastertheboss.com/jboss-frameworks/spring/spring-boot-hello-world-on-wildfly/
  */
