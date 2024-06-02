@@ -2,6 +2,8 @@ package com.chace.serverManagement.serverConfig;
 
 import org.springframework.context.annotation.Configuration;
 
+
+/* This class is used to initialize some values inside the DB*/
 @Configuration
 public class ServerConfig {
 //    @Bean
