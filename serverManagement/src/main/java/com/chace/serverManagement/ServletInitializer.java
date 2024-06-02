@@ -12,6 +12,9 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 **/
 public class ServletInitializer extends SpringBootServletInitializer {
 
+	/* SpringBootServletInitializer is an abstract class that implements the WebApplicationInitializer. 
+	* It provides a way to run a Spring Boot application from a traditional WAR deployment.*/
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(ServerManagementApplication.class);
