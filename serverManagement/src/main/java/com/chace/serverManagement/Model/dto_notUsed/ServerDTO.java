@@ -18,6 +18,7 @@ public class ServerDTO {
   private String name;
   private String memory;
   private String type;
+  private String serverDtoProperty;
   private String imageUrl;
   private Status status;
 

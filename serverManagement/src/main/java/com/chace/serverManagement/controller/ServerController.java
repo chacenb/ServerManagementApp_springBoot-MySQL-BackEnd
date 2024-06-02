@@ -1,5 +1,6 @@
 package com.chace.serverManagement.controller;
 
+import com.chace.serverManagement.Model.dto_notUsed.DataCenterDTO;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.utils.ResponseStructure;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
@@ -8,12 +9,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,6 +36,7 @@ public class ServerController {
   private final ServerServiceImplementation serverService;
 
   /* ResponseEntity<Response> : cf code blocks */
+//  @GetMapping(path = "") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
   @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
   public ResponseEntity<ResponseStructure> getAllServers() {
     return ResponseEntity.ok(
@@ -133,5 +140,50 @@ public class ServerController {
     return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/SpringBoot_Projects/images/" + fileName));
   }
 
+
+  /*
+   * When you use the @Valid annotation for a method argument in the Controller,
+   * the validator is invoked automatically and it tries to validate the object,
+   * if the object is invalid, it throws MethodArgumentNotValidException.
+   * If Spring finds an "ExceptionHandler method" for this exception it will execute the code inside this method. */
+  @PostMapping(path = "/save/datacenter")
+  public ResponseEntity<ResponseStructure> saveServer(@RequestBody @Valid DataCenterDTO datacenter) {
+    log.info("/save/datacenter body = {}", datacenter);
+
+    Optional<DataCenterDTO> _datacenter = serverService.createDatacenter(datacenter); /* ping the server and get the result */
+
+    return ResponseEntity.ok(ResponseStructure.builder()
+        .timeStamp(LocalDateTime.now())
+        .status(HttpStatus.CREATED)
+        .statusCode(HttpStatus.CREATED.value())
+        .message(_datacenter.map(d_center -> ("dataCenter created")).orElse("No server found with this IP Address"))
+        .data((_datacenter.isEmpty()) ? Map.of() : Map.of("datacenter", _datacenter.get()))
+        .build());
+
+  }
+
+
+  /* Spring "ExceptionHandler method" for MethodArgumentNotValidException
+  * this will handle exceptions in the local controller
+  * to handle exceptions globally, cf. FtaExceptionHandler class */
+//  @ResponseStatus(HttpStatus.BAD_REQUEST)
+//  @ExceptionHandler(MethodArgumentNotValidException.class)
+//  public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException notValidException) {
+//
+//    List<String> error_details = new ArrayList<>();
+//    for (ObjectError error : notValidException.getBindingResult().getAllErrors()) {
+//      error_details.add(error.getDefaultMessage());
+//    }
+//
+//    return ResponseEntity.badRequest().body(
+//        ResponseStructure.builder()
+//            .timeStamp(LocalDateTime.now())
+//            .status(HttpStatus.BAD_REQUEST)
+//            .statusCode(HttpStatus.BAD_REQUEST.value())
+//            .message(String.valueOf(error_details))
+//            .data(null)
+//            .build()
+//    );
+//  }
 
 }

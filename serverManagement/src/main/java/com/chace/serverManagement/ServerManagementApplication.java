@@ -5,12 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class ServerManagementApplication  extends SpringBootServletInitializer {
-    public static void main(String[] args) {
-        SpringApplication.run(ServerManagementApplication.class, args);
-    }
+public class ServerManagementApplication extends SpringBootServletInitializer {
 
-    /* STOPPED AT 02:24:30 */
-
+  public static void main(String[] args) {
+    SpringApplication.run(ServerManagementApplication.class, args);
+  }
 
 }

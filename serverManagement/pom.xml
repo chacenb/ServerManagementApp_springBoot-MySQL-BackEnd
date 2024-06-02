@@ -50,14 +50,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
 
-            <!-- for wildfly deployment -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-            <!-- END for wildfly deployment -->
+            <!-- EXCLUDE embedded tomcat when we want to deploy on  wildfly -->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.boot</groupId>-->
+<!--                    <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+            <!-- END EXCLUDE embedded tomcat when we want to deploy on  wildfly -->
 
         </dependency>
 

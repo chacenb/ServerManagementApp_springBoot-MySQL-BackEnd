@@ -1,5 +1,6 @@
 package com.chace.serverManagement.service.implementation;
 
+import com.chace.serverManagement.Model.dto_notUsed.DataCenterDTO;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.repository.ServerRepo;
@@ -7,8 +8,6 @@ import com.chace.serverManagement.service.ServerService;
 import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,6 +42,18 @@ public class ServerServiceImplementation implements ServerService {
     server.setImageUrl(setServerImageUrl());
     return serverRepo.save(server);
   }
+
+  @Override
+  public Optional<DataCenterDTO> createDatacenter(DataCenterDTO dataCenterDTO) {
+    log.info("creating Datacenter dataCenterDTO = {}", dataCenterDTO);
+
+    /* check if the server associated exists */
+    Optional<Server> server = this.getOptional(dataCenterDTO.getServerId());
+    log.info("server = {}", server);
+
+    return Optional.of(new DataCenterDTO());
+  }
+
 
   @Override
   public Server ping_old(String ipAddress) throws IOException {
