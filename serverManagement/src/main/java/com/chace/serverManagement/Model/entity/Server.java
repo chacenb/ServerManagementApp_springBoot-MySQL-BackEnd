@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor // helps autoInsert NoArgsConstructor
 @AllArgsConstructor // helps autoInsert AllArgsConstructor
 @Table( //This annot is used to specify the primary table for the annotated entity */
-    name = "server"
+    name = "server",
 
     /* defining a custom unique constraint on a table column */
-//    uniqueConstraints = {
-//        @UniqueConstraint(name = "CONSTR_server_ipAddress_unique", columnNames = "ip_address"),
-//    }
+    uniqueConstraints = {
+        @UniqueConstraint(name = "CONSTR_server_ipAddress_unique", columnNames = "ipAddress"),
+    }
 )
 public class Server {
 
@@ -34,6 +34,9 @@ public class Server {
   private Status status;
 
 
+  // Ignoring Fields With the JPA @Transient Annotation > https://www.baeldung.com/jpa-transient-ignore-field
+  @Transient
   private String description;
-  private String location;
+
+  private transient String location;
 }

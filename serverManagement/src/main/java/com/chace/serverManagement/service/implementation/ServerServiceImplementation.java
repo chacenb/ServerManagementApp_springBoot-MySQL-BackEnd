@@ -41,7 +41,7 @@ public class ServerServiceImplementation implements ServerService {
    * - dynamically set an image to the serv
    * - save the serverDTO to the DB and return it */
   @Override
-  public ServerDTO create(ServerDTO serverDTO) {
+  public ServerDTO create(ServerDTO serverDTO)  throws Exception{
     log.info("[SI] creating new serverDTO {} of class = {}", serverDTO.getName(), serverDTO.getClass().getName());
     serverDTO.setImageUrl(setServerImageUrl());
 
@@ -51,7 +51,16 @@ public class ServerServiceImplementation implements ServerService {
     server.setDescription("default description");
     server.setLocation("IAI");
     /* END setting other Entity fields */
-    Server created_server = serverRepo.save(server);
+    log.info("about to save = {}", server);
+
+    Server created_server = null;
+    try {
+      created_server = serverRepo.save(server);
+    } catch (Exception e) {
+      log.error("ERROR ON SAVE ", e);
+      throw new RuntimeException(e.getMessage());
+    }
+    log.info("saved server = {}", created_server);
 
     return serverMapper.toDTO(created_server);
   }

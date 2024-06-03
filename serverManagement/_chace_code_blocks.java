@@ -1,3 +1,10 @@
+// Manage transactions with springboot >> https://dev.to/wynnt3o/spring-transactional-rollback-handling-hc8
+
+//-- Ignoring Fields With the JPA @Transient Annotation > https://www.baeldung.com/jpa-transient-ignore-field
+
+
+
+
 /*
 See all java versions installed on linux ?
 update-alternatives --config java // After that we will be prompted to select the version to use
@@ -25,6 +32,11 @@ update-alternatives --config java // After that we will be prompted to select th
 * The <scope> element can take 6 values: compile, provided, runtime, test, system and import.
 * url: https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope
 * */
+
+
+
+
+
 
 /*
 inside project folder, type "mvn dependency:tree" command to see the project dependency tree structure

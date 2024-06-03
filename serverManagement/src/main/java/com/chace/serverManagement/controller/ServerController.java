@@ -99,11 +99,26 @@ public class ServerController {
 
   @PostMapping(path = "/save")
   public ResponseEntity<ResponseStructure> saveServer(@RequestBody @Valid ServerDTO server) {
+    ServerDTO createdSerser = null;
+    try {
+      createdSerser = serverService.create(server);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(
+          ResponseStructure.builder()
+              .timeStamp(LocalDateTime.now())
+              .status(HttpStatus.BAD_REQUEST)
+              .statusCode(HttpStatus.BAD_REQUEST.value())
+              .message(e.getMessage())
+//              .data((_datacenter.isEmpty()) ? Map.of() : Map.of("dataCenter", _datacenter.get()))
+              .build());
+
+    }
+
     return ResponseEntity.ok(ResponseStructure.builder()
         .timeStamp(LocalDateTime.now())
         .status(HttpStatus.CREATED)
         .statusCode(HttpStatus.CREATED.value())
-        .data(Map.of("server", serverService.create(server)))
+        .data(Map.of("server", createdSerser))
         .message("Server created")
         .build());
   }

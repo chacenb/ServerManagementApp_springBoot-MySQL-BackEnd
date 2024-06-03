@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface ServerService {
-  ServerDTO create(ServerDTO server);
+  ServerDTO create(ServerDTO server) throws Exception;
 
   Server old_create(Server server);
 
