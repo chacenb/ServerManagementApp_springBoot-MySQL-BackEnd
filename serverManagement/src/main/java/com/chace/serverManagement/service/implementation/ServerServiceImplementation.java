@@ -1,8 +1,10 @@
 package com.chace.serverManagement.service.implementation;
 
 import com.chace.serverManagement.Model.dto_notUsed.DataCenterDTO;
+import com.chace.serverManagement.Model.dto_notUsed.ServerDTO;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.enumeration.Status;
+import com.chace.serverManagement.Model.utils.ServerMapper;
 import com.chace.serverManagement.repository.ServerRepo;
 import com.chace.serverManagement.service.ServerService;
 import lombok.RequiredArgsConstructor;
@@ -28,28 +30,49 @@ import static java.lang.Boolean.TRUE;
 @Transactional
 @Slf4j /* @Slf4j auto adds a field named 'log' that uses the underlying logging implementation (Log4j2 in this case) */
 public class ServerServiceImplementation implements ServerService {
+
   private final ServerRepo serverRepo;
+  private final ServerMapper serverMapper;
   /* either use this declaration or insert @Slf4j annotation (better way) */
 //  private static final Logger log = LoggerFactory.getLogger(ServerServiceImplementation.class);
 
-  /* this method is going to be called for each server save, it will:
-   * - log the server to save
+  /* this method is going to be called for each serverDTO save, it will:
+   * - log the serverDTO to save
    * - dynamically set an image to the serv
-   * - save the server to the DB and return it */
+   * - save the serverDTO to the DB and return it */
   @Override
-  public Server create(Server server) {
+  public ServerDTO create(ServerDTO serverDTO) {
+    log.info("[SI] creating new serverDTO {} of class = {}", serverDTO.getName(), serverDTO.getClass().getName());
+    serverDTO.setImageUrl(setServerImageUrl());
+
+    /* convert from DTO to Entity before save */
+    Server server = serverMapper.toEntity(serverDTO);
+    /* setting other Entity fields */
+    server.setDescription("default description");
+    server.setLocation("IAI");
+    /* END setting other Entity fields */
+    Server created_server = serverRepo.save(server);
+
+    return serverMapper.toDTO(created_server);
+  }
+
+  @Override
+  public Server old_create(Server server) {
     log.info("[SI] creating new server {}", server.getName());
     server.setImageUrl(setServerImageUrl());
     return serverRepo.save(server);
   }
 
   @Override
-  public Optional<DataCenterDTO> createDatacenter(DataCenterDTO dataCenterDTO) {
+  public Optional<DataCenterDTO> createDatacenter(DataCenterDTO dataCenterDTO) throws Exception {
     log.info("creating Datacenter dataCenterDTO = {}", dataCenterDTO);
 
     /* check if the server associated exists */
-    Optional<Server> server = this.getOptional(dataCenterDTO.getServerId());
-    log.info("server = {}", server);
+    Optional<Server> server = serverRepo.findById(dataCenterDTO.getServerId());
+    log.info("server.isPresent() = {}", server.isPresent());
+    if (server.isEmpty()) throw new RuntimeException("The mentionned server id does not exist! Please provide an existing server");
+
+    /* Save the */
 
     return Optional.of(new DataCenterDTO());
   }
@@ -99,7 +122,8 @@ public class ServerServiceImplementation implements ServerService {
   @Override
   public Optional<Server> getOptional(Long id) {
     log.info("[SI] fetching [ if exists ] server w/ id : {}", id);
-    return serverRepo.findById(id).isPresent() ? serverRepo.findById(id) : Optional.of(new Server());
+//    return serverRepo.findById(id).isPresent() ? serverRepo.findById(id) : Optional.of(new Server());
+    return serverRepo.findById(id); //.isPresent() ? serverRepo.findById(id) : Optional.of(Server.);
   }
 
   @Override
@@ -118,7 +142,7 @@ public class ServerServiceImplementation implements ServerService {
       oldServer.setType(serverUpdate.getType());
       oldServer.setIpAddress(serverUpdate.getIpAddress());
       log.info("[SI] server w/ id : {} updated successfully => {}", id, oldServer);
-      return this.create(oldServer);
+      return this.old_create(oldServer);
     }
   }
 
@@ -135,7 +159,7 @@ public class ServerServiceImplementation implements ServerService {
       oldServer.setType(serverUpdate.getType());
       oldServer.setIpAddress(serverUpdate.getIpAddress());
       log.info("[SI] server w/ id : {} updated successfully => {}", id, oldServer);
-      return Optional.of(this.create(oldServer));
+      return Optional.of(this.old_create(oldServer));
     } else {
       log.info("[SI] server w/ id : {} doesn't exist", id);
       return oldServerOptional;

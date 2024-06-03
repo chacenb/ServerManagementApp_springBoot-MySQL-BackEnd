@@ -12,13 +12,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor // helps autoInsert AllArgsConstructor
 public class ServerDTO {
 
+  /* JAKARTA BEAN VALIDATION :: see all the validation annotations for controllers here
+   * https://jakartaee.github.io/jakartaee-documentation/jakartaee-tutorial/current/beanvalidation/bean-validation/bean-validation.html */
   @Column(unique = true)  // creates unique Constraint on this ipAddress Field
   @NotEmpty(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private String ipAddress;
+
   private String name;
   private String memory;
   private String type;
-  private String serverDtoProperty;
   private String imageUrl;
   private Status status;
 

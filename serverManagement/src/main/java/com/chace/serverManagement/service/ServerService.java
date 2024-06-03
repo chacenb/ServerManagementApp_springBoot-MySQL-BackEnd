@@ -1,6 +1,7 @@
 package com.chace.serverManagement.service;
 
 import com.chace.serverManagement.Model.dto_notUsed.DataCenterDTO;
+import com.chace.serverManagement.Model.dto_notUsed.ServerDTO;
 import com.chace.serverManagement.Model.entity.Server;
 
 import java.io.IOException;
@@ -8,9 +9,11 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface ServerService {
-  Server create(Server server);
+  ServerDTO create(ServerDTO server);
 
-  Optional<DataCenterDTO> createDatacenter(DataCenterDTO dataCenterDTO);
+  Server old_create(Server server);
+
+  Optional<DataCenterDTO> createDatacenter(DataCenterDTO dataCenterDTO) throws Exception;
 
   Server ping_old(String ipAddress) throws IOException;
 

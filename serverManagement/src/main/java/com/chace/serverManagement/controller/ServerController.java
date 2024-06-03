@@ -1,6 +1,7 @@
 package com.chace.serverManagement.controller;
 
 import com.chace.serverManagement.Model.dto_notUsed.DataCenterDTO;
+import com.chace.serverManagement.Model.dto_notUsed.ServerDTO;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.utils.ResponseStructure;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
@@ -9,17 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -102,12 +98,23 @@ public class ServerController {
   }
 
   @PostMapping(path = "/save")
-  public ResponseEntity<ResponseStructure> saveServer(@RequestBody @Valid Server server) {
+  public ResponseEntity<ResponseStructure> saveServer(@RequestBody @Valid ServerDTO server) {
     return ResponseEntity.ok(ResponseStructure.builder()
         .timeStamp(LocalDateTime.now())
         .status(HttpStatus.CREATED)
         .statusCode(HttpStatus.CREATED.value())
         .data(Map.of("server", serverService.create(server)))
+        .message("Server created")
+        .build());
+  }
+
+  @PostMapping(path = "/save_v1")
+  public ResponseEntity<ResponseStructure> saveServer_v1(@RequestBody @Valid Server server) {
+    return ResponseEntity.ok(ResponseStructure.builder()
+        .timeStamp(LocalDateTime.now())
+        .status(HttpStatus.CREATED)
+        .statusCode(HttpStatus.CREATED.value())
+        .data(Map.of("server", serverService.old_create(server)))
         .message("Server created")
         .build());
   }
@@ -145,27 +152,43 @@ public class ServerController {
    * When you use the @Valid annotation for a method argument in the Controller,
    * the validator is invoked automatically and it tries to validate the object,
    * if the object is invalid, it throws MethodArgumentNotValidException.
-   * If Spring finds an "ExceptionHandler method" for this exception it will execute the code inside this method. */
+   * If Spring finds a Class/Global level "ExceptionHandler method" for this specific exception, it will execute the code inside this method. */
   @PostMapping(path = "/save/datacenter")
-  public ResponseEntity<ResponseStructure> saveServer(@RequestBody @Valid DataCenterDTO datacenter) {
-    log.info("/save/datacenter body = {}", datacenter);
+  public ResponseEntity<ResponseStructure> saveDataCenter(@RequestBody @Valid DataCenterDTO dataCenterDTO) {
+    log.info("/save/dataCenterDTO body = {}", dataCenterDTO);
 
-    Optional<DataCenterDTO> _datacenter = serverService.createDatacenter(datacenter); /* ping the server and get the result */
+    Optional<DataCenterDTO> _datacenter = null;
+    try {
+      _datacenter = serverService.createDatacenter(dataCenterDTO);
+    } catch (Exception e) {
+      log.error("serverService.createDatacenter(dataCenterDTO) ::", e);
+      return ResponseEntity.badRequest().body(
+          ResponseStructure.builder()
+              .timeStamp(LocalDateTime.now())
+              .status(HttpStatus.BAD_REQUEST)
+              .statusCode(HttpStatus.BAD_REQUEST.value())
+              .message(e.getMessage())
+//              .data((_datacenter.isEmpty()) ? Map.of() : Map.of("dataCenter", _datacenter.get()))
+              .build());
+
+    }
+    log.info("_datacenter created  = {}", _datacenter);
 
     return ResponseEntity.ok(ResponseStructure.builder()
         .timeStamp(LocalDateTime.now())
         .status(HttpStatus.CREATED)
         .statusCode(HttpStatus.CREATED.value())
         .message(_datacenter.map(d_center -> ("dataCenter created")).orElse("No server found with this IP Address"))
-        .data((_datacenter.isEmpty()) ? Map.of() : Map.of("datacenter", _datacenter.get()))
+        .data((_datacenter.isEmpty()) ? Map.of() : Map.of("dataCenter", _datacenter.get()))
         .build());
 
   }
 
 
-  /* Spring "ExceptionHandler method" for MethodArgumentNotValidException
-  * this will handle exceptions in the local controller
-  * to handle exceptions globally, cf. FtaExceptionHandler class */
+  /** Controller(Class) level exception handling for Validation | cf. FtaExceptionHandler class for global exceptions handling
+   * @param notValidException
+   * @return
+   */
 //  @ResponseStatus(HttpStatus.BAD_REQUEST)
 //  @ExceptionHandler(MethodArgumentNotValidException.class)
 //  public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException notValidException) {

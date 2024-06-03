@@ -18,11 +18,12 @@ import java.util.List;
 public class FtaExceptionHandler extends ResponseEntityExceptionHandler {
 
   @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException notValidException, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    log.info("handleMethodArgumentNotValid :: notValidException = {},\n headers = {},\n status = {},\n request = {}", notValidException, headers, status, request);
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
     /* get all the errors messages for clean returning */
-    List<String> errorList = notValidException.getBindingResult().getFieldErrors().stream().map(fieldError -> fieldError.getDefaultMessage()).toList();
+    List<String> errorList = exception.getBindingResult().getFieldErrors().stream().map(fieldError -> fieldError.getDefaultMessage()).toList();
+
+    log.error("Method Arguments are Not Valid :: \nerrors = {},\n headers = {},\n status = {},\n request = {}", errorList, headers, status, request);
 
     return ResponseEntity.badRequest().body(
         ResponseStructure.builder()
