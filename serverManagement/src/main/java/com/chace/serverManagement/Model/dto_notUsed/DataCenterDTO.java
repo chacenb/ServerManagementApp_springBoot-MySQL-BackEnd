@@ -2,7 +2,9 @@ package com.chace.serverManagement.Model.dto_notUsed;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,9 @@ public class DataCenterDTO {
   @AssertTrue(message = "datacenter must be in use to be created")
   private boolean isInUse;
 
+  @DecimalMax(value = "30", message = "Maximum 30 servers in a datacenter")
+  private int numberOfServers;
+
   private String description;
   private ServerDTO server;
   private Long serverId;
@@ -31,20 +36,6 @@ public class DataCenterDTO {
 
 /*
 *
-* Constraint	Description	Example
-@AssertFalse
-
-The value of the field or property must be false.
-
-@AssertFalse
-boolean isUnsupported;
-@AssertTrue
-
-The value of the field or property must be true.
-
-@AssertTrue
-boolean isActive;
-@DecimalMax
 
 The value of the field or property must be a decimal value lower than or equal to the number in the value element.
 
