@@ -11,6 +11,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data // adds @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor annots in the class
 @NoArgsConstructor // helps autoInsert NoArgsConstructor
 @AllArgsConstructor // helps autoInsert AllArgsConstructor
@@ -18,7 +21,7 @@ public class ServerDTO {
 
   /* JAKARTA BEAN VALIDATION :: see all the validation annotations for controllers here
    * https://jakartaee.github.io/jakartaee-documentation/jakartaee-tutorial/current/beanvalidation/bean-validation/bean-validation.html */
-  @Column(unique = true)  // creates unique Constraint on this ipAddress Field
+
   @NotEmpty(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private String ipAddress;
 
@@ -28,8 +31,12 @@ public class ServerDTO {
   private String imageUrl;
   private Status status;
 
-  @NotNull(message = "Server details can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  @NotNull(message = "Server details can't be null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private ServerDetails serverDetails;
+
+  @NotEmpty(message = "Server details list can't be empty")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  @NotNull(message = "Server details list can't be  null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  private List<ServerDetails> serverDetailsList = new ArrayList<ServerDetails>();
 
 
 }
