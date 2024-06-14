@@ -118,7 +118,6 @@ public class ServerServiceImplementation implements ServerService {
   @Override
   public Collection<Server> list(int limit) {
     log.info("[SI] fetching all servers ");
-//        return serverRepo.findAll(of(0, limit)).toList();
     return serverRepo.findAllByOrderByIdDesc();
   }
 

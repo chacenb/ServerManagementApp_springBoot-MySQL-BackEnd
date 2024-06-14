@@ -23,7 +23,7 @@ public class FtaExceptionHandler extends ResponseEntityExceptionHandler {
     /* get all the errors messages for clean returning */
     List<String> errorList = exception.getBindingResult().getFieldErrors().stream().map(fieldError -> fieldError.getDefaultMessage()).toList();
 
-    log.error("Method Arguments are Not Valid :: \nerrors = {},\n headers = {},\n status = {},\n request = {}", errorList, headers, status, request);
+    log.error("Method Arguments are Not Valid :: errors = {}, status = {}", errorList, status);
 
     return ResponseEntity.badRequest().body(
         ResponseStructure.builder()

@@ -1,10 +1,14 @@
 package com.chace.serverManagement.Model.entity;
 
 import com.chace.serverManagement.Model.enumeration.Status;
+import com.chace.serverManagement.Model.utils.ServerDetails;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+//import org.hibernate.annotations.Type;
 
 
 @Entity //(name="t_server") in order to map this student class to the database : used by hibernate
@@ -33,6 +37,10 @@ public class Server {
   private String imageUrl;
   private Status status;
 
+  //  store JSON (Collection of) Object in JPA Entity using JPA and Hibernate 6 (dependencies required) >  https://vladmihalcea.com/how-to-map-json-collections-using-jpa-and-hibernate/
+  @Type(JsonType.class)
+  @Column(name="server_details", columnDefinition = "json")
+  private ServerDetails serverDetails;
 
   // Ignoring Fields With the JPA @Transient Annotation > https://www.baeldung.com/jpa-transient-ignore-field
   @Transient

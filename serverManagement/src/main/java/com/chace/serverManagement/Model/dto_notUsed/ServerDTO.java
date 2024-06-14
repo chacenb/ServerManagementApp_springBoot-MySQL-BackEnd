@@ -1,11 +1,15 @@
 package com.chace.serverManagement.Model.dto_notUsed;
 
 import com.chace.serverManagement.Model.enumeration.Status;
+import com.chace.serverManagement.Model.utils.ServerDetails;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 @Data // adds @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor annots in the class
 @NoArgsConstructor // helps autoInsert NoArgsConstructor
@@ -23,5 +27,9 @@ public class ServerDTO {
   private String type;
   private String imageUrl;
   private Status status;
+
+  @NotNull(message = "Server details can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  private ServerDetails serverDetails;
+
 
 }
