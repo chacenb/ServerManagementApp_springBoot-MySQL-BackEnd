@@ -19,13 +19,12 @@ spring:
     show-sql: false # false, true
     hibernate:
       ddl-auto: update # create-drop
-#      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
       #-------------------------------
-      # used to generate DB scripts to a file called 'create.sql' at the root of our project at project startup | but prevents auto creation of DB Objects inside the database
+      # generates SQL script file (create.sql) at project.basedir at project startup, !!! BUT !!!  PREVENTS AUTO CREATION OF OBJECTS IN THE DB
 #      jakarta:
 #        persistence:
 #          schema-generation:
