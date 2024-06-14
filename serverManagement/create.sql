@@ -1,20 +1,4 @@
 
-    create table my_list (
-       sample_id bigint not null,
-        list varchar(255)
-    ) engine=InnoDB;
-
-    create table sample (
-       id bigint not null,
-        primary key (id)
-    ) engine=InnoDB;
-
-    create table sample_seq (
-       next_val bigint
-    ) engine=InnoDB;
-
-    insert into sample_seq values ( 1 );
-
     create table server (
        id bigint not null,
         image_url varchar(255),
@@ -32,10 +16,37 @@
 
     insert into server_seq values ( 1 );
 
+
+
+
+
+
+
+
+
+
+    create table t_sample (
+       id_sample bigint not null,
+        primary key (id_sample)
+    ) engine=InnoDB;
+
+    create table t_sample_list (
+       sample_id bigint not null,
+        sample_list varchar(255)
+    ) engine=InnoDB;
+
+    create table t_sample_seq (
+       next_val bigint
+    ) engine=InnoDB;
+
+    insert into t_sample_seq values ( 1 );
+
+
+
     alter table server 
        add constraint UK_96tx503up4941ibvsnhh8itdi unique (ip_address);
 
-    alter table my_list 
-       add constraint FKr1vwgjmnbg419urew2w3s51mu 
+    alter table t_sample_list 
+       add constraint FKkio42047i3i4k8acc6uhc92oc 
        foreign key (sample_id) 
-       references sample (id);
+       references t_sample (id_sample);

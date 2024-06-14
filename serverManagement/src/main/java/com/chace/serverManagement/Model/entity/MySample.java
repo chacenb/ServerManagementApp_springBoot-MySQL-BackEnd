@@ -13,9 +13,9 @@ public class MySample {
   private Long idSample;
 
   /* How to store collection values to DB */
-  @ElementCollection // 1
+  @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "t_sample_list", joinColumns = @JoinColumn(name = "sample_id")) // 2
-  @Column(name = "sample_list") // 3
+  @Column(name = "sample_list", nullable = false) // 3
   private List<String> list;
 
 }
