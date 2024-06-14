@@ -23,6 +23,17 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
+      #-------------------------------
+      # used to generate DB scripts to a file called 'create.sql' at the root of our project at project startup
+      jakarta:
+        persistence:
+          schema-generation:
+            scripts:
+              action: create
+              create-target: create.sql
+              create-source: metadata
+        # END used to generate DB scripts
+      #-------------------------------
     open-in-view: false
 
 # set logging level of core loggers (tomcat, springBoot itself, hibernate) ONLY to debug an upwards
