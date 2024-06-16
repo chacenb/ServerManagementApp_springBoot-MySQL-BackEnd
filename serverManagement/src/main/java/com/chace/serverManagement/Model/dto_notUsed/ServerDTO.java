@@ -2,6 +2,7 @@ package com.chace.serverManagement.Model.dto_notUsed;
 
 import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.Model.utils.ServerDetails;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,8 @@ public class ServerDTO {
   /* JAKARTA BEAN VALIDATION :: see all the validation annotations for controllers here
    * https://jakartaee.github.io/jakartaee-documentation/jakartaee-tutorial/current/beanvalidation/bean-validation/bean-validation.html */
 
-  @NotEmpty(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+//  @NotEmpty(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  @NotBlank(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private String ipAddress;
 
   private String name;
