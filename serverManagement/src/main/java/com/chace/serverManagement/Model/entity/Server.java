@@ -2,12 +2,12 @@ package com.chace.serverManagement.Model.entity;
 
 import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.Model.utils.ServerDetails;
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +43,13 @@ public class Server {
   private Status status;
 
   //  store JSON (Collection of) Object in JPA Entity using JPA and Hibernate 6 (dependencies required) >  https://vladmihalcea.com/how-to-map-json-collections-using-jpa-and-hibernate/
-  @Type(JsonType.class)
-  @Column(name="server_details", columnDefinition = "json")
+//  @Type(JsonType.class)
+  @Column(name="server_details", columnDefinition = "JSON")
+  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
   private ServerDetails serverDetails;
 
-  @Type(JsonType.class)
+//  @Type(JsonType.class)
+  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
   @Column(name="server_details_list", columnDefinition = "json")
   private List<ServerDetails> serverDetailsList = new ArrayList<ServerDetails>();
 

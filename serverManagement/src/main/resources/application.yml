@@ -19,6 +19,7 @@ spring:
     show-sql: false # false, true
     hibernate:
       ddl-auto: update # create-drop
+#      ddl-auto: update # create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
