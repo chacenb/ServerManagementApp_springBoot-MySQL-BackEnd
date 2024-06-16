@@ -2,13 +2,11 @@ package com.chace.serverManagement.Model.entity;
 
 import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.Model.utils.ServerDetails;
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
@@ -54,8 +52,9 @@ public class Server {
   @Column(name="server_details", columnDefinition = "JSON")
   private ServerDetails serverDetails;
 
-  @Type(JsonType.class)
-  @Column(name="server_details_list", columnDefinition = "json")
+//  @Type(JsonType.class)
+  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
+  @Column(name="server_details_list", columnDefinition = "JSON")
   private List<ServerDetails> serverDetailsList = new ArrayList<ServerDetails>();
 
   // Ignoring Fields With the JPA @Transient Annotation > https://www.baeldung.com/jpa-transient-ignore-field
