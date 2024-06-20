@@ -26,7 +26,7 @@ import java.util.List;
         @UniqueConstraint(name = "CONSTR_UNIQUE_server_ipAddress", columnNames = "ipAddress"),
     }
 )
-public class Server {
+public class Server extends AbstractModel{
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,20 +42,15 @@ public class Server {
   private String imageUrl;
   private Status status;
 
-  //  store JSON (Collection of) Object in JPA Entity using JPA and Hibernate 6 (dependencies required) >  https://vladmihalcea.com/how-to-map-json-collections-using-jpa-and-hibernate/
-  //  @Type(JsonType.class)
-  //  @Column(name="server_details", columnDefinition = "json")
-  //  private ServerDetails serverDetails;
-
   // or use the new springboot 3 way w/ hibernate 6
-  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
-  @Column(name="server_details", columnDefinition = "JSON")
-  private ServerDetails serverDetails;
+//  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
+//  @Column(name="server_details", columnDefinition = "JSON")
+//  private ServerDetails serverDetails;
 
 //  @Type(JsonType.class)
-  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
-  @Column(name="server_details_list", columnDefinition = "JSON")
-  private List<ServerDetails> serverDetailsList = new ArrayList<ServerDetails>();
+//  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
+//  @Column(name="server_details_list", columnDefinition = "JSON")
+//  private List<ServerDetails> serverDetailsList = new ArrayList<ServerDetails>();
 
   // Ignoring Fields With the JPA @Transient Annotation > https://www.baeldung.com/jpa-transient-ignore-field
   @Transient
