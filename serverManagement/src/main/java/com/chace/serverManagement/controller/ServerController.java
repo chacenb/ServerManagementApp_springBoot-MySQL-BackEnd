@@ -4,6 +4,7 @@ import com.chace.serverManagement.Model.dto_notUsed.DataCenterDTO;
 import com.chace.serverManagement.Model.dto_notUsed.ServerDTO;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.utils.ResponseStructure;
+import com.chace.serverManagement.Model.utils.ServerMapper;
 import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class ServerController {
 
   /* this wil be injected because of @RequiredArgsConstructor annot. that generates constructor for all final & @NonNull fields */
   private final ServerServiceImplementation serverService;
+  private final ServerMapper serverMapper;
 
   /* ResponseEntity<Response> : cf code blocks */
 //  @GetMapping(path = "") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
@@ -102,6 +104,7 @@ public class ServerController {
     ServerDTO createdSerser = null;
     try {
       createdSerser = serverService.create(server);
+
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(
           ResponseStructure.builder()

@@ -43,14 +43,15 @@ public class Server extends AbstractModel{
   private Status status;
 
   // or use the new springboot 3 way w/ hibernate 6
-//  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
-//  @Column(name="server_details", columnDefinition = "JSON")
-//  private ServerDetails serverDetails;
+  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
+  @Column(name="server_details", columnDefinition = "JSON")
+  private ServerDetails serverDetails;
 
 //  @Type(JsonType.class)
-//  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
-//  @Column(name="server_details_list", columnDefinition = "JSON")
-//  private List<ServerDetails> serverDetailsList = new ArrayList<ServerDetails>();
+  @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
+  @Column(name="server_details_list", columnDefinition = "JSON")
+  private List<ServerDetails> serverDetailsList;
+//  private List<ServerDetails> serverDetailsList = new ArrayList<>();
 
   // Ignoring Fields With the JPA @Transient Annotation > https://www.baeldung.com/jpa-transient-ignore-field
   @Transient

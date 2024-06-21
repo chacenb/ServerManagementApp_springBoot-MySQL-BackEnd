@@ -124,7 +124,18 @@ public class ServerServiceImplementation implements ServerService {
   @Override
   public Server get(Long id) {
     log.info("[SI] fetching server w/ id : {}", id);
-    return serverRepo.findById(id).get();
+
+    Server theServer = serverRepo.findById(id).get();
+    log.info("[SI] server : {}", theServer);
+
+    /* testing mapper with different fields in entity and Dto */
+    ServerDTO dtoed = serverMapper.toDTO2(theServer);
+    log.info("mapper::toDto2 of class = {} is {}", serverMapper.toDTO2(theServer).getClass(), serverMapper.toDTO2(theServer));
+    Server entitied = serverMapper.toEntity2(dtoed);
+    log.info("mapper::toEntity2 of class = {} is {}", entitied.getClass(), entitied);
+    /* END testing mapper with different fields in entity and Dto */
+
+    return theServer;
   }
 
   @Override

@@ -20,9 +20,11 @@ public class ServerDTO {
   /* JAKARTA BEAN VALIDATION :: see all the validation annotations for controllers here
    * https://jakartaee.github.io/jakartaee-documentation/jakartaee-tutorial/current/beanvalidation/bean-validation/bean-validation.html */
 
+  private Long _id;
+
 //  @NotEmpty(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   @NotBlank(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
-  private String ipAddress;
+  private String _ipAddress;
 
   private String name;
   private String memory;
@@ -30,12 +32,12 @@ public class ServerDTO {
   private String imageUrl;
   private Status status;
 
-//  @NotNull(message = "Server details can't be null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
-//  private ServerDetails serverDetails;
-//
-//  @NotEmpty(message = "Server details list can't be empty")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
-//  @NotNull(message = "Server details list can't be  null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
-//  private List<ServerDetails> serverDetailsList = new ArrayList<ServerDetails>();
+  @NotNull(message = "Server details can't be null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  private ServerDetails serverDetails;
+
+  @NotEmpty(message = "Server details list can't be empty")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  @NotNull(message = "Server details list can't be  null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  private List<ServerDetails> serverDetailsList = new ArrayList<>();
 
 
 }
