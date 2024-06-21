@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 //@EnableWebMvc
 @Configuration
-public class CorsConfig implements  WebMvcConfigurer{ //  extends WebSecurityConfigurerAdapter
+public class CorsConfig implements WebMvcConfigurer { //  extends WebSecurityConfigurerAdapter
 
   @Bean
   public WebMvcConfigurer corsConfigurer() {
@@ -25,13 +25,13 @@ public class CorsConfig implements  WebMvcConfigurer{ //  extends WebSecurityCon
       @Override
       public void addCorsMappings(CorsRegistry registry) {
         registry
-          .addMapping("/api/v2/server/**") // or .addMapping("/**")
-          .allowedOrigins("http://localhost:4200", "http://localhost:3000")
-          .allowedMethods("GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE", "HEAD") // or .allowedMethods("*")
-          .allowedHeaders("Origin", "Access-Control-Allow-Origin", "Content-Type", "Accept", "Jwt-Token", "Authorization", "Origin, Accept", "X-Requested-With", "Access-Control-Request-Method", "Access-Control-Request-Headers")
-          .exposedHeaders("Origin", "Content-Type", "Accept", "Jwt-Token", "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "Filename")
-          .allowCredentials(true)
-          .maxAge(3600);
+            .addMapping("/api/v2/server/**") // or .addMapping("/**")
+            .allowedOrigins("http://localhost:4200", "http://localhost:3000")
+            .allowedMethods("GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE", "HEAD") // or .allowedMethods("*")
+            .allowedHeaders("Origin", "Access-Control-Allow-Origin", "Content-Type", "Accept", "Jwt-Token", "Authorization", "Origin, Accept", "X-Requested-With", "Access-Control-Request-Method", "Access-Control-Request-Headers")
+            .exposedHeaders("Origin", "Content-Type", "Accept", "Jwt-Token", "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "Filename")
+            .allowCredentials(true)
+            .maxAge(3600);
       }
     };
   }
