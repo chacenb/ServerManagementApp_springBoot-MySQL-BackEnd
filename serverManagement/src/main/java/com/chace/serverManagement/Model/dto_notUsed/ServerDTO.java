@@ -30,12 +30,12 @@ public class ServerDTO {
   private String imageUrl;
   private Status status;
 
-  @NotNull(message = "Server details can't be null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
-  private ServerDetails serverDetails;
-
-  @NotEmpty(message = "Server details list can't be empty")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
-  @NotNull(message = "Server details list can't be  null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
-  private List<ServerDetails> serverDetailsList = new ArrayList<ServerDetails>();
+//  @NotNull(message = "Server details can't be null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+//  private ServerDetails serverDetails;
+//
+//  @NotEmpty(message = "Server details list can't be empty")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+//  @NotNull(message = "Server details list can't be  null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+//  private List<ServerDetails> serverDetailsList = new ArrayList<ServerDetails>();
 
 
 }
