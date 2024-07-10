@@ -28,6 +28,7 @@ public class ServerMapper {
     /*------------*/
     dtoServerTypeMap.addMapping(ServerDTO::get_id, Server::setId);
     dtoServerTypeMap.addMapping(ServerDTO::get_ipAddress, Server::setIpAddress);
+    dtoServerTypeMap.addMapping(ServerDTO::getServerDetails, Server::setServerDetails);
   }
 
   public ServerDTO toDTO(Server server) {

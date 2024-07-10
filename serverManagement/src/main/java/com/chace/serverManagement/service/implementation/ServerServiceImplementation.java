@@ -47,9 +47,11 @@ public class ServerServiceImplementation implements ServerService {
 
     /* convert from DTO to Entity before save */
     Server server = serverMapper.toEntity(serverDTO);
+
     /* setting other Entity fields */
     server.setDescription("default description");
     server.setLocation("IAI");
+
     /* END setting other Entity fields */
     log.info("about to save = {}", server);
 
@@ -118,7 +120,7 @@ public class ServerServiceImplementation implements ServerService {
   @Override
   public Collection<Server> list(int limit) {
     log.info("[SI] fetching all servers ");
-    return serverRepo.findAllByOrderByIdDesc();
+    return serverRepo.findAll(); // or :: serverRepo.findAllByOrderByIdDesc();
   }
 
   @Override

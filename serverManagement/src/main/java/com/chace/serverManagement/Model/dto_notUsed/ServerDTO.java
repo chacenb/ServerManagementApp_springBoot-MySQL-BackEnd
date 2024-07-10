@@ -15,14 +15,14 @@ import java.util.List;
 @Data // adds @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor annots in the class
 @NoArgsConstructor // helps autoInsert NoArgsConstructor
 @AllArgsConstructor // helps autoInsert AllArgsConstructor
-public class ServerDTO {
+public class ServerDTO extends _AbstractDto {
 
   /* JAKARTA BEAN VALIDATION :: see all the validation annotations for controllers here
    * https://jakartaee.github.io/jakartaee-documentation/jakartaee-tutorial/current/beanvalidation/bean-validation/bean-validation.html */
 
   private Long _id;
 
-//  @NotEmpty(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+  //  @NotEmpty(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   @NotBlank(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private String _ipAddress;
 
@@ -33,11 +33,11 @@ public class ServerDTO {
   private Status status;
 
   @NotNull(message = "Server details can't be null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
-  private ServerDetails serverDetails;
+  private Object serverDetails; //  private ServerDetails serverDetails;
 
   @NotEmpty(message = "Server details list can't be empty")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   @NotNull(message = "Server details list can't be  null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
-  private List<ServerDetails> serverDetailsList = new ArrayList<>();
+  private List<Object> serverDetailsList; // List<ServerDetails> serverDetailsList;
 
 
 }
