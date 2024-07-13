@@ -33,8 +33,6 @@ public class ServerServiceImplementation implements ServerService {
 
   private final ServerRepo serverRepo;
   private final ServerMapper serverMapper;
-  /* either use this declaration or insert @Slf4j annotation (better way) */
-//  private static final Logger log = LoggerFactory.getLogger(ServerServiceImplementation.class);
 
   /* this method is going to be called for each serverDTO save, it will:
    * - log the serverDTO to save

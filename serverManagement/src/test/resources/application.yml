@@ -12,16 +12,16 @@
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/serverdb
-    username: root
+    url: jdbc:h2:mem:testDB
     password:
+    username: root
+    driver-class-name: org.h2.Driver
   jpa:
     show-sql: true # false, true
     hibernate:
       ddl-auto: update # create-drop, create, none, validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         #-------------------------------
         # generates SQL script file (create.sql) at project.basedir at project startup, !!! BUT !!!  PREVENTS AUTO CREATION OF OBJECTS IN THE DB

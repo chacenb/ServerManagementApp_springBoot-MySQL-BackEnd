@@ -1,0 +1,17 @@
+TODO :: ---------------------------------------------
+ADD PAGINATION
+
+
+
+DONE -------------------------------------------------
+ok- Global Exception handler (Light)
+ok- create server via Dto
+ok- Entity=Dto Mapping with modelMapper | custom field Mapping
+ok- prefill dates on @PrePersist | @PreUpdate | @PreRemove
+ok- persisting Complex types as JSON :: New feature in hibernate 6 (embedded in springBoot 3)
+ok- generate SQL script file (create.sql) at project.basedir at project startup, !!! BUT !!!  PREVENTS AUTO CREATION OF OBJECTS IN THE DB chace 6/14/2024 8:37 AM
+ok- Implemented constraints and constraints error handling
+ok- Controller arguments VALIDATION W/ JAKARTA :: @RestControllerAdvice :: Global ExceptionHandler
+ok- Update ServletInitializer.java
+>>>> Added notes :: See all java versions installed on linux
+ok- LOG4J2 added successfully (file & console)
