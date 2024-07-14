@@ -22,6 +22,6 @@ public class ServerDetails implements Serializable {
   private String name;
   private String memory;
   private String type;
-//  private String imageUrl;
+  private String imageUrl;
   private Status status;
 }

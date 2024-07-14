@@ -1,4 +1,4 @@
-package com.chace.serverManagement.serverConfig;
+package com.chace.serverManagement.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

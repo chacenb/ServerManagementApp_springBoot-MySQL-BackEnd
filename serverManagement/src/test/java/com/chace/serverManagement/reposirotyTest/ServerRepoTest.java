@@ -8,7 +8,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,13 +27,16 @@ public class ServerRepoTest {
 
   @BeforeEach /* Execute some actions before each test method */
   public void setUp() {
-    testServer = new Server();  // Initialize test data before each test method
-    testServer.setIpAddress("0.0.0.0");
-    testServer.setName("serverName");
-    testServer.setStatus(Status.SERVER_DOWN);
-    testServer.setMemory("64GB");
-    testServer.setServerDetails(new ServerDetails());
-    testServer.setServerDetailsList(new ArrayList<>(Collections.singleton(testServer.getServerDetails())));
+    // Initialize test data before each test method
+    testServer = Server.builder()
+      .ipAddress("0.0.0.0")
+      .name("serverName")
+      .status(Status.SERVER_DOWN)
+      .memory("64GB")
+      .serverDetails(new ServerDetails())
+      .serverDetailsList(new ArrayList<>(Collections.singleton(new ServerDetails())))
+      .build();
+
     serverRepo.save(testServer);
   }
 

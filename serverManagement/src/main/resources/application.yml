@@ -16,7 +16,7 @@ spring:
     username: root
     password:
   jpa:
-    show-sql: true # false, true
+    show-sql: false # false, true
     hibernate:
       ddl-auto: update # create-drop, create, none, validate
     properties:

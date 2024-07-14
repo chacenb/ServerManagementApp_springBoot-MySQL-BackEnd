@@ -51,15 +51,29 @@ public class ServerController {
 
   @GetMapping(path = "/get/{id}")
   public ResponseEntity<ResponseStructure> getServer(@PathVariable("id") Long id) {
-    Server serverFetchedByID = serverService.get(id);
-    return ResponseEntity.ok(
+
+    ServerDTO serverFetchedByID;
+    try {
+      serverFetchedByID = serverService.get(id);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(
         ResponseStructure.builder()
-            .timeStamp(ZonedDateTime.now())
-            .statusCode(HttpStatus.OK.value())
-            .status(HttpStatus.OK)
-            .message("Server retrieved successfully")
-            .data(Map.of("server", serverFetchedByID))
-            .build());
+          .timeStamp(ZonedDateTime.now())
+          .status(HttpStatus.BAD_REQUEST)
+          .statusCode(HttpStatus.BAD_REQUEST.value())
+          .message(e.getMessage())
+          .build());
+
+    }
+
+    return ResponseEntity.ok(
+      ResponseStructure.builder()
+        .timeStamp(ZonedDateTime.now())
+        .statusCode(HttpStatus.OK.value())
+        .status(HttpStatus.OK)
+        .message("Server retrieved successfully")
+        .data(Map.of("server", serverFetchedByID))
+        .build());
   }
 
 

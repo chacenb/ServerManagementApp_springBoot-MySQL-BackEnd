@@ -31,7 +31,7 @@ import static java.lang.Boolean.TRUE;
 @Slf4j /* @Slf4j auto adds a field named 'log' that uses the underlying logging implementation (Log4j2 in this case) */
 public class ServerServiceImplementation implements ServerService {
 
-  private final ServerRepo serverRepo;
+  private final ServerRepo   serverRepo;
   private final ServerMapper serverMapper;
 
   /* this method is going to be called for each serverDTO save, it will:
@@ -39,7 +39,7 @@ public class ServerServiceImplementation implements ServerService {
    * - dynamically set an image to the serv
    * - save the serverDTO to the DB and return it */
   @Override
-  public ServerDTO create(ServerDTO serverDTO)  throws Exception{
+  public ServerDTO create(ServerDTO serverDTO) throws Exception {
     log.info("[SI] creating new serverDTO {} of class = {}", serverDTO.getName(), serverDTO.getClass().getName());
     serverDTO.setImageUrl(setServerImageUrl());
 
@@ -122,20 +122,20 @@ public class ServerServiceImplementation implements ServerService {
   }
 
   @Override
-  public Server get(Long id) {
+  public ServerDTO get(Long id) throws RuntimeException {
     log.info("[SI] fetching server w/ id : {}", id);
 
-    Server theServer = serverRepo.findById(id).get();
+    Server theServer = serverRepo.findById(id).orElseThrow(() -> new RuntimeException("No server with id =[" + id + "]")); // .get();
     log.info("[SI] server : {}", theServer);
 
     /* testing mapper with different fields in entity and Dto */
-    ServerDTO dtoed = serverMapper.toDTO2(theServer);
-    log.info("mapper::toDto2 of class = {} is {}", serverMapper.toDTO2(theServer).getClass(), serverMapper.toDTO2(theServer));
-    Server entitied = serverMapper.toEntity2(dtoed);
-    log.info("mapper::toEntity2 of class = {} is {}", entitied.getClass(), entitied);
+//    ServerDTO dtoed = serverMapper.toDTO(theServer);
+//    log.info("mapper::toDto2 of class = {} is {}", serverMapper.toDTO2(theServer).getClass(), serverMapper.toDTO2(theServer));
+//    Server entitied = serverMapper.toEntity2(dtoed);
+//    log.info("mapper::toEntity2 of class = {} is {}", entitied.getClass(), entitied);
     /* END testing mapper with different fields in entity and Dto */
 
-    return theServer;
+    return serverMapper.toDTO(theServer);
   }
 
   @Override
@@ -204,7 +204,7 @@ public class ServerServiceImplementation implements ServerService {
   public String setServerImageUrl() {
     String[] imageNames = {"serv0.png", "serv1.png", "serv2.png", "serv3.png", "serv4.png"};
     return ServletUriComponentsBuilder.fromCurrentContextPath()
-        .path("api/v2/server/image/" + imageNames[new Random().nextInt(5)])
-        .toUriString();
+      .path("api/v2/server/image/" + imageNames[new Random().nextInt(5)])
+      .toUriString();
   }
 }

@@ -1,12 +1,14 @@
 package com.chace.serverManagement.Model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 @Data @MappedSuperclass //A class designated with the MappedSuperclass annotation can be mapped in the same way as an entity except that the mappings will apply only to its subclasses since no table exists for the mapped superclass itself.
 public abstract class _AbstractModel {
 

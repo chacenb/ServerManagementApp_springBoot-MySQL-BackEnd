@@ -21,7 +21,7 @@ public interface ServerService {
 
   Collection<Server> list(int limit);
 
-  Server get(Long id);
+  ServerDTO get(Long id) throws Exception;
 
   Optional<Server> getOptional(Long id);
 

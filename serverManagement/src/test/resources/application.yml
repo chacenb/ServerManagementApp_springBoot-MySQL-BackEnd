@@ -1,45 +1,11 @@
-#spring.datasource.url=jdbc:mysql://localhost:3306/serverdb
-#spring.datasource.username=root
-#spring.datasource.password=
-#spring.jpa.hibernate.ddl-auto=create
-#spring.jpa.show-sql=true
-#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
-#spring.jpa.properties.hibernate.format_sql=true
-#spring.jpa.open-in-view=false
-#
-## show messages in responses
-##server.error.include-message = always
-
 spring:
   datasource:
-    url: jdbc:h2:mem:testDB
-    password:
-    username: root
+    url: jdbc:h2:mem:servertestdb;DB_CLOSE_DELAY=-1
+    password: test
+    username: test
     driver-class-name: org.h2.Driver
   jpa:
-    show-sql: true # false, true
-    hibernate:
-      ddl-auto: update # create-drop, create, none, validate
     properties:
       hibernate:
         format_sql: true
-        #-------------------------------
-        # generates SQL script file (create.sql) at project.basedir at project startup, !!! BUT !!!  PREVENTS AUTO CREATION OF OBJECTS IN THE DB
-        #      jakarta:
-        #        persistence:
-        #          schema-generation:
-        #            scripts:
-        #              action: create
-        #              create-target: create.sql
-        #              create-source: metadata
-        # END used to generate DB scripts
-      #-------------------------------
     open-in-view: false
-
-# set logging level of core loggers (tomcat, springBoot itself, hibernate) ONLY to debug an upwards
-#debug: true
-
-# set the whole application root log level
-#logging:
-#  level:
-#    root: INFO # TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF

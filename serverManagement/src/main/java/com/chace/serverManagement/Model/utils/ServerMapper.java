@@ -31,20 +31,19 @@ public class ServerMapper {
     dtoServerTypeMap.addMapping(ServerDTO::getServerDetails, Server::setServerDetails);
   }
 
-  public ServerDTO toDTO(Server server) {
-    return this.modelMapper.map(server, ServerDTO.class);
+  public ServerDTO toDTO(Server param) {
+    log.info("_____mapping toDTO :: param is = {}", param);
+    ServerDTO map = this.modelMapper.map(param, ServerDTO.class);
+    log.info("_____mapped OK :: about to return mapped Obj = {}", map);
+    return map;
   }
 
-  public Server toEntity(ServerDTO serverDTO) {
-    return this.modelMapper.map(serverDTO, Server.class);
+  public Server toEntity(ServerDTO param) {
+    log.info("_____mapping toEntity :: param is = {}", param);
+    Server map = this.modelMapper.map(param, Server.class);
+    log.info("_____mapped OK :: about to return mapped Obj = {}", map);
+    return map;
   }
-
-  public ServerDTO toDTO2(Server server) {
-    return this.modelMapper.map(server, ServerDTO.class);
-  }
-
-  public Server toEntity2(ServerDTO serverDTO) {return this.modelMapper.map(serverDTO, Server.class);}
-
 
 }
 

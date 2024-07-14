@@ -20,8 +20,6 @@ public class ServerDTO extends _AbstractDto {
   /* JAKARTA BEAN VALIDATION :: see all the validation annotations for controllers here
    * https://jakartaee.github.io/jakartaee-documentation/jakartaee-tutorial/current/beanvalidation/bean-validation/bean-validation.html */
 
-  private Long _id;
-
   //  @NotEmpty(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   @NotBlank(message = "IP Address can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private String _ipAddress;

@@ -10,6 +10,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor // helps autoInsert NoArgsConstructor
 @AllArgsConstructor // helps autoInsert AllArgsConstructor
 public abstract class _AbstractDto {
+  private Long _id;
   protected ZonedDateTime creationDate;
   protected ZonedDateTime lastModifiedDate;
 }
