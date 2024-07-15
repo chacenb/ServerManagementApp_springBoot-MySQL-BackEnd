@@ -1,7 +1,7 @@
 package com.chace.serverManagement.service.implementation;
 
-import com.chace.serverManagement.Model.dto_notUsed.DataCenterDTO;
-import com.chace.serverManagement.Model.dto_notUsed.ServerDTO;
+import com.chace.serverManagement.Model.dto.DataCenterDTO;
+import com.chace.serverManagement.Model.dto.ServerDTO;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.Model.utils.ServerMapper;
@@ -57,8 +57,8 @@ public class ServerServiceImplementation implements ServerService {
     try {
       created_server = serverRepo.save(server);
     } catch (Exception e) {
-      log.error("ERROR ON SAVE ", e);
-      throw new RuntimeException(e.getMessage());
+      log.error("ERROR ON SAVE", e);
+      throw new Exception("ERROR ON SAVE :: " + e.getMessage(), e);
     }
     log.info("saved server = {}", created_server);
 

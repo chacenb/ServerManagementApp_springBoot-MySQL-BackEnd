@@ -11,9 +11,10 @@ import org.hibernate.type.SqlTypes;
 import java.util.List;
 //import org.hibernate.annotations.Type;
 
-@SuperBuilder
+@EqualsAndHashCode(callSuper = true) @SuperBuilder
 @Entity //(name="t_server") in order to map this student class to the database : used by hibernate
-@Getter @Setter // adds @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor annots in the class
+//@Getter @Setter // adds @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor annots in the class
+@Data // adds @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor annots in the class
 @NoArgsConstructor // helps autoInsert NoArgsConstructor
 @AllArgsConstructor // helps autoInsert AllArgsConstructor
 @Table( //This annot is used to specify the primary table for the annotated entity */
@@ -25,10 +26,6 @@ import java.util.List;
   }
 )
 public class Server extends _AbstractModel {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
 
   @Column(nullable = false)
   private String ipAddress;
@@ -51,4 +48,20 @@ public class Server extends _AbstractModel {
   private String description;
 
   private transient String location;
+
+  @Override
+  public String toString() {
+    return "Server{" + super.toString() +
+      "ipAddress='" + ipAddress + '\'' +
+      ", name='" + name + '\'' +
+      ", memory='" + memory + '\'' +
+      ", type='" + type + '\'' +
+      ", imageUrl='" + imageUrl + '\'' +
+      ", status=" + status +
+      ", serverDetails=" + serverDetails +
+      ", serverDetailsList=" + serverDetailsList +
+      ", description='" + description + '\'' +
+      ", location='" + location + '\'' +
+      "} " ;
+  }
 }

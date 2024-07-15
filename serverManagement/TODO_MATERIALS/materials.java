@@ -1,23 +1,35 @@
-// Manage transactions with springboot >> https://dev.to/wynnt3o/spring-transactional-rollback-handling-hc8
+/* ---------------------------------------------------------------
+* A Guide to Mocking With Mockito
+* https://dzone.com/articles/a-guide-to-mocking-with-mockito
+*
+* An example using Mockito
+* https://medium.com/javarevisited/getting-started-with-unit-testing-in-spring-boot-bada732a5baa
+* */
 
-//-- Ignoring Fields With the JPA @Transient Annotation > https://www.baeldung.com/jpa-transient-ignore-field
 
+/* -------------------------------------------------
+* Manage transactions with springboot
+* https://dev.to/wynnt3o/spring-transactional-rollback-handling-hc8
+* */
 
+/* -------------------------------------------------
+* Ignoring Fields With the JPA @Transient Annotation
+* https://www.baeldung.com/jpa-transient-ignore-field
+* */
 
-
-/*
+/* ----------------------------------------------------------
 See all java versions installed on linux ?
 update-alternatives --config java // After that we will be prompted to select the version to use
 */
 
 
-/*
+/* ----------------------------------------------------------
 *  * How to Deploy Spring Boot (2.X or 3.X) Application in Wildfly Application Server (JAKARTA 8- or JAKARTA 10+)
  * link : https://www.mastertheboss.com/jboss-frameworks/spring/spring-boot-hello-world-on-wildfly/
  */
 
 
-/*
+/* -------------------------------------------------------
  * How to install WildFly on Ubuntu 20.04 && Deploy Java Hello World Application on WildFly
  * ***** yt link : https://youtu.be/ULXt-G_-2ws
  * steps document link : https://docs.google.com/document/d/1nDqrJPErhaF6YJEtKuoauEPTv4Mx6ALN/edit

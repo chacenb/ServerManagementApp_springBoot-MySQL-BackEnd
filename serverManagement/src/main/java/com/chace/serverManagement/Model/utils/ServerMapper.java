@@ -1,12 +1,14 @@
 package com.chace.serverManagement.Model.utils;
 
-import com.chace.serverManagement.Model.dto_notUsed.ServerDTO;
+import com.chace.serverManagement.Model.dto.ServerDTO;
 import com.chace.serverManagement.Model.entity.Server;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
 
 @Slf4j
 @Component
@@ -32,16 +34,31 @@ public class ServerMapper {
   }
 
   public ServerDTO toDTO(Server param) {
-    log.info("_____mapping toDTO :: param is = {}", param);
+
+    /* This one uses typeMapping */
     ServerDTO map = this.modelMapper.map(param, ServerDTO.class);
-    log.info("_____mapped OK :: about to return mapped Obj = {}", map);
+    log.info("toDTO: {}", map);
     return map;
+
+    /* This one is a hand made mapper :: full control on our code */
+//    return ServerDTO.builder()
+//      ._id(param.getId())
+//      .creationDate(param.getCreationDate())
+//      .lastModifiedDate(param.getLastModifiedDate())
+//      ._ipAddress(param.getIpAddress())
+//      .name(param.getName())
+//      .memory(param.getMemory())
+//      .type(param.getType())
+//      .imageUrl(param.getImageUrl())
+//      .status(param.getStatus())
+//      .serverDetails(param.getServerDetails())
+//      .serverDetailsList(Collections.singletonList(param.getServerDetailsList()))
+//      .build();
   }
 
   public Server toEntity(ServerDTO param) {
-    log.info("_____mapping toEntity :: param is = {}", param);
-    Server map = this.modelMapper.map(param, Server.class);
-    log.info("_____mapped OK :: about to return mapped Obj = {}", map);
+    Server map = modelMapper.map(param, Server.class);
+    log.info("toEntity: {}", map);
     return map;
   }
 

@@ -1,20 +1,24 @@
-package com.chace.serverManagement.Model.dto_notUsed;
+package com.chace.serverManagement.Model.dto;
 
 import com.chace.serverManagement.Model.enumeration.Status;
-import com.chace.serverManagement.Model.utils.ServerDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data // adds @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor annots in the class
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor // helps autoInsert NoArgsConstructor
 @AllArgsConstructor // helps autoInsert AllArgsConstructor
+@SuperBuilder
 public class ServerDTO extends _AbstractDto {
 
   /* JAKARTA BEAN VALIDATION :: see all the validation annotations for controllers here
@@ -37,5 +41,25 @@ public class ServerDTO extends _AbstractDto {
   @NotNull(message = "Server details list can't be  null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private List<Object> serverDetailsList; // List<ServerDetails> serverDetailsList;
 
+  @JsonIgnore
+  private String description;
 
+  @JsonIgnore
+  private transient String location;
+
+  @Override
+  public String toString() {
+    return "ServerDTO{" + super.toString() +
+      "_ipAddress='" + _ipAddress + '\'' +
+      ", name='" + name + '\'' +
+      ", memory='" + memory + '\'' +
+      ", type='" + type + '\'' +
+      ", imageUrl='" + imageUrl + '\'' +
+      ", status=" + status +
+      ", serverDetails=" + serverDetails +
+      ", serverDetailsList=" + serverDetailsList +
+      ", description='" + description + '\'' +
+      ", location='" + location + '\'' +
+      "} ";
+  }
 }

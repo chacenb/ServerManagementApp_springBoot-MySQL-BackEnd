@@ -12,6 +12,10 @@ import java.time.ZonedDateTime;
 @Data @MappedSuperclass //A class designated with the MappedSuperclass annotation can be mapped in the same way as an entity except that the mappings will apply only to its subclasses since no table exists for the mapped superclass itself.
 public abstract class _AbstractModel {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  protected Long id;
+
   //  @CreationTimestamp // from hibernate
 //  @CreatedDate // from JPA packed within spring
   @Column(name = "creation_date", updatable = false)
@@ -39,4 +43,12 @@ public abstract class _AbstractModel {
     this.lastModifiedDate = ZonedDateTime.now();
   }
 
+
+  @Override
+  public String toString() {
+    return "id=" + id +
+      ", creationDate=" + creationDate +
+      ", lastModifiedDate=" + lastModifiedDate +
+      "} ";
+  }
 }
