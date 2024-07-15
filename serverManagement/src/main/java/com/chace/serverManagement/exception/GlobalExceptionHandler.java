@@ -1,5 +1,6 @@
-package com.chace.serverManagement.Model.utils;
+package com.chace.serverManagement.exception;
 
+import com.chace.serverManagement.Model.utils.ResponseStructure;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,11 +12,12 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Slf4j
 @RestControllerAdvice
-public class FtaExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -27,7 +29,7 @@ public class FtaExceptionHandler extends ResponseEntityExceptionHandler {
 
     return ResponseEntity.badRequest().body(
         ResponseStructure.builder()
-            .timeStamp(LocalDateTime.now())
+            .timeStamp(ZonedDateTime.now())
             .status(HttpStatus.valueOf(status.value()))
             .statusCode(status.value())
             .message(errorList.toString())

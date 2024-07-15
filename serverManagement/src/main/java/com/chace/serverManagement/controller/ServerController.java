@@ -1,7 +1,7 @@
 package com.chace.serverManagement.controller;
 
-import com.chace.serverManagement.Model.dto_notUsed.DataCenterDTO;
-import com.chace.serverManagement.Model.dto_notUsed.ServerDTO;
+import com.chace.serverManagement.Model.dto.DataCenterDTO;
+import com.chace.serverManagement.Model.dto.ServerDTO;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.utils.ResponseStructure;
 import com.chace.serverManagement.Model.utils.ServerMapper;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,7 +39,7 @@ public class ServerController {
   public ResponseEntity<ResponseStructure> getAllServers() {
     return ResponseEntity.ok(
         ResponseStructure.builder()
-            .timeStamp(LocalDateTime.now())
+            .timeStamp(ZonedDateTime.now())
             .statusCode(HttpStatus.OK.value())
             .status(HttpStatus.OK)
             .message("Servers fetched successfully !")
@@ -50,15 +50,29 @@ public class ServerController {
 
   @GetMapping(path = "/get/{id}")
   public ResponseEntity<ResponseStructure> getServer(@PathVariable("id") Long id) {
-    Server serverFetchedByID = serverService.get(id);
-    return ResponseEntity.ok(
+
+    ServerDTO serverFetchedByID;
+    try {
+      serverFetchedByID = serverService.get(id);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(
         ResponseStructure.builder()
-            .timeStamp(LocalDateTime.now())
-            .statusCode(HttpStatus.OK.value())
-            .status(HttpStatus.OK)
-            .message("Server retrieved successfully")
-            .data(Map.of("server", serverFetchedByID))
-            .build());
+          .timeStamp(ZonedDateTime.now())
+          .status(HttpStatus.BAD_REQUEST)
+          .statusCode(HttpStatus.BAD_REQUEST.value())
+          .message(e.getMessage())
+          .build());
+
+    }
+
+    return ResponseEntity.ok(
+      ResponseStructure.builder()
+        .timeStamp(ZonedDateTime.now())
+        .statusCode(HttpStatus.OK.value())
+        .status(HttpStatus.OK)
+        .message("Server retrieved successfully")
+        .data(Map.of("server", serverFetchedByID))
+        .build());
   }
 
 
@@ -67,7 +81,7 @@ public class ServerController {
     Optional<Server> serv_ = serverService.pingIfExists(ipAddress); /* ping the server and get the result */
 
     return ResponseEntity.ok(ResponseStructure.builder()
-        .timeStamp(LocalDateTime.now())
+        .timeStamp(ZonedDateTime.now())
         .statusCode((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST.value() : HttpStatus.OK.value())
         .status((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST : HttpStatus.OK)
 
@@ -77,7 +91,7 @@ public class ServerController {
         .build());
 
 //    return ResponseEntity.ok(ResponseStructure.builder()
-//      .timeStamp(LocalDateTime.now())
+//      .timeStamp(ZonedDateTime.now())
 //      .statusCode((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST.value() : HttpStatus.OK.value())
 //      .status((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST : HttpStatus.OK)
 //      .message((serv_.isEmpty()) ? "No server found with this IP Address" : (serv_.get().getStatus() == SERVER_UP ? "Ping success" : "Ping failed"))
@@ -91,7 +105,7 @@ public class ServerController {
     Optional<Server> serv_ = serverService.updateIfExists(serverId, serverUpdates);
 
     return ResponseEntity.ok(ResponseStructure.builder()
-        .timeStamp(LocalDateTime.now())
+        .timeStamp(ZonedDateTime.now())
         .statusCode((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST.value() : HttpStatus.OK.value())
         .status((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST : HttpStatus.OK)
         .data((serv_.isEmpty()) ? Map.of() : Map.of("server", serv_.get()))
@@ -108,7 +122,7 @@ public class ServerController {
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(
           ResponseStructure.builder()
-              .timeStamp(LocalDateTime.now())
+              .timeStamp(ZonedDateTime.now())
               .status(HttpStatus.BAD_REQUEST)
               .statusCode(HttpStatus.BAD_REQUEST.value())
               .message(e.getMessage())
@@ -118,7 +132,7 @@ public class ServerController {
     }
 
     return ResponseEntity.ok(ResponseStructure.builder()
-        .timeStamp(LocalDateTime.now())
+        .timeStamp(ZonedDateTime.now())
         .status(HttpStatus.CREATED)
         .statusCode(HttpStatus.CREATED.value())
         .data(Map.of("server", createdSerser))
@@ -129,7 +143,7 @@ public class ServerController {
   @PostMapping(path = "/save_v1")
   public ResponseEntity<ResponseStructure> saveServer_v1(@RequestBody @Valid Server server) {
     return ResponseEntity.ok(ResponseStructure.builder()
-        .timeStamp(LocalDateTime.now())
+        .timeStamp(ZonedDateTime.now())
         .status(HttpStatus.CREATED)
         .statusCode(HttpStatus.CREATED.value())
         .data(Map.of("server", serverService.old_create(server)))
@@ -143,7 +157,7 @@ public class ServerController {
     Boolean deleteResult = serverService.delete(id);
     return ResponseEntity.ok(
         ResponseStructure.builder()
-            .timeStamp(LocalDateTime.now())
+            .timeStamp(ZonedDateTime.now())
             .data(Map.of("deleted", deleteResult))
             .message(deleteResult ? "Server deleted successfully" : "No server found with id " + id)
             .statusCode(deleteResult ? HttpStatus.OK.value() : HttpStatus.BAD_REQUEST.value())
@@ -182,7 +196,7 @@ public class ServerController {
       log.error("serverService.createDatacenter(dataCenterDTO) ::", e);
       return ResponseEntity.badRequest().body(
           ResponseStructure.builder()
-              .timeStamp(LocalDateTime.now())
+              .timeStamp(ZonedDateTime.now())
               .status(HttpStatus.BAD_REQUEST)
               .statusCode(HttpStatus.BAD_REQUEST.value())
               .message(e.getMessage())
@@ -193,7 +207,7 @@ public class ServerController {
     log.info("_datacenter created  = {}", _datacenter);
 
     return ResponseEntity.ok(ResponseStructure.builder()
-        .timeStamp(LocalDateTime.now())
+        .timeStamp(ZonedDateTime.now())
         .status(HttpStatus.CREATED)
         .statusCode(HttpStatus.CREATED.value())
         .message(_datacenter.map(d_center -> ("dataCenter created")).orElse("No server found with this IP Address"))
@@ -218,7 +232,7 @@ public class ServerController {
 //
 //    return ResponseEntity.badRequest().body(
 //        ResponseStructure.builder()
-//            .timeStamp(LocalDateTime.now())
+//            .timeStamp(ZonedDateTime.now())
 //            .status(HttpStatus.BAD_REQUEST)
 //            .statusCode(HttpStatus.BAD_REQUEST.value())
 //            .message(String.valueOf(error_details))

@@ -1,7 +1,7 @@
 package com.chace.serverManagement.service;
 
-import com.chace.serverManagement.Model.dto_notUsed.DataCenterDTO;
-import com.chace.serverManagement.Model.dto_notUsed.ServerDTO;
+import com.chace.serverManagement.Model.dto.DataCenterDTO;
+import com.chace.serverManagement.Model.dto.ServerDTO;
 import com.chace.serverManagement.Model.entity.Server;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public interface ServerService {
 
   Collection<Server> list(int limit);
 
-  Server get(Long id);
+  ServerDTO get(Long id) throws Exception;
 
   Optional<Server> getOptional(Long id);
 
