@@ -73,7 +73,6 @@ class ServerServiceImplementationTest {
 
   @AfterEach
   void tearDown() {
-    log.info("________ tearDown Logic");
   }
 
 
@@ -107,7 +106,7 @@ class ServerServiceImplementationTest {
   @Test
   @Transactional
   @Rollback
-  public void createsServer_provideNull_throwException() throws Exception {
+  public void createsServer_provideNull_throwException() {
 
     assertThrows(Exception.class, () -> serverService.create(null));
 
@@ -119,7 +118,7 @@ class ServerServiceImplementationTest {
   @Test
   @Transactional
   @Rollback
-  public void getServer_successful() throws Exception {
+  public void getServer_successful() {
 
     Long serverId = 1L;
     ServerDTO serverDTO1L = ServerDTO.builder()._id(serverId) /* other fields*/.build();
@@ -138,7 +137,7 @@ class ServerServiceImplementationTest {
   @Test
   @Transactional
   @Rollback
-  public void getServer_throwsException() throws Exception {
+  public void getServer_throwsException() {
 
     Long serverId = 1L;
     when(serverRepo.findById(any(Long.class))).thenThrow(new RuntimeException("No server with id" + serverId));

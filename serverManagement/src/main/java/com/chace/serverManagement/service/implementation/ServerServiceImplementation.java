@@ -125,7 +125,10 @@ public class ServerServiceImplementation implements ServerService {
   public ServerDTO get(Long id) throws RuntimeException {
     log.info("[SI] fetching server w/ id : {}", id);
 
-    Server theServer = serverRepo.findById(id).orElseThrow(() -> new RuntimeException("No server with id =[" + id + "]")); // .get();
+    /* OLD */
+    // Server theServer = serverRepo.findById(id).orElseThrow(() -> new RuntimeException("No server with id =[" + id + "]")); // .get();
+    /* Update */
+    Server theServer = Optional.ofNullable(id).map(this.serverRepo::getReferenceById).orElseThrow(() -> new RuntimeException("Server with id [" + id + "] not found"));
     log.info("[SI] server : {}", theServer);
 
     /* testing mapper with different fields in entity and Dto */
@@ -204,7 +207,7 @@ public class ServerServiceImplementation implements ServerService {
   public String setServerImageUrl() {
     String[] imageNames = {"serv0.png", "serv1.png", "serv2.png", "serv3.png", "serv4.png"};
     return ServletUriComponentsBuilder.fromCurrentContextPath()
-      .path("api/v2/server/image/" + imageNames[new Random().nextInt(5)])
-      .toUriString();
+                                      .path("api/v2/server/image/" + imageNames[new Random().nextInt(5)])
+                                      .toUriString();
   }
 }

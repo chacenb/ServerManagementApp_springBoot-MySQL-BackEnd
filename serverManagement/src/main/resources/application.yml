@@ -12,31 +12,26 @@
 
 spring:
   datasource:
-#    url: jdbc:mysql://localhost:3306/serverdb
-    url: jdbc:postgresql://localhost:5432/serverdb  # postgre connection URL
-    username: postgres #root
+    url: jdbc:postgresql://localhost:5432/serverdb  # url: jdbc:mysql://localhost:3306/serverdb
+    username: postgres
     password: postgre
   jpa:
-    show-sql: false # false, true
     hibernate:
-      ddl-auto: update # create-drop
-#      ddl-auto: update # create-drop
+      ddl-auto: create-drop
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.MySQL8Dialect
-
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-#        default_schema: wallet  # used by postgreSQL to determine the default schema, Else it will use the public one
+        dialect: org.hibernate.dialect.PostgreSQLDialect #        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_schema: server  # used by postgreSQL to determine the default schema, Else it will use the public one
         format_sql: true
-      #-------------------------------
-      # generates SQL script file (create.sql) at project.basedir at project startup, !!! BUT !!!  PREVENTS AUTO CREATION OF OBJECTS IN THE DB
-#      jakarta:
-#        persistence:
-#          schema-generation:
-#            scripts:
-#              action: create
-#              create-target: create.sql
-#              create-source: metadata
+        #-------------------------------
+        # generates SQL script file (create.sql) at project.basedir at project startup, !!! BUT !!!  PREVENTS AUTO CREATION OF OBJECTS IN THE DB
+        #      jakarta:
+        #        persistence:
+        #          schema-generation:
+        #            scripts:
+        #              action: create
+        #              create-target: create.sql
+        #              create-source: metadata
         # END used to generate DB scripts
       #-------------------------------
     open-in-view: false
