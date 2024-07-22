@@ -1,8 +1,11 @@
 package com.chace.serverManagement.Model.entity;
 
+import com.chace.serverManagement.configurations.securityConfiguration.UserPrincipal;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.ZonedDateTime;
 
@@ -27,28 +30,56 @@ public abstract class _AbstractModel {
   protected ZonedDateTime lastModifiedDate;
 
 
+  @Column(name = "created_by")
+  protected Long createdBy;
+
+  @Column(name = "modified_by")
+  protected Long modifiedBy;
+
+  @Column(name = "deleted_by")
+  protected Long deletedBy;
+
   @PrePersist
   protected void prePersist() {
-    if (this.creationDate == null)  creationDate = ZonedDateTime.now();
+    if (this.creationDate == null) creationDate = ZonedDateTime.now();
     if (this.lastModifiedDate == null) lastModifiedDate = ZonedDateTime.now();
+
+    if (SecurityContextHolder.getContext().getAuthentication() != null) {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
+      this.createdBy = currPrincpl.getUserId();
+    }
   }
 
   @PreUpdate
   protected void preUpdate() {
     this.lastModifiedDate = ZonedDateTime.now();
+
+    if (SecurityContextHolder.getContext().getAuthentication() != null) {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
+      this.modifiedBy = currPrincpl.getUserId();
+    }
   }
 
   @PreRemove
   protected void preRemove() {
     this.lastModifiedDate = ZonedDateTime.now();
+
+    if (SecurityContextHolder.getContext().getAuthentication() != null) {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
+      this.deletedBy = currPrincpl.getUserId();
+    }
+
   }
 
 
   @Override
   public String toString() {
     return "id=" + id +
-      ", creationDate=" + creationDate +
-      ", lastModifiedDate=" + lastModifiedDate +
-      "} ";
+           ", creationDate=" + creationDate +
+           ", lastModifiedDate=" + lastModifiedDate +
+           "} ";
   }
 }

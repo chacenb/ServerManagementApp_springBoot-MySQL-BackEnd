@@ -5,11 +5,14 @@ import com.chace.serverManagement.Model.dto.ServerDTO;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.Model.utils.ServerMapper;
+import com.chace.serverManagement.configurations.securityConfiguration.UserPrincipal;
 import com.chace.serverManagement.repository.ServerRepo;
 import com.chace.serverManagement.service.ServerService;
 import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -118,6 +121,11 @@ public class ServerServiceImplementation implements ServerService {
   @Override
   public Collection<Server> list(int limit) {
     log.info("[SI] fetching all servers ");
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
+    log.info("currPrincpl = getUserId={}  getLogin={}  getPassword={}  getAuthorities={} ", currPrincpl.getUserId(), currPrincpl.getLogin(), currPrincpl.getPassword(), currPrincpl.getAuthorities());
+
     return serverRepo.findAll(); // or :: serverRepo.findAllByOrderByIdDesc();
   }
 
