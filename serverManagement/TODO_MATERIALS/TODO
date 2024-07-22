@@ -2,7 +2,7 @@ TODO :: ---------------------------------------------
 ADD PAGINATION
 [] Add Read HTTP Headers [backEnd side] in Spring REST Controllers >> https://www.baeldung.com/spring-rest-http-headers
 [] Angular Set default headers [frontEnd side] in Spring REST Controllers >> https://v17.angular.io/guide/http-interceptor-use-cases
-
+[] Add spring security to the app
 
 DONE -------------------------------------------------
 ok- Global Exception handler (Light)

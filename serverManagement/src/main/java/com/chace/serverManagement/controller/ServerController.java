@@ -25,6 +25,7 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @Slf4j /* Slf4j: Simple Logging Facade for Java : see codeBlocks */
 @RestController /* show that class is going to serve rest endpoints api-s, mostly used with @RequestMapping. */
+//@RequestMapping(path = "")  /* used to map the web requests */
 @RequestMapping(path = "api/v2/server")  /* used to map the web requests */
 @RequiredArgsConstructor /* generates constructor for all final & @NonNull fields. Thus handles dependency injection */
 public class ServerController {
@@ -34,9 +35,22 @@ public class ServerController {
   private final ServerMapper serverMapper;
 
   /* ResponseEntity<Response> : cf code blocks */
-//  @GetMapping(path = "") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
+  @GetMapping(path = "") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
+  public ResponseEntity<ResponseStructure> getAllServersAtRoot() {
+    return ResponseEntity.ok(
+        ResponseStructure.builder()
+            .timeStamp(ZonedDateTime.now())
+            .statusCode(HttpStatus.OK.value())
+            .status(HttpStatus.OK)
+            .message("Servers fetched successfully !")
+            .data(Map.of("servers", serverService.list(30)))
+            .build());
+  }
+
+
+  /* ResponseEntity<Response> : cf code blocks */
   @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
-  public ResponseEntity<ResponseStructure> getAllServers() {
+  public ResponseEntity<ResponseStructure> getServersList() {
     return ResponseEntity.ok(
         ResponseStructure.builder()
             .timeStamp(ZonedDateTime.now())
