@@ -1,4 +1,4 @@
-package com.chace.serverManagement.configurations;
+package com.chace.serverManagement.configurations.corsConfiguration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
