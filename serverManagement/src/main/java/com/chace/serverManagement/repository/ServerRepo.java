@@ -57,7 +57,8 @@ public interface ServerRepo extends JpaRepository<Server, Long> {
   /* list all the specifications here to construct queries with criterias  */
 
   static Specification<Server> isNotDeleted() {
-    return (T, cq, cb) -> cb.equal(T.get("isNotdeleted"), true);
+    return (T, cq, cb) -> cb.isNull(T.get("deletedDate"));
+//    return (T, cq, cb) -> cb.equal(T.get("isNotdeleted"), true);
   }
 
   static Specification<Server> loginEquals(String login) {

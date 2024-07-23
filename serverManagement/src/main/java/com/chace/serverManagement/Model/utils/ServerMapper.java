@@ -36,24 +36,30 @@ public class ServerMapper {
   public ServerDTO toDTO(Server param) {
 
     /* This one uses typeMapping */
-    ServerDTO map = this.modelMapper.map(param, ServerDTO.class);
-    log.info("toDTO: {}", map);
-    return map;
+//    ServerDTO map = this.modelMapper.map(param, ServerDTO.class);
+//    log.info("toDTO: {}", map);
+//    return map;
 
     /* This one is a hand made mapper :: full control on our code */
-//    return ServerDTO.builder()
-//      ._id(param.getId())
-//      .creationDate(param.getCreationDate())
-//      .lastModifiedDate(param.getLastModifiedDate())
-//      ._ipAddress(param.getIpAddress())
-//      .name(param.getName())
-//      .memory(param.getMemory())
-//      .type(param.getType())
-//      .imageUrl(param.getImageUrl())
-//      .status(param.getStatus())
-//      .serverDetails(param.getServerDetails())
-//      .serverDetailsList(Collections.singletonList(param.getServerDetailsList()))
-//      .build();
+    return ServerDTO.builder()
+      ._id(param.getId())
+      .creationDate(param.getCreationDate())
+      .lastModifiedDate(param.getLastModifiedDate())
+      .deletedDate(param.getDeletedDate())
+      .isNotdeleted(param.getIsNotdeleted())
+      .createdBy(param.getCreatedBy())
+      .modifiedBy(param.getModifiedBy())
+      .deletedBy(param.getDeletedBy())
+      ._ipAddress(param.getIpAddress())
+      .name(param.getName())
+      .memory(param.getMemory())
+      .type(param.getType())
+      .imageUrl(param.getImageUrl())
+      .status(param.getStatus())
+      .serverDetails(param.getServerDetails())
+      .serverDetailsList(Collections.singletonList(param.getServerDetailsList()))
+
+      .build();
   }
 
   public Server toEntity(ServerDTO param) {

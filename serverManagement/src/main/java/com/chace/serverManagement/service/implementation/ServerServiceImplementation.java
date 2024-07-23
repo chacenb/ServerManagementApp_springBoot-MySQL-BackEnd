@@ -23,6 +23,7 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static com.chace.serverManagement.repository.ServerRepo.isNotDeleted;
 import static java.lang.Boolean.FALSE;
@@ -135,7 +136,7 @@ public class ServerServiceImplementation implements ServerService {
 
 
   @Override
-  public Collection<Server> list(int limit) {
+  public Collection<ServerDTO> list(int limit) {
     log.info("[SI] fetching all servers ");
 
     if (SecurityContextHolder.getContext().getAuthentication() == null) throw new RuntimeException("User Not authenticated");
@@ -144,7 +145,7 @@ public class ServerServiceImplementation implements ServerService {
     UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
     log.info("currPrincpl = getUserId={}  getLogin={}  getPassword={}  getAuthorities={} ", currPrincpl.getUserId(), currPrincpl.getLogin(), currPrincpl.getPassword(), currPrincpl.getAuthorities());
 
-    return serverRepo.findAll(isNotDeleted()); // or :: serverRepo.findAllByOrderByIdDesc();
+    return serverRepo.findAll(isNotDeleted()).stream().map(serverMapper::toDTO).collect(Collectors.toSet()); // or :: serverRepo.findAllByOrderByIdDesc();
   }
 
   @Override

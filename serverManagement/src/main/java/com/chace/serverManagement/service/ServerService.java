@@ -21,7 +21,7 @@ public interface ServerService {
 
   Collection<Server> allServers_withoutAuthentication();
 
-  Collection<Server> list(int limit);
+  Collection<ServerDTO> list(int limit);
 
   ServerDTO get(Long id) throws Exception;
 

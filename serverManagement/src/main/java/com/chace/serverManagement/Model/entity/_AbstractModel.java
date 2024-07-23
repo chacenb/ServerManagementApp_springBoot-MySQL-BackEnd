@@ -51,6 +51,8 @@ public abstract class _AbstractModel {
     if (this.creationDate == null) creationDate = ZonedDateTime.now();
     if (this.lastModifiedDate == null) lastModifiedDate = ZonedDateTime.now();
 
+    this.isNotdeleted = true;
+
     if (SecurityContextHolder.getContext().getAuthentication() != null) {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
       UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();

@@ -17,9 +17,11 @@ public abstract class _AbstractDto {
   protected Long          _id;
   protected ZonedDateTime creationDate;
   protected ZonedDateTime lastModifiedDate;
-  protected Long createdBy;
-  protected Long modifiedBy;
-  protected Long deletedBy;
+  protected ZonedDateTime deletedDate;
+  protected Boolean       isNotdeleted;
+  protected Long          createdBy;
+  protected Long          modifiedBy;
+  protected Long          deletedBy;
 
 
   @Override
