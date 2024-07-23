@@ -1,5 +1,6 @@
 package com.chace.serverManagement.Model.dto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,20 @@ public abstract class _AbstractDto {
   protected Long          _id;
   protected ZonedDateTime creationDate;
   protected ZonedDateTime lastModifiedDate;
+  protected Long createdBy;
+  protected Long modifiedBy;
+  protected Long deletedBy;
+
 
   @Override
   public String toString() {
-    return "_id=" + _id +
+    return "_AbstractDto {" +
+      "_id=" + _id +
       ", creationDate=" + creationDate +
       ", lastModifiedDate=" + lastModifiedDate +
-      "} ";
+      ", createdBy=" + createdBy +
+      ", modifiedBy=" + modifiedBy +
+      ", deletedBy=" + deletedBy +
+      '}';
   }
 }

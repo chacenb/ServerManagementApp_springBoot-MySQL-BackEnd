@@ -19,6 +19,8 @@ public interface ServerService {
 
   Optional<Server> pingIfExists(String ipAddress) throws IOException;
 
+  Collection<Server> all();
+
   Collection<Server> list(int limit);
 
   ServerDTO get(Long id) throws Exception;
@@ -27,7 +29,7 @@ public interface ServerService {
 
   Server update_old(Long id, Server server);
 
-  Optional<Server> updateIfExists(Long id, Server serverUpdate);
+  Optional<Server> updateIfExists(Long id, ServerDTO serverUpdate);
 
   Boolean delete(Long id);
 }

@@ -29,6 +29,13 @@ public abstract class _AbstractModel {
   @Column(name = "last_modified_date")
   protected ZonedDateTime lastModifiedDate;
 
+  //  @UpdateTimestamp  // from hibernate
+//  @LastModifiedDate // from JPA packed within spring
+  @Column(name = "deleted_date")
+  protected ZonedDateTime deletedDate;
+
+  @Column(name = "is_not_deleted")
+  protected Boolean isNotdeleted = true;
 
   @Column(name = "created_by")
   protected Long createdBy;
@@ -65,6 +72,7 @@ public abstract class _AbstractModel {
   @PreRemove
   protected void preRemove() {
     this.lastModifiedDate = ZonedDateTime.now();
+    this.deletedDate = ZonedDateTime.now();
 
     if (SecurityContextHolder.getContext().getAuthentication() != null) {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -77,9 +85,14 @@ public abstract class _AbstractModel {
 
   @Override
   public String toString() {
-    return "id=" + id +
-           ", creationDate=" + creationDate +
-           ", lastModifiedDate=" + lastModifiedDate +
-           "} ";
+    return "_AbstractModel {" +
+      "id=" + id +
+      ", creationDate=" + creationDate +
+      ", lastModifiedDate=" + lastModifiedDate +
+      ", deletedDate=" + deletedDate +
+      ", createdBy=" + createdBy +
+      ", modifiedBy=" + modifiedBy +
+      ", deletedBy=" + deletedBy +
+      '}';
   }
 }

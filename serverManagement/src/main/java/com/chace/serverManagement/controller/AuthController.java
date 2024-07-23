@@ -2,6 +2,7 @@ package com.chace.serverManagement.controller;
 
 import com.chace.serverManagement.configurations.securityConfiguration.JwtIssuer;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,20 @@ public class AuthController {
 
   private final JwtIssuer jwtIssuer;
 
-  public record LoginCredentials(String login, String password) {
+  public record LoginCredential(String login, String password) {
   }
 
   @Getter @Setter @Builder
   public static class LoginResponse {
     private final String token;
+  }
+
+  @Getter @Setter @Builder
+  public static class LoginCredentials {
+    @NotBlank(message = "login can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+    private String login;
+    @NotBlank(message = "password can't be empty or null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
+    private String password;
   }
 
 

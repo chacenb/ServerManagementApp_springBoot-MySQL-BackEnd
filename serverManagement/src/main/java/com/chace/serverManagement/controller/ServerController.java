@@ -43,7 +43,7 @@ public class ServerController {
             .statusCode(HttpStatus.OK.value())
             .status(HttpStatus.OK)
             .message("Servers fetched successfully !")
-            .data(Map.of("servers", serverService.list(30)))
+            .data(Map.of("servers", serverService.all()))
             .build());
   }
 
@@ -115,7 +115,7 @@ public class ServerController {
 
 
   @PutMapping(path = "/{serverId}")
-  public ResponseEntity<ResponseStructure> updateServer(@PathVariable("serverId") Long serverId, @RequestBody(required = true /* true is default val */) @Valid Server serverUpdates) {
+  public ResponseEntity<ResponseStructure> updateServer(@PathVariable("serverId") Long serverId, @RequestBody(required = true /* true is default val */) @Valid ServerDTO serverUpdates) {
     Optional<Server> serv_ = serverService.updateIfExists(serverId, serverUpdates);
 
     return ResponseEntity.ok(ResponseStructure.builder()

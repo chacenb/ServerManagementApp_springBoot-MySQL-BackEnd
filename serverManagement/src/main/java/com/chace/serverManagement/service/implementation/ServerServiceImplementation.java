@@ -19,10 +19,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Random;
 
+import static com.chace.serverManagement.repository.ServerRepo.isNotDeleted;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -119,7 +121,7 @@ public class ServerServiceImplementation implements ServerService {
 
 
   @Override
-  public Collection<Server> list(int limit) {
+  public Collection<Server> all() {
     log.info("[SI] fetching all servers ");
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -127,6 +129,18 @@ public class ServerServiceImplementation implements ServerService {
     log.info("currPrincpl = getUserId={}  getLogin={}  getPassword={}  getAuthorities={} ", currPrincpl.getUserId(), currPrincpl.getLogin(), currPrincpl.getPassword(), currPrincpl.getAuthorities());
 
     return serverRepo.findAll(); // or :: serverRepo.findAllByOrderByIdDesc();
+  }
+
+
+  @Override
+  public Collection<Server> list(int limit) {
+    log.info("[SI] fetching all servers ");
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
+    log.info("currPrincpl = getUserId={}  getLogin={}  getPassword={}  getAuthorities={} ", currPrincpl.getUserId(), currPrincpl.getLogin(), currPrincpl.getPassword(), currPrincpl.getAuthorities());
+
+    return serverRepo.findAll(isNotDeleted()); // or :: serverRepo.findAllByOrderByIdDesc();
   }
 
   @Override
@@ -178,7 +192,7 @@ public class ServerServiceImplementation implements ServerService {
 
   @Override
   @Transactional
-  public Optional<Server> updateIfExists(Long id, Server serverUpdate) {
+  public Optional<Server> updateIfExists(Long id, ServerDTO serverUpdate) {
     Optional<Server> oldServerOptional = serverRepo.findById(id);
     log.info("[SI] old server [ if exists ] to update is : {}", oldServerOptional);
     if (oldServerOptional.isPresent()) {
@@ -187,9 +201,9 @@ public class ServerServiceImplementation implements ServerService {
       oldServer.setStatus(serverUpdate.getStatus());
       oldServer.setMemory(serverUpdate.getMemory());
       oldServer.setType(serverUpdate.getType());
-      oldServer.setIpAddress(serverUpdate.getIpAddress());
-      log.info("[SI] server w/ id : {} updated successfully => {}", id, oldServer);
-      return Optional.of(this.old_create(oldServer));
+      oldServer.setIpAddress(serverUpdate.get_ipAddress());
+//      return Optional.of(this.old_create(oldServer));
+      return Optional.of(serverRepo.save(oldServer));
     } else {
       log.info("[SI] server w/ id : {} doesn't exist", id);
       return oldServerOptional;
@@ -200,16 +214,24 @@ public class ServerServiceImplementation implements ServerService {
   /* STOPPED HERE */
   @Override
   @Transactional
-  public Boolean delete(Long id) {
-    log.info("[SI] deleting server w/ id : {}", id);
-    Optional<Server> serverToDelete = serverRepo.findById(id);
+  public Boolean delete(Long serverId) {
+    log.info("[SI] deleting server w/ serverId : {}", serverId);
+    Optional<Server> serverToDelete = serverRepo.findById(serverId);
     if (serverToDelete.isEmpty()) {
-      log.info("[SI] server w/ id : {} doesn't exist", id);
+      log.info("[SI] server w/ serverId : {} doesn't exist", serverId);
       return FALSE;
     }
-    serverRepo.deleteById(id);
-    log.info("[SI] server w/ id : {} deleted successfully", id);
-    return TRUE;
+
+
+    if (SecurityContextHolder.getContext().getAuthentication() != null) {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
+
+      serverRepo.deleteById(serverId, currPrincpl.getUserId(), ZonedDateTime.now());
+      log.info("[SI] server w/ serverId : {} deleted successfully", serverId);
+      return TRUE;
+    }
+    return FALSE;
   }
 
   public String setServerImageUrl() {
