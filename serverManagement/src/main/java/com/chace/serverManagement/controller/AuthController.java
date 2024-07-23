@@ -1,6 +1,8 @@
 package com.chace.serverManagement.controller;
 
-import com.chace.serverManagement.configurations.securityConfiguration.JwtIssuer;
+import com.chace.serverManagement.Model.utils.ResponseStructure;
+import com.chace.serverManagement.configurations.securityConfiguration.JwtTokenIssuerDecoder;
+import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
@@ -8,13 +10,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j /* Slf4j: Simple Logging Facade for Java : see codeBlocks */
 @RestController /* show that class is going to serve rest endpoints api-s, mostly used with @RequestMapping. */
@@ -22,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor /* generates constructor for all final & @NonNull fields. Thus handles dependency injection */
 public class AuthController {
 
-  private final JwtIssuer jwtIssuer;
+  private final JwtTokenIssuerDecoder       jwtTokenIssuerDecoder;
 
   public record LoginCredential(String login, String password) {
   }
@@ -52,7 +54,7 @@ public class AuthController {
 
 
   private String generateDummyToken(LoginCredentials credentials) {
-    return jwtIssuer.issue(1L, credentials.login, List.of("DEFAULT_ROLE"));
+    return jwtTokenIssuerDecoder.issue(1L, credentials.login, List.of("DEFAULT_ROLE"));
   }
 
 }

@@ -17,22 +17,35 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-  private final JwtDecoder              jwtDecoder;
-  private final JwtToPrincipalConverter jwtToPrincipalConverter;
+  private final JwtTokenIssuerDecoder        jwtTokenDecoder;
+  private final JwtTokenToPrincipalConverter jwtTokenToPrincipalConverter;
 
-  @Override protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    extractTokenFromRequestHeader(request)
-        .map(jwtDecoder::decode)
-        .map(jwtToPrincipalConverter::convert)
-        .map(UserPrincipalAuthenticationToken::new)
-        .ifPresent(auth -> SecurityContextHolder.getContext().setAuthentication(auth));
+  @Override
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+    /* get the token string from the incoming request */
+    this.extractTokenFromRequestHeader(request)
+
+      /* decode it into a "DecodedJWT" */
+      .map(jwtTokenDecoder::decode)
+
+      /* Convert the "DecodedJWT" to a Principal */
+      .map(jwtTokenToPrincipalConverter::convert)
+
+      /* Wrap the Principal into "UserPrincipalAuthenticationToken" to fill other parameters */
+      .map(UserPrincipalAuthenticationToken::new)
+
+      /* if everything is OK, Set the currently authenticated principal in the Security context */
+      .ifPresent(userPrincAuthToken -> SecurityContextHolder.getContext().setAuthentication(userPrincAuthToken));
+
+
+    /* apply our custom filter to the request*/
     filterChain.doFilter(request, response);
   }
 
 
   /**
-   * EXtract token from the authorization header of the incoming request
+   * Util internal method just to extract token from the authorization header of the incoming request
    * The token can be present inside a request header or NOT
    */
   private Optional<String> extractTokenFromRequestHeader(HttpServletRequest request) {

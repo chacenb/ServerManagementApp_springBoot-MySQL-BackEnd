@@ -19,7 +19,7 @@ public interface ServerService {
 
   Optional<Server> pingIfExists(String ipAddress) throws IOException;
 
-  Collection<Server> all();
+  Collection<Server> allServers_withoutAuthentication();
 
   Collection<Server> list(int limit);
 

@@ -32,21 +32,6 @@ public class ServerController {
 
   /* this wil be injected because of @RequiredArgsConstructor annot. that generates constructor for all final & @NonNull fields */
   private final ServerServiceImplementation serverService;
-  private final ServerMapper serverMapper;
-
-  /* ResponseEntity<Response> : cf code blocks */
-  @GetMapping(path = "") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
-  public ResponseEntity<ResponseStructure> getAllServersAtRoot() {
-    return ResponseEntity.ok(
-        ResponseStructure.builder()
-            .timeStamp(ZonedDateTime.now())
-            .statusCode(HttpStatus.OK.value())
-            .status(HttpStatus.OK)
-            .message("Servers fetched successfully !")
-            .data(Map.of("servers", serverService.all()))
-            .build());
-  }
-
 
   /* ResponseEntity<Response> : cf code blocks */
   @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"

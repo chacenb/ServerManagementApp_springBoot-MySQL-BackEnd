@@ -121,12 +121,14 @@ public class ServerServiceImplementation implements ServerService {
 
 
   @Override
-  public Collection<Server> all() {
+  public Collection<Server> allServers_withoutAuthentication() {
     log.info("[SI] fetching all servers ");
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
-    log.info("currPrincpl = getUserId={}  getLogin={}  getPassword={}  getAuthorities={} ", currPrincpl.getUserId(), currPrincpl.getLogin(), currPrincpl.getPassword(), currPrincpl.getAuthorities());
+    if (SecurityContextHolder.getContext().getAuthentication() == null) throw new RuntimeException("User Not authenticated");
+
+    // returns AnonymousAuthenticationToken [Principal=anonymousUser, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_ANONYMOUS]]
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    log.info("currPrincpl = {}, Credentials = {}, Authenticated = {}, Details = {}", auth.getPrincipal(), auth.getCredentials(), auth.isAuthenticated(), auth.getDetails());
 
     return serverRepo.findAll(); // or :: serverRepo.findAllByOrderByIdDesc();
   }
@@ -135,6 +137,8 @@ public class ServerServiceImplementation implements ServerService {
   @Override
   public Collection<Server> list(int limit) {
     log.info("[SI] fetching all servers ");
+
+    if (SecurityContextHolder.getContext().getAuthentication() == null) throw new RuntimeException("User Not authenticated");
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
@@ -237,7 +241,7 @@ public class ServerServiceImplementation implements ServerService {
   public String setServerImageUrl() {
     String[] imageNames = {"serv0.png", "serv1.png", "serv2.png", "serv3.png", "serv4.png"};
     return ServletUriComponentsBuilder.fromCurrentContextPath()
-                                      .path("api/v2/server/image/" + imageNames[new Random().nextInt(5)])
-                                      .toUriString();
+      .path("api/v2/server/image/" + imageNames[new Random().nextInt(5)])
+      .toUriString();
   }
 }
