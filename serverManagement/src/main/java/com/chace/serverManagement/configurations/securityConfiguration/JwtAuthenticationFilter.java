@@ -38,7 +38,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       /* if everything is OK, Set the currently authenticated principal in the Security context */
       .ifPresent(userPrincAuthToken -> SecurityContextHolder.getContext().setAuthentication(userPrincAuthToken));
 
-
     /* apply our custom filter to the request*/
     filterChain.doFilter(request, response);
   }

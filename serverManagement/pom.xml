@@ -50,16 +50,7 @@
             <!-- END for wildfly deployment -->
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-            <version>4.4.0</version>
-        </dependency>
 
 
         <dependency>
@@ -140,6 +131,19 @@
             <version>3.2.0</version>
         </dependency>
 
+
+        <!-- security needs -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.4.0</version>
+        </dependency>
 
         <!-- store JSON (Collection of) Object in JPA Entity using JPA and Hibernate 6 >  https://vladmihalcea.com/how-to-map-json-collections-using-jpa-and-hibernate/-->
 <!--        <dependency>-->

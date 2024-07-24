@@ -22,7 +22,7 @@ public class _WebSecurityConfiguration {
   @Bean
   public SecurityFilterChain applicationSecurityFilterChain(HttpSecurity http) throws Exception {
 
-    /* We add our custom filter in the filter chain of Spring just before the "UsernamePasswordAuthenticationFilter" */
+    /* We add our custom security filter "JwtAuthenticationFilter" in Spring's filter chain just before the "UsernamePasswordAuthenticationFilter" */
     http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http
