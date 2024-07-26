@@ -9,6 +9,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.util.List;
+import java.util.Set;
 //import org.hibernate.annotations.Type;
 
 @EqualsAndHashCode(callSuper = true) @SuperBuilder
@@ -43,6 +44,9 @@ public class Server extends _AbstractModel {
   @JdbcTypeCode(SqlTypes.JSON) /* New feature in hibernate 6 (embedded in springBoot 3) to store Complex types as JSON in DB */
   @Column(name = "server_details_list", columnDefinition = "JSON")
   private List<ServerDetails> serverDetailsList;
+
+  @ManyToMany(mappedBy = "server", fetch = FetchType.EAGER)
+  private Set<Dummy> dummies;
 
   @Transient// Ignoring Fields With the JPA @Transient Annotation > https://www.baeldung.com/jpa-transient-ignore-field
   private String description;
