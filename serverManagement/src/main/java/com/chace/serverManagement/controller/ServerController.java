@@ -1,7 +1,6 @@
 package com.chace.serverManagement.controller;
 
 import com.chace.serverManagement.Model.dto.DataCenterDTO;
-import com.chace.serverManagement.Model.dto.PortDTO;
 import com.chace.serverManagement.Model.dto.ServerDTO;
 import com.chace.serverManagement.Model.entity.Port;
 import com.chace.serverManagement.Model.entity.Server;
@@ -26,7 +25,6 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @Slf4j /* Slf4j: Simple Logging Facade for Java : see codeBlocks */
 @RestController /* show that class is going to serve rest endpoints api-s, mostly used with @RequestMapping. */
-//@RequestMapping(path = "")  /* used to map the web requests */
 @RequestMapping(path = "api/v2/server")  /* used to map the web requests */
 @RequiredArgsConstructor /* generates constructor for all final & @NonNull fields. Thus handles dependency injection */
 public class ServerController {
@@ -50,28 +48,13 @@ public class ServerController {
 
   @GetMapping(path = "/get/{id}")
   public ResponseEntity<ResponseStructure> getServer(@PathVariable("id") Long id) {
-
-    ServerDTO serverFetchedByID;
-    try {
-      serverFetchedByID = serverService.get(id);
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(
-          ResponseStructure.builder()
-              .timeStamp(ZonedDateTime.now())
-              .status(HttpStatus.BAD_REQUEST)
-              .statusCode(HttpStatus.BAD_REQUEST.value())
-              .message(e.getMessage())
-              .build());
-
-    }
-
     return ResponseEntity.ok(
         ResponseStructure.builder()
             .timeStamp(ZonedDateTime.now())
             .statusCode(HttpStatus.OK.value())
             .status(HttpStatus.OK)
             .message("Server retrieved successfully")
-            .data(Map.of("server", serverFetchedByID))
+            .data(Map.of("server", serverService.get(id)))
             .build());
   }
 
@@ -89,14 +72,6 @@ public class ServerController {
         .message(serv_.map(server -> (server.getStatus() == SERVER_UP ? "Ping success" : "Ping failed")).orElse("No server found with this IP Address"))
         .data((serv_.isEmpty()) ? Map.of() : Map.of("server", serv_.get()))
         .build());
-
-//    return ResponseEntity.ok(ResponseStructure.builder()
-//      .timeStamp(ZonedDateTime.now())
-//      .statusCode((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST.value() : HttpStatus.OK.value())
-//      .status((serv_.isEmpty()) ? HttpStatus.BAD_REQUEST : HttpStatus.OK)
-//      .message((serv_.isEmpty()) ? "No server found with this IP Address" : (serv_.get().getStatus() == SERVER_UP ? "Ping success" : "Ping failed"))
-//      .data((serv_.isEmpty()) ? Map.of() : Map.of("server", serv_.get()))
-//      .build());
   }
 
 
@@ -115,27 +90,11 @@ public class ServerController {
 
   @PostMapping(path = "/save")
   public ResponseEntity<ResponseStructure> saveServer(@RequestBody @Valid ServerDTO server) {
-    ServerDTO createdSerser = null;
-    try {
-      createdSerser = serverService.create(server);
-
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(
-          ResponseStructure.builder()
-              .timeStamp(ZonedDateTime.now())
-              .status(HttpStatus.BAD_REQUEST)
-              .statusCode(HttpStatus.BAD_REQUEST.value())
-              .message(e.getMessage())
-//              .data((_datacenter.isEmpty()) ? Map.of() : Map.of("dataCenter", _datacenter.get()))
-              .build());
-
-    }
-
     return ResponseEntity.ok(ResponseStructure.builder()
         .timeStamp(ZonedDateTime.now())
         .status(HttpStatus.CREATED)
         .statusCode(HttpStatus.CREATED.value())
-        .data(Map.of("server", createdSerser))
+        .data(Map.of("server", serverService.create(server)))
         .message("Server created")
         .build());
   }
@@ -188,24 +147,7 @@ public class ServerController {
   @PostMapping(path = "/save/datacenter")
   public ResponseEntity<ResponseStructure> saveDataCenter(@RequestBody @Valid DataCenterDTO dataCenterDTO) {
     log.info("/save/dataCenterDTO body = {}", dataCenterDTO);
-
-    Optional<DataCenterDTO> _datacenter = null;
-    try {
-      _datacenter = serverService.createDatacenter(dataCenterDTO);
-    } catch (Exception e) {
-      log.error("serverService.createDatacenter(dataCenterDTO) ::", e);
-      return ResponseEntity.badRequest().body(
-          ResponseStructure.builder()
-              .timeStamp(ZonedDateTime.now())
-              .status(HttpStatus.BAD_REQUEST)
-              .statusCode(HttpStatus.BAD_REQUEST.value())
-              .message(e.getMessage())
-//              .data((_datacenter.isEmpty()) ? Map.of() : Map.of("dataCenter", _datacenter.get()))
-              .build());
-
-    }
-    log.info("_datacenter created  = {}", _datacenter);
-
+    Optional<DataCenterDTO> _datacenter = serverService.createDatacenter(dataCenterDTO);
     return ResponseEntity.ok(ResponseStructure.builder()
         .timeStamp(ZonedDateTime.now())
         .status(HttpStatus.CREATED)
@@ -219,63 +161,32 @@ public class ServerController {
 
   @GetMapping(path = "/get-port/{id}")
   public ResponseEntity<ResponseStructure> getPort(@PathVariable("id") Long id) {
-
-    PortDTO portFetchedByID;
-    try {
-      portFetchedByID = serverService.getPort(id);
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(
-          ResponseStructure.builder()
-              .timeStamp(ZonedDateTime.now())
-              .status(HttpStatus.BAD_REQUEST)
-              .statusCode(HttpStatus.BAD_REQUEST.value())
-              .message(e.getMessage())
-              .build());
-
-    }
-
     return ResponseEntity.ok(
         ResponseStructure.builder()
             .timeStamp(ZonedDateTime.now())
             .statusCode(HttpStatus.OK.value())
             .status(HttpStatus.OK)
             .message("Port retrieved successfully")
-            .data(Map.of("port", portFetchedByID))
+            .data(Map.of("port", serverService.getPort(id)))
             .build());
   }
 
 
   @PostMapping(path = "/save-port")
   public ResponseEntity<ResponseStructure> savePort(@RequestBody @Valid Port port) {
-    Port createdPort = null;
-    try {
-      createdPort = serverService.createPort(port);
-
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(
-          ResponseStructure.builder()
-              .timeStamp(ZonedDateTime.now())
-              .status(HttpStatus.BAD_REQUEST)
-              .statusCode(HttpStatus.BAD_REQUEST.value())
-              .message(e.getMessage())
-              .build());
-    }
-
     return ResponseEntity.ok(ResponseStructure.builder()
         .timeStamp(ZonedDateTime.now())
         .status(HttpStatus.CREATED)
         .statusCode(HttpStatus.CREATED.value())
-        .data(Map.of("port", createdPort))
+        .data(Map.of("port", serverService.createPort(port)))
         .message("port created")
         .build());
   }
 
 
   @GetMapping(path = "/{idServer}/add-port/{idPort}")
-  public ResponseEntity<ResponseStructure> addPortToServer(@PathVariable("idServer") Long idServer,
-                                                           @PathVariable("idPort") Long idPort) {
+  public ResponseEntity<ResponseStructure> addPortToServer(@PathVariable("idServer") Long idServer, @PathVariable("idPort") Long idPort) {
     serverService.addPortToServerWithoutCallingSave(idServer, idPort);
-
     return ResponseEntity.ok(ResponseStructure.builder()
         .timeStamp(ZonedDateTime.now())
         .status(HttpStatus.CREATED)

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -21,43 +22,38 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<Object> globalExceptionHandler(Exception ex, WebRequest request) {
-    log.error("globalExceptionHandler :: Exception = {}, request = {}", ex, request);
-    System.out.println(ex);
+  @Override /* default handler for ALL EXCEPTIONS */
+  protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
     return ResponseEntity.badRequest().body(
         ResponseStructure.builder()
-            .status(HttpStatus.BAD_REQUEST)
-            .message("Error = " + ex.getMessage() + " | When trying to hit = " + request)
+            .timeStamp(ZonedDateTime.now())
+            .statusCode(statusCode.value())
+            .status(HttpStatus.valueOf(statusCode.value()))
+            .message(ex.getMessage())
             .error(ex)
             .build());
   }
 
 
-  /**
-   * Customize the handling of {@link NoResourceFoundException}.
-   * <p>This method delegates to {@link #handleExceptionInternal}.
-   *
-   * @param ex      the exception to handle
-   * @param headers the headers to use for the response
-   * @param status  the status code to use for the response
-   * @param request the current request
-   * @return a {@code ResponseEntity} for the response to use, possibly
-   * {@code null} when the response is already committed
-   * @since 6.1
-   */
-  @Override
-  protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    return super.handleNoResourceFoundException(ex, headers, status, request);
+  @ExceptionHandler({CustomException.class,}) /* handler for our custom exception */
+  public ResponseEntity<Object> customExceptionHandler(CustomException ex) {
+    log.error("[ERROR] customExceptionHandler >>> ", ex);
+    return ResponseEntity.badRequest().body(
+        ResponseStructure.builder()
+            .timeStamp(ZonedDateTime.now())
+            .statusCode(HttpStatus.BAD_REQUEST.value())
+            .status(HttpStatus.BAD_REQUEST)
+            .message(ex.getMessage())
+            .build());
   }
 
-  @Override
+
+  @Override /* handleMethodArgumentNotValid */
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    log.error("[ERROR] handleMethodArgumentNotValid >>> ", exception);
 
     /* get all the errors messages for clean returning */
     List<String> errorList = exception.getBindingResult().getFieldErrors().stream().map(fieldError -> fieldError.getDefaultMessage()).toList();
-
-    log.error("Method Arguments are Not Valid :: errors = {}, status = {}", errorList, status);
 
     return ResponseEntity.badRequest().body(
         ResponseStructure.builder()

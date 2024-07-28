@@ -8,6 +8,7 @@ import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.Model.utils.ServerMapper;
 import com.chace.serverManagement.configurations.securityConfiguration.UserPrincipal;
+import com.chace.serverManagement.exception.CustomException;
 import com.chace.serverManagement.repository.PortRepo;
 import com.chace.serverManagement.repository.ServerRepo;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +32,7 @@ import static com.chace.serverManagement.repository.ServerRepo.isNotDeleted;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
-// RequiredArgsConstructor annot. will create a constructor, add the serverRepo property in it
-// and that will be our dependency injection
-@RequiredArgsConstructor
-@Service
-@Transactional
-@Slf4j /* @Slf4j auto adds a field named 'log' that uses the underlying logging implementation (Log4j2 in this case) */
+@RequiredArgsConstructor @Service @Transactional @Slf4j
 public class ServerService implements com.chace.serverManagement.service.interfaces.IServerService {
 
   private final ServerRepo   serverRepo;
@@ -48,7 +44,7 @@ public class ServerService implements com.chace.serverManagement.service.interfa
    * - dynamically set an image to the serv
    * - save the serverDTO to the DB and return it */
   @Override
-  public ServerDTO create(ServerDTO serverDTO) throws Exception {
+  public ServerDTO create(ServerDTO serverDTO)/* throws Exception*/ {
     log.info("[SI] creating new serverDTO {} of class = {}", serverDTO.getName(), serverDTO.getClass().getName());
     serverDTO.setImageUrl(setServerImageUrl());
 
@@ -63,12 +59,12 @@ public class ServerService implements com.chace.serverManagement.service.interfa
     log.info("about to save = {}", server);
 
     Server created_server = null;
-    try {
-      created_server = serverRepo.save(server);
-    } catch (Exception e) {
-      log.error("ERROR ON SAVE", e);
-      throw new Exception("ERROR ON SAVE :: " + e.getMessage(), e);
-    }
+//    try {
+    created_server = serverRepo.save(server);
+//    } catch (Exception e) {
+//      log.error("ERROR ON SAVE", e);
+//      throw new Exception("ERROR ON SAVE :: " + e.getMessage(), e);
+//    }
     log.info("saved server = {}", created_server);
 
     return serverMapper.toDTO(created_server);
@@ -82,7 +78,7 @@ public class ServerService implements com.chace.serverManagement.service.interfa
   }
 
   @Override
-  public Optional<DataCenterDTO> createDatacenter(DataCenterDTO dataCenterDTO) throws Exception {
+  public Optional<DataCenterDTO> createDatacenter(DataCenterDTO dataCenterDTO) {
     log.info("creating Datacenter dataCenterDTO = {}", dataCenterDTO);
 
     /* check if the server associated exists */
@@ -152,31 +148,16 @@ public class ServerService implements com.chace.serverManagement.service.interfa
   }
 
   @Override
-  public ServerDTO get(Long id) throws RuntimeException {
+  public ServerDTO get(Long id) {
     log.info("[SI] fetching server w/ id : {}", id);
-
-    /* OLD */
-    // Server theServer = serverRepo.findById(id).orElseThrow(() -> new RuntimeException("No server with id =[" + id + "]")); // .get();
-    /* Update */
-    Server theServer = Optional.ofNullable(id).map(this.serverRepo::getReferenceById).orElseThrow(() -> new RuntimeException("Server with id [" + id + "] not found"));
-    log.info("[SI] server : {}", theServer);
-
-    /* testing mapper with different fields in entity and Dto */
-//    ServerDTO dtoed = serverMapper.toDTO(theServer);
-//    log.info("mapper::toDto2 of class = {} is {}", serverMapper.toDTO2(theServer).getClass(), serverMapper.toDTO2(theServer));
-//    Server entitied = serverMapper.toEntity2(dtoed);
-//    log.info("mapper::toEntity2 of class = {} is {}", entitied.getClass(), entitied);
-    /* END testing mapper with different fields in entity and Dto */
-
+    Server theServer = serverRepo.findById(id).orElseThrow(() -> new CustomException("No server with id =[" + id + "]"));
     return serverMapper.toDTO(theServer);
   }
-
 
   @Override
   public Optional<Server> getOptional(Long id) {
     log.info("[SI] fetching [ if exists ] server w/ id : {}", id);
-//    return serverRepo.findById(id).isPresent() ? serverRepo.findById(id) : Optional.of(new Server());
-    return serverRepo.findById(id); //.isPresent() ? serverRepo.findById(id) : Optional.of(Server.);
+    return serverRepo.findById(id);
   }
 
   @Override
@@ -257,7 +238,6 @@ public class ServerService implements com.chace.serverManagement.service.interfa
   }
 
 
-
   @Override
   public PortDTO getPort(Long id) throws RuntimeException {
     log.info("[SI] fetching port w/ id : {}", id);
@@ -274,7 +254,7 @@ public class ServerService implements com.chace.serverManagement.service.interfa
     Port port = portRepo.getReferenceById(idPort);
     server.getPorts().add(port);
 
-    return serverMapper.toDTO( serverRepo.save(server));
+    return serverMapper.toDTO(serverRepo.save(server));
   }
 
   @Override
