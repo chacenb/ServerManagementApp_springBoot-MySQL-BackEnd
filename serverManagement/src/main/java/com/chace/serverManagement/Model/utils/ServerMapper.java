@@ -2,15 +2,20 @@ package com.chace.serverManagement.Model.utils;
 
 import com.chace.serverManagement.Model.dto.PortDTO;
 import com.chace.serverManagement.Model.dto.ServerDTO;
+import com.chace.serverManagement.Model.dto._AbstractDto;
 import com.chace.serverManagement.Model.entity.Port;
 import com.chace.serverManagement.Model.entity.Server;
+import com.chace.serverManagement.Model.entity._AbstractModel;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -35,70 +40,60 @@ public class ServerMapper {
     dtoServerTypeMap.addMapping(ServerDTO::getServerDetails, Server::setServerDetails);
   }
 
-  public ServerDTO toDTO(Server param) {
+  public ServerDTO toDTO(Server entity) {
 
-    /* This one uses typeMapping */
-    ServerDTO map = this.modelMapper.map(param, ServerDTO.class);
+    //    ServerDTO map = this.modelMapper.map(entity, ServerDTO.class);  /* This one uses typeMapping */
+    ServerDTO map = setCommonFields(
+        entity, ServerDTO.builder()
+            ._ipAddress(entity.getIpAddress())
+            .name(entity.getName())
+            .memory(entity.getMemory())
+            .type(entity.getType())
+            .imageUrl(entity.getImageUrl())
+            .status(entity.getStatus())
+            .serverDetails(entity.getServerDetails())
+            .serverDetailsList(Arrays.asList(entity.getServerDetailsList().toArray()))
+            .portsUnidir(Objects.nonNull(entity.getPortsUnidir()) ? entity.getPortsUnidir().stream().map(_AbstractModel::getId).collect(Collectors.toSet()) : new ArrayList<>())
+            .portsBidir(Objects.nonNull(entity.getPortsBidir()) ? entity.getPortsBidir().stream().map(_AbstractModel::getId).collect(Collectors.toSet()) : new ArrayList<>())
+            .description(entity.getDescription())
+            .build()
+    );
+
+
     log.info("toDTO: {}", map);
     return map;
-
-    /* This one is a hand made mapper :: full control on our code */
-//    return ServerDTO.builder()
-//        ._id(param.getId())
-//        .creationDate(param.getCreationDate())
-//        .lastModifiedDate(param.getLastModifiedDate())
-//        .deletedDate(param.getDeletedDate())
-//        .isNotdeleted(param.getIsNotdeleted())
-//        .createdBy(param.getCreatedBy())
-//        .modifiedBy(param.getModifiedBy())
-//        .deletedBy(param.getDeletedBy())
-//        ._ipAddress(param.getIpAddress())
-//        .name(param.getName())
-//        .memory(param.getMemory())
-//        .type(param.getType())
-//        .imageUrl(param.getImageUrl())
-//        .status(param.getStatus())
-//        .serverDetails(param.getServerDetails())
-//        .serverDetailsList(Collections.singletonList(param.getServerDetailsList()))
-//        .dummies(param.getDummies())
-//        .ports(param.getPorts())
-//        .build();
   }
 
   public PortDTO portToDTO(Port entity) {
-
-    /* This one uses typeMapping */
     PortDTO map = this.modelMapper.map(entity, PortDTO.class);
+
+    /* Or use  the method below :: WORKS TOO */
+    //    PortDTO map = setCommonFields(entity, PortDTO.builder()
+    //        .name(entity.getName())
+    //        .details(entity.getDetails())
+    //        .serverBidir(entity.getServerBidir().getId())
+    //        .build());
+
     log.info("portToDTO: {}", map);
     return map;
-
-    /* This one is a hand made mapper :: full control on our code */
-//    return ServerDTO.builder()
-//        ._id(entity.getId())
-//        .creationDate(entity.getCreationDate())
-//        .lastModifiedDate(entity.getLastModifiedDate())
-//        .deletedDate(entity.getDeletedDate())
-//        .isNotdeleted(entity.getIsNotdeleted())
-//        .createdBy(entity.getCreatedBy())
-//        .modifiedBy(entity.getModifiedBy())
-//        .deletedBy(entity.getDeletedBy())
-//        ._ipAddress(entity.getIpAddress())
-//        .name(entity.getName())
-//        .memory(entity.getMemory())
-//        .type(entity.getType())
-//        .imageUrl(entity.getImageUrl())
-//        .status(entity.getStatus())
-//        .serverDetails(entity.getServerDetails())
-//        .serverDetailsList(Collections.singletonList(entity.getServerDetailsList()))
-//        .dummies(entity.getDummies())
-//        .ports(entity.getPorts())
-//        .build();
   }
 
   public Server toEntity(ServerDTO param) {
     Server map = modelMapper.map(param, Server.class);
     log.info("toEntity: {}", map);
     return map;
+  }
+
+  private static <E extends _AbstractModel, D extends _AbstractDto> D setCommonFields(E entity, D dto) {
+    dto.set_id(entity.getId());
+    dto.setCreationDate(entity.getCreationDate());
+    dto.setLastModifiedDate(entity.getLastModifiedDate());
+    dto.setDeletedDate(entity.getDeletedDate());
+    dto.setIsNotDeleted(entity.getIsNotDeleted());
+    dto.setCreatedBy(entity.getCreatedBy());
+    dto.setModifiedBy(entity.getModifiedBy());
+    dto.setDeletedBy(entity.getDeletedBy());
+    return dto;
   }
 
 }

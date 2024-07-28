@@ -46,7 +46,9 @@ public class ServerDTO extends _AbstractDto {
 
   private Collection<Dummy> dummies;
 
-  private Collection<PortDTO> ports;
+  private Collection<Object> portsUnidir;
+
+  private Collection<Object> portsBidir;
 
   @JsonIgnore
   private String description;
@@ -57,16 +59,16 @@ public class ServerDTO extends _AbstractDto {
   @Override
   public String toString() {
     return "ServerDTO{" + super.toString() +
-      "_ipAddress='" + _ipAddress + '\'' +
-      ", name='" + name + '\'' +
-      ", memory='" + memory + '\'' +
-      ", type='" + type + '\'' +
-      ", imageUrl='" + imageUrl + '\'' +
-      ", status=" + status +
-      ", serverDetails=" + serverDetails +
-      ", serverDetailsList=" + serverDetailsList +
-      ", description='" + description + '\'' +
-      ", location='" + location + '\'' +
-      "} ";
+        "_ipAddress='" + _ipAddress + '\'' +
+        ", name='" + name + '\'' +
+        ", memory='" + memory + '\'' +
+        ", type='" + type + '\'' +
+        ", imageUrl='" + imageUrl + '\'' +
+        ", status=" + status +
+        ", serverDetails=" + serverDetails +
+        ", serverDetailsList=" + serverDetailsList +
+        ", description='" + description + '\'' +
+        ", location='" + location + '\'' +
+        "} ";
   }
 }

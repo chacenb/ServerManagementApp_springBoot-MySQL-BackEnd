@@ -35,7 +35,7 @@ public abstract class _AbstractModel {
   protected ZonedDateTime deletedDate;
 
   @Column(name = "is_not_deleted")
-  protected Boolean isNotdeleted = true;
+  protected Boolean isNotDeleted = true;
 
   @Column(name = "created_by")
   protected Long createdBy;
@@ -51,8 +51,9 @@ public abstract class _AbstractModel {
     if (this.creationDate == null) creationDate = ZonedDateTime.now();
     if (this.lastModifiedDate == null) lastModifiedDate = ZonedDateTime.now();
 
-    this.isNotdeleted = true;
+    this.isNotDeleted = true;
 
+    /* Get the currently logged in User in the context of Spring security */
     if (SecurityContextHolder.getContext().getAuthentication() != null) {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
       UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();

@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.chace.serverManagement.Model.enumeration.Status.SERVER_UP;
+import static com.chace.serverManagement.Model.utils.Globals.PAGE_INDEX;
+import static com.chace.serverManagement.Model.utils.Globals.PAGE_SIZE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @Slf4j /* Slf4j: Simple Logging Facade for Java : see codeBlocks */
@@ -41,7 +43,7 @@ public class ServerController {
             .statusCode(HttpStatus.OK.value())
             .status(HttpStatus.OK)
             .message("Servers fetched successfully !")
-            .data(Map.of("servers", serverService.list(30)))
+            .data(Map.of("servers", serverService.serversList(PAGE_INDEX, PAGE_SIZE)))
             .build());
   }
 
@@ -184,9 +186,21 @@ public class ServerController {
   }
 
 
-  @GetMapping(path = "/{idServer}/add-port/{idPort}")
-  public ResponseEntity<ResponseStructure> addPortToServer(@PathVariable("idServer") Long idServer, @PathVariable("idPort") Long idPort) {
-    serverService.addPortToServerWithoutCallingSave(idServer, idPort);
+  @GetMapping(path = "/{idServer}/add-port-unidir/{idPort}")
+  public ResponseEntity<ResponseStructure> addPortToServer_unidirectionalRelationship(@PathVariable("idServer") Long idServer, @PathVariable("idPort") Long idPort) {
+    serverService.addPortToServerWithoutCallingSave_usingUnidirestionalRelationship(idServer, idPort);
+    return ResponseEntity.ok(ResponseStructure.builder()
+        .timeStamp(ZonedDateTime.now())
+        .status(HttpStatus.CREATED)
+        .statusCode(HttpStatus.CREATED.value())
+        .data(Map.of("server", serverService.get(idServer)))
+        .message("port created")
+        .build());
+  }
+
+  @GetMapping(path = "/{idServer}/add-port-bidir/{idPort}")
+  public ResponseEntity<ResponseStructure> addPortToServer_bidirectionalRelationship(@PathVariable("idServer") Long idServer, @PathVariable("idPort") Long idPort) {
+    serverService.addPortToServer_usingBidirectionalRelationship(idServer, idPort);
     return ResponseEntity.ok(ResponseStructure.builder()
         .timeStamp(ZonedDateTime.now())
         .status(HttpStatus.CREATED)

@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static com.chace.serverManagement.repository.ServerRepo.isNotDeleted;
+import static com.chace.serverManagement.Model.utils.Utils.pagingSorting;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -135,16 +135,15 @@ public class ServerService implements com.chace.serverManagement.service.interfa
 
 
   @Override
-  public Collection<ServerDTO> list(int limit) {
+  public Collection<ServerDTO> serversList(int pageIndex, int pageSize) {
     log.info("[SI] fetching all servers ");
+    return serverRepo.findAll(ServerRepo.isNotDeleted(), pagingSorting()).stream().map(serverMapper::toDTO).collect(Collectors.toSet()); // or :: serverRepo.findAllByOrderByIdDesc();
+  }
 
-    if (SecurityContextHolder.getContext().getAuthentication() == null) throw new RuntimeException("User Not authenticated");
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    UserPrincipal currPrincpl = (UserPrincipal) authentication.getPrincipal();
-    log.info("currPrincpl = getUserId={}  getLogin={}  getPassword={}  getAuthorities={} ", currPrincpl.getUserId(), currPrincpl.getLogin(), currPrincpl.getPassword(), currPrincpl.getAuthorities());
-
-    return serverRepo.findAll(isNotDeleted()).stream().map(serverMapper::toDTO).collect(Collectors.toSet()); // or :: serverRepo.findAllByOrderByIdDesc();
+  @Override
+  public Collection<PortDTO> portsList(int pageIndex, int pageSize) {
+    log.info("[SI] fetching all servers ");
+    return portRepo.findAll(PortRepo.isNotDeleted(), pagingSorting()).stream().map(serverMapper::portToDTO).collect(Collectors.toSet()); // or :: serverRepo.findAllByOrderByIdDesc();
   }
 
   @Override
@@ -249,18 +248,23 @@ public class ServerService implements com.chace.serverManagement.service.interfa
   }
 
   @Override
-  public ServerDTO addPortToServer(Long idServer, Long idPort) {
-    Server server = serverRepo.getReferenceById(idServer);
-    Port port = portRepo.getReferenceById(idPort);
-    server.getPorts().add(port);
-
-    return serverMapper.toDTO(serverRepo.save(server));
+  public void addPortToServerWithoutCallingSave_usingUnidirestionalRelationship(Long idServer, Long idPort) {
+    Server server = serverRepo.findById(idServer).orElseThrow(() -> new CustomException("No server with id =[" + idServer + "]"));
+    Port port = portRepo.findById(idPort).orElseThrow(() -> new CustomException("No port with id =[" + idPort + "]"));
+    server.getPortsUnidir().add(port);
   }
 
   @Override
-  public void addPortToServerWithoutCallingSave(Long idServer, Long idPort) {
-    Server server = serverRepo.getReferenceById(idServer);
-    Port port = portRepo.getReferenceById(idPort);
-    server.getPorts().add(port);
+  public ServerDTO addPortToServer_usingBidirectionalRelationship(Long idServer, Long idPort) {
+    Server server = serverRepo.findById(idServer).orElseThrow(() -> new CustomException("No server with id =[" + idServer + "]"));
+    Port port = portRepo.findById(idPort).orElseThrow(() -> new CustomException("No port with id =[" + idPort + "]"));
+    server.getPortsBidir().add(port);
+
+    /* port side actions */
+    port.setServerBidir(server);
+
+    /* for bidirectional relationship, we have to call the save method on the server | Even cascade the saving to the Port Entity */
+    return serverMapper.toDTO(serverRepo.save(server));
   }
+
 }

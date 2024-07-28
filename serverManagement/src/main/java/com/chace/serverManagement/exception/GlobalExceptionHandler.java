@@ -34,7 +34,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             .build());
   }
 
-
   @ExceptionHandler({CustomException.class,}) /* handler for our custom exception */
   public ResponseEntity<Object> customExceptionHandler(CustomException ex) {
     log.error("[ERROR] customExceptionHandler >>> ", ex);
@@ -46,7 +45,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             .message(ex.getMessage())
             .build());
   }
-
 
   @Override /* handleMethodArgumentNotValid */
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {

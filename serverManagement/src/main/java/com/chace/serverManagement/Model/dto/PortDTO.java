@@ -24,8 +24,9 @@ import java.util.List;
 @AllArgsConstructor // helps autoInsert AllArgsConstructor
 @SuperBuilder
 public class PortDTO extends _AbstractDto {
-  private String      name;
-  private PortDetails details;
-  private Server      server;
+  protected Long        id;
+  private   String      name;
+  private   PortDetails details;
+  private   Object      serverBidir;
 
 }

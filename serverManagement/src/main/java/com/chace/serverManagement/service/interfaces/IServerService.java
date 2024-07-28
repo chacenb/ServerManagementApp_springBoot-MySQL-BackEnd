@@ -24,7 +24,10 @@ public interface IServerService {
 
   Collection<Server> allServers_withoutAuthentication();
 
-  Collection<ServerDTO> list(int limit);
+
+  Collection<ServerDTO> serversList(int pageIndex, int pageSize);
+
+  Collection<PortDTO> portsList(int pageINdex, int pageSize);
 
   ServerDTO get(Long id) throws Exception;
 
@@ -41,8 +44,8 @@ public interface IServerService {
 
   Port createPort(Port port) throws Exception;
 
-  ServerDTO addPortToServer(Long idServer, Long idPort) throws Exception;
+  ServerDTO addPortToServer_usingBidirectionalRelationship(Long idServer, Long idPort) throws Exception;
 
-  void addPortToServerWithoutCallingSave(Long idServer, Long idPort) throws Exception;
+  void addPortToServerWithoutCallingSave_usingUnidirestionalRelationship(Long idServer, Long idPort) throws Exception;
 
 }

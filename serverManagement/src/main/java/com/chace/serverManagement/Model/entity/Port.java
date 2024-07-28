@@ -16,9 +16,8 @@ public class Port extends _AbstractModel {
   @Column(columnDefinition = "JSON")
   private PortDetails details;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
   @ManyToOne
   @JoinColumn(name = "id_server", foreignKey = @ForeignKey(name = "FK_PORT_SERVER"))
-  private Server server;
+  private Server serverBidir;
 
 }

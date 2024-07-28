@@ -1,6 +1,9 @@
 package com.chace.serverManagement.repository;
 
 import com.chace.serverManagement.Model.entity.Server;
+import com.chace.serverManagement.Model.entity.Server_;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +29,7 @@ public interface ServerRepo extends JpaRepository<Server, Long> {
    * @param specification
    * @return
    */
-  List<Server> findAll(Specification<Server> specification);
+  List<Server> findAll(Specification<Server> specification, Pageable pageable);
 
   /**
    * This method will extend JpaRepository:
@@ -47,7 +51,7 @@ public interface ServerRepo extends JpaRepository<Server, Long> {
   List<Server> findAllByOrderByIdDesc();
 
   @Modifying
-  @Query("UPDATE Server s SET s.isNotdeleted = false, s.deletedDate = :deleteDate, s.deletedBy=:deleterId WHERE s.id = :serverId")
+  @Query("UPDATE Server s SET s.isNotDeleted = false, s.deletedDate = :deleteDate, s.deletedBy=:deleterId WHERE s.id = :serverId")
   public void deleteById(@Param("serverId") Long serverId, @Param("deleterId") Long userId, @Param("deleteDate") ZonedDateTime deleteDate);
 
 
@@ -57,8 +61,7 @@ public interface ServerRepo extends JpaRepository<Server, Long> {
   /* list all the specifications here to construct queries with criterias  */
 
   static Specification<Server> isNotDeleted() {
-    return (T, cq, cb) -> cb.isNull(T.get("deletedDate"));
-//    return (T, cq, cb) -> cb.equal(T.get("isNotdeleted"), true);
+    return (T, cq, cb) -> cb.isTrue(T.get(Server_.IS_NOTDELETED));
   }
 
   static Specification<Server> loginEquals(String login) {
