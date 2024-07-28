@@ -6,8 +6,86 @@
 	},
 	"item": [
 		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Dunny Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"server-token\", jsonData.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\":\"dummyLogin\",\r\n    \"password\": \"dummyPassword\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "server",
 			"item": [
+				{
+					"name": "get all servers [PUBLIC]",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/public",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								"public"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "get all servers",
 					"request": {
@@ -66,7 +144,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ipAddress\":\"192.168.0.1 **\",\r\n    \"name\":\"testpostman serv **\",\r\n    \"memory\":\"32GB **\",\r\n    \"type\":\"test **\",\r\n    \"status\":\"SERVER_DOWN\",\r\n    \"serverDetails\": {\r\n        \"ipAddress\":\"serverDetails_ipAddress\",\r\n        \"name\":\"serverDetails_name\",\r\n        \"memory\":\"serverDetails_memory\",\r\n        \"type\":\"serverDetails_type\",\r\n        \"status\":\"serverDetails_status\"\r\n    },\r\n    \"serverDetailsList\": [\r\n        {\r\n            \"ipAddress\":\"serverDetailsList_ipAddress\",\r\n            \"name\":\"serverDetailsList_name\",\r\n            \"memory\":\"serverDetailsList_memory\",\r\n            \"type\":\"serverDetailsList_type\",\r\n            \"status\":\"serverDetailsList_status\"\r\n        },\r\n        {\r\n            \"ipAddress\":\"serverDetailsList_ipAddress\",\r\n            \"name\":\"serverDetailsList_name\",\r\n            \"memory\":\"serverDetailsList_memory\",\r\n            \"type\":\"serverDetailsList_type\",\r\n            \"status\":\"serverDetailsList_status\"\r\n        }\r\n    ]\r\n\r\n}",
+							"raw": "{\r\n    \"_ipAddress\":\"192.168.0.1\",\r\n    \"name\":\"testpostman serv ***\",\r\n    \"memory\":\"32GB **\",\r\n    \"type\":\"test **\",\r\n    \"status\":\"SERVER_DOWN\",\r\n    \"serverDetails\": {\r\n        \"ipAddress\":\"serverDetails_ipAddress\",\r\n        \"name\":\"serverDetails_name\",\r\n        \"memory\":\"serverDetails_memory\",\r\n        \"type\":\"serverDetails_type\",\r\n        \"status\":\"SERVER_DOWN\"\r\n    },\r\n    \"serverDetailsList\": [\r\n        {\r\n            \"ipAddress\":\"serverDetailsList_ipAddress\",\r\n            \"name\":\"serverDetailsList_name\",\r\n            \"memory\":\"serverDetailsList_memory\",\r\n            \"type\":\"serverDetailsList_type\",\r\n            \"status\":\"SERVER_DOWN\"\r\n        },\r\n        {\r\n            \"ipAddress\":\"serverDetailsList_ipAddress\",\r\n            \"name\":\"serverDetailsList_name\",\r\n            \"memory\":\"serverDetailsList_memory\",\r\n            \"type\":\"serverDetailsList_type\",\r\n            \"status\":\"SERVER_DOWN\"\r\n        }\r\n    ]\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -93,11 +171,21 @@
 				{
 					"name": "update server",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibG9naW4iOiJkdW1teUxvZ2luIiwicGFzc3dvcmQiOiJkdW1teUxvZ2luIiwicm9sZXMiOlsiREVGQVVMVF9ST0xFIl0sImV4cCI6MTcyMTc5NjkzNn0.W5_E9ZuemePvWMltjoReNfUrSee3zTDfONp5h3qxKpY",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ipAddress\":\"192.168.0.1 **\",\r\n    \"name\":\"testpostman serv **\",\r\n    \"memory\":\"32GB **\",\r\n    \"type\":\"test **\",\r\n    \"status\":\"SERVER_DOWN\"\r\n}",
+							"raw": "{\r\n    \"_ipAddress\":\"192.168.0.1 UPDATED2\",\r\n    \"name\":\"testpostman serv ***\",\r\n    \"memory\":\"32GB **\",\r\n    \"type\":\"test **\",\r\n    \"status\":\"SERVER_DOWN\",\r\n    \"serverDetails\": {\r\n        \"ipAddress\":\"serverDetails_ipAddress\",\r\n        \"name\":\"serverDetails_name\",\r\n        \"memory\":\"serverDetails_memory\",\r\n        \"type\":\"serverDetails_type\",\r\n        \"status\":\"SERVER_DOWN\"\r\n    },\r\n    \"serverDetailsList\": [\r\n        {\r\n            \"ipAddress\":\"serverDetailsList_ipAddress\",\r\n            \"name\":\"serverDetailsList_name\",\r\n            \"memory\":\"serverDetailsList_memory\",\r\n            \"type\":\"serverDetailsList_type\",\r\n            \"status\":\"SERVER_DOWN\"\r\n        },\r\n        {\r\n            \"ipAddress\":\"serverDetailsList_ipAddress\",\r\n            \"name\":\"serverDetailsList_name\",\r\n            \"memory\":\"serverDetailsList_memory\",\r\n            \"type\":\"serverDetailsList_type\",\r\n            \"status\":\"SERVER_DOWN\"\r\n        }\r\n    ]\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -120,7 +208,7 @@
 							"variable": [
 								{
 									"key": "serverId",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -149,6 +237,45 @@
 							"variable": [
 								{
 									"key": "serverId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete server",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibG9naW4iOiJkdW1teUxvZ2luIiwicGFzc3dvcmQiOiJkdW1teUxvZ2luIiwicm9sZXMiOlsiREVGQVVMVF9ST0xFIl0sImV4cCI6MTcyMTc5NjkzNn0.W5_E9ZuemePvWMltjoReNfUrSee3zTDfONp5h3qxKpY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/delete/:serverId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								"delete",
+								":serverId"
+							],
+							"variable": [
+								{
+									"key": "serverId",
 									"value": "2"
 								}
 							]
@@ -156,7 +283,239 @@
 					},
 					"response": []
 				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
+		},
+		{
+			"name": "Port",
+			"item": [
+				{
+					"name": "get all ports",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/port/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"port",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save port",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"testpostman port 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/save-port",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								"save-port"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add port to server unidirectional relationship",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/:idServer/add-port-unidir/:idPort",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								":idServer",
+								"add-port-unidir",
+								":idPort"
+							],
+							"variable": [
+								{
+									"key": "idServer",
+									"value": "1"
+								},
+								{
+									"key": "idPort",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add port to server bidirectional relationship",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/:idServer/add-port-bidir/:idPort",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								":idServer",
+								"add-port-bidir",
+								":idPort"
+							],
+							"variable": [
+								{
+									"key": "idServer",
+									"value": "1"
+								},
+								{
+									"key": "idPort",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get port by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/server/get-port/:serverId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"server",
+								"get-port",
+								":serverId"
+							],
+							"variable": [
+								{
+									"key": "serverId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{server-token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server-token",
+			"value": "",
+			"type": "default"
 		}
 	]
 }
