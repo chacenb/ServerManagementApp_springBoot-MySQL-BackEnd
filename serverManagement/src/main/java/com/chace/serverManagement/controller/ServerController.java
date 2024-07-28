@@ -1,11 +1,12 @@
 package com.chace.serverManagement.controller;
 
 import com.chace.serverManagement.Model.dto.DataCenterDTO;
+import com.chace.serverManagement.Model.dto.PortDTO;
 import com.chace.serverManagement.Model.dto.ServerDTO;
+import com.chace.serverManagement.Model.entity.Port;
 import com.chace.serverManagement.Model.entity.Server;
 import com.chace.serverManagement.Model.utils.ResponseStructure;
-import com.chace.serverManagement.Model.utils.ServerMapper;
-import com.chace.serverManagement.service.implementation.ServerServiceImplementation;
+import com.chace.serverManagement.service.ServerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 public class ServerController {
 
   /* this wil be injected because of @RequiredArgsConstructor annot. that generates constructor for all final & @NonNull fields */
-  private final ServerServiceImplementation serverService;
+  private final ServerService serverService;
 
   /* ResponseEntity<Response> : cf code blocks */
   @GetMapping(path = "/list") // "@GetMapping" is a shortcut for "@RequestMapping(method = RequestMethod.GET)"
@@ -55,23 +56,23 @@ public class ServerController {
       serverFetchedByID = serverService.get(id);
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(
-        ResponseStructure.builder()
-          .timeStamp(ZonedDateTime.now())
-          .status(HttpStatus.BAD_REQUEST)
-          .statusCode(HttpStatus.BAD_REQUEST.value())
-          .message(e.getMessage())
-          .build());
+          ResponseStructure.builder()
+              .timeStamp(ZonedDateTime.now())
+              .status(HttpStatus.BAD_REQUEST)
+              .statusCode(HttpStatus.BAD_REQUEST.value())
+              .message(e.getMessage())
+              .build());
 
     }
 
     return ResponseEntity.ok(
-      ResponseStructure.builder()
-        .timeStamp(ZonedDateTime.now())
-        .statusCode(HttpStatus.OK.value())
-        .status(HttpStatus.OK)
-        .message("Server retrieved successfully")
-        .data(Map.of("server", serverFetchedByID))
-        .build());
+        ResponseStructure.builder()
+            .timeStamp(ZonedDateTime.now())
+            .statusCode(HttpStatus.OK.value())
+            .status(HttpStatus.OK)
+            .message("Server retrieved successfully")
+            .data(Map.of("server", serverFetchedByID))
+            .build());
   }
 
 
@@ -214,6 +215,105 @@ public class ServerController {
         .build());
 
   }
+
+
+  @GetMapping(path = "/get-port/{id}")
+  public ResponseEntity<ResponseStructure> getPort(@PathVariable("id") Long id) {
+
+    PortDTO portFetchedByID;
+    try {
+      portFetchedByID = serverService.getPort(id);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(
+          ResponseStructure.builder()
+              .timeStamp(ZonedDateTime.now())
+              .status(HttpStatus.BAD_REQUEST)
+              .statusCode(HttpStatus.BAD_REQUEST.value())
+              .message(e.getMessage())
+              .build());
+
+    }
+
+    return ResponseEntity.ok(
+        ResponseStructure.builder()
+            .timeStamp(ZonedDateTime.now())
+            .statusCode(HttpStatus.OK.value())
+            .status(HttpStatus.OK)
+            .message("Port retrieved successfully")
+            .data(Map.of("port", portFetchedByID))
+            .build());
+  }
+
+
+  @PostMapping(path = "/save-port")
+  public ResponseEntity<ResponseStructure> savePort(@RequestBody @Valid Port port) {
+    Port createdPort = null;
+    try {
+      createdPort = serverService.createPort(port);
+
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(
+          ResponseStructure.builder()
+              .timeStamp(ZonedDateTime.now())
+              .status(HttpStatus.BAD_REQUEST)
+              .statusCode(HttpStatus.BAD_REQUEST.value())
+              .message(e.getMessage())
+              .build());
+    }
+
+    return ResponseEntity.ok(ResponseStructure.builder()
+        .timeStamp(ZonedDateTime.now())
+        .status(HttpStatus.CREATED)
+        .statusCode(HttpStatus.CREATED.value())
+        .data(Map.of("port", createdPort))
+        .message("port created")
+        .build());
+  }
+
+
+  @GetMapping(path = "/{idServer}/add-port/{idPort}")
+  public ResponseEntity<ResponseStructure> addPortToServer(@PathVariable("idServer") Long idServer,
+                                                           @PathVariable("idPort") Long idPort) {
+    serverService.addPortToServerWithoutCallingSave(idServer, idPort);
+
+    return ResponseEntity.ok(ResponseStructure.builder()
+        .timeStamp(ZonedDateTime.now())
+        .status(HttpStatus.CREATED)
+        .statusCode(HttpStatus.CREATED.value())
+        .data(Map.of("server", serverService.get(idServer)))
+        .message("port created")
+        .build());
+  }
+
+
+//
+//  @GetMapping(path = "/{idServer}/add-port/{idPort}")
+//  public ResponseEntity<ResponseStructure> addPortToServer(@PathVariable("idServer") Long idServer,
+//                                                           @PathVariable("idPort") Long idPort) {
+//    ServerDTO updatedServer = null;
+//    try {
+////      updatedServer = serverService.addPortToServer(idServer, idPort);
+//      serverService.addPortToServerWithoutCallingSave(idServer, idPort);
+//
+//    } catch (Exception e) {
+//      return ResponseEntity.badRequest().body(
+//          ResponseStructure.builder()
+//              .timeStamp(ZonedDateTime.now())
+//              .status(HttpStatus.BAD_REQUEST)
+//              .statusCode(HttpStatus.BAD_REQUEST.value())
+//              .message(e.getMessage())
+//              .build());
+//    }
+//
+//    return ResponseEntity.ok(ResponseStructure.builder()
+//        .timeStamp(ZonedDateTime.now())
+//        .status(HttpStatus.CREATED)
+//        .statusCode(HttpStatus.CREATED.value())
+////        .data(Map.of("server", updatedServer))
+//        .data(Map.of("server", serverService.get(idServer)))
+//        .message("port created")
+//        .build());
+//  }
 
 
   /** Controller(Class) level exception handling for Validation | cf. FtaExceptionHandler class for global exceptions handling

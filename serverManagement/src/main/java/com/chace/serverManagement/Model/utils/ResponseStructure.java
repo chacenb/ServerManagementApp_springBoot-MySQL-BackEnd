@@ -24,6 +24,7 @@ public class ResponseStructure {
 
   /* these fields will only be populated if the response in an error */
   protected String developerMessage; // ** this can be null if the response is a success
+  protected Throwable error;
   protected String reason;    // ** this can be null if the response is a success
 
 

@@ -6,6 +6,7 @@ import com.chace.serverManagement.Model.enumeration.Status;
 import com.chace.serverManagement.Model.utils.ServerDetails;
 import com.chace.serverManagement.Model.utils.ServerMapper;
 import com.chace.serverManagement.repository.ServerRepo;
+import com.chace.serverManagement.service.ServerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +31,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ServerServiceImplementationTest {
 
-  @Mock private        HttpServletRequest          request;
-  @Mock private        ServerRepo                  serverRepo;
-  @Mock private        ServerMapper                serverMapper;
-  @InjectMocks private ServerServiceImplementation serverService;
+  @Mock private        HttpServletRequest request;
+  @Mock private        ServerRepo         serverRepo;
+  @Mock private        ServerMapper       serverMapper;
+  @InjectMocks private ServerService      serverService;
 
   private ServerDTO serverDTO;
   private Server    server;

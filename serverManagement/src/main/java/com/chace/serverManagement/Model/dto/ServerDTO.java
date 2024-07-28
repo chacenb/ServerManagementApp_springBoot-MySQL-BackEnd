@@ -1,5 +1,7 @@
 package com.chace.serverManagement.Model.dto;
 
+import com.chace.serverManagement.Model.entity.Dummy;
+import com.chace.serverManagement.Model.entity.Port;
 import com.chace.serverManagement.Model.enumeration.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Transient;
@@ -12,6 +14,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Collection;
 import java.util.List;
 
 @Data // adds @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor annots in the class
@@ -40,6 +43,10 @@ public class ServerDTO extends _AbstractDto {
   @NotEmpty(message = "Server details list can't be empty")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   @NotNull(message = "Server details list can't be  null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private List<Object> serverDetailsList; // List<ServerDetails> serverDetailsList;
+
+  private Collection<Dummy> dummies;
+
+  private Collection<PortDTO> ports;
 
   @JsonIgnore
   private String description;

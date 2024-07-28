@@ -1,6 +1,8 @@
 package com.chace.serverManagement.Model.utils;
 
+import com.chace.serverManagement.Model.dto.PortDTO;
 import com.chace.serverManagement.Model.dto.ServerDTO;
+import com.chace.serverManagement.Model.entity.Port;
 import com.chace.serverManagement.Model.entity.Server;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -36,30 +38,61 @@ public class ServerMapper {
   public ServerDTO toDTO(Server param) {
 
     /* This one uses typeMapping */
-//    ServerDTO map = this.modelMapper.map(param, ServerDTO.class);
-//    log.info("toDTO: {}", map);
-//    return map;
+    ServerDTO map = this.modelMapper.map(param, ServerDTO.class);
+    log.info("toDTO: {}", map);
+    return map;
 
     /* This one is a hand made mapper :: full control on our code */
-    return ServerDTO.builder()
-      ._id(param.getId())
-      .creationDate(param.getCreationDate())
-      .lastModifiedDate(param.getLastModifiedDate())
-      .deletedDate(param.getDeletedDate())
-      .isNotdeleted(param.getIsNotdeleted())
-      .createdBy(param.getCreatedBy())
-      .modifiedBy(param.getModifiedBy())
-      .deletedBy(param.getDeletedBy())
-      ._ipAddress(param.getIpAddress())
-      .name(param.getName())
-      .memory(param.getMemory())
-      .type(param.getType())
-      .imageUrl(param.getImageUrl())
-      .status(param.getStatus())
-      .serverDetails(param.getServerDetails())
-      .serverDetailsList(Collections.singletonList(param.getServerDetailsList()))
+//    return ServerDTO.builder()
+//        ._id(param.getId())
+//        .creationDate(param.getCreationDate())
+//        .lastModifiedDate(param.getLastModifiedDate())
+//        .deletedDate(param.getDeletedDate())
+//        .isNotdeleted(param.getIsNotdeleted())
+//        .createdBy(param.getCreatedBy())
+//        .modifiedBy(param.getModifiedBy())
+//        .deletedBy(param.getDeletedBy())
+//        ._ipAddress(param.getIpAddress())
+//        .name(param.getName())
+//        .memory(param.getMemory())
+//        .type(param.getType())
+//        .imageUrl(param.getImageUrl())
+//        .status(param.getStatus())
+//        .serverDetails(param.getServerDetails())
+//        .serverDetailsList(Collections.singletonList(param.getServerDetailsList()))
+//        .dummies(param.getDummies())
+//        .ports(param.getPorts())
+//        .build();
+  }
 
-      .build();
+  public PortDTO portToDTO(Port entity) {
+
+    /* This one uses typeMapping */
+    PortDTO map = this.modelMapper.map(entity, PortDTO.class);
+    log.info("portToDTO: {}", map);
+    return map;
+
+    /* This one is a hand made mapper :: full control on our code */
+//    return ServerDTO.builder()
+//        ._id(entity.getId())
+//        .creationDate(entity.getCreationDate())
+//        .lastModifiedDate(entity.getLastModifiedDate())
+//        .deletedDate(entity.getDeletedDate())
+//        .isNotdeleted(entity.getIsNotdeleted())
+//        .createdBy(entity.getCreatedBy())
+//        .modifiedBy(entity.getModifiedBy())
+//        .deletedBy(entity.getDeletedBy())
+//        ._ipAddress(entity.getIpAddress())
+//        .name(entity.getName())
+//        .memory(entity.getMemory())
+//        .type(entity.getType())
+//        .imageUrl(entity.getImageUrl())
+//        .status(entity.getStatus())
+//        .serverDetails(entity.getServerDetails())
+//        .serverDetailsList(Collections.singletonList(entity.getServerDetailsList()))
+//        .dummies(entity.getDummies())
+//        .ports(entity.getPorts())
+//        .build();
   }
 
   public Server toEntity(ServerDTO param) {

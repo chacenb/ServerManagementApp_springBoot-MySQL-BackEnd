@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Data @MappedSuperclass //A class designated with the MappedSuperclass annotation can be mapped in the same way as an entity except that the mappings will apply only to its subclasses since no table exists for the mapped superclass itself.
+@Getter @Setter @ToString @MappedSuperclass //A class designated with the MappedSuperclass annotation can be mapped in the same way as an entity except that the mappings will apply only to its subclasses since no table exists for the mapped superclass itself.
 public abstract class _AbstractModel {
 
   @Id
@@ -85,16 +85,16 @@ public abstract class _AbstractModel {
   }
 
 
-  @Override
-  public String toString() {
-    return "_AbstractModel {" +
-      "id=" + id +
-      ", creationDate=" + creationDate +
-      ", lastModifiedDate=" + lastModifiedDate +
-      ", deletedDate=" + deletedDate +
-      ", createdBy=" + createdBy +
-      ", modifiedBy=" + modifiedBy +
-      ", deletedBy=" + deletedBy +
-      '}';
-  }
+//  @Override
+//  public String toString() {
+//    return "_AbstractModel {" +
+//      "id=" + id +
+//      ", creationDate=" + creationDate +
+//      ", lastModifiedDate=" + lastModifiedDate +
+//      ", deletedDate=" + deletedDate +
+//      ", createdBy=" + createdBy +
+//      ", modifiedBy=" + modifiedBy +
+//      ", deletedBy=" + deletedBy +
+//      '}';
+//  }
 }

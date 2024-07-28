@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 //import org.hibernate.annotations.Type;
@@ -45,8 +46,17 @@ public class Server extends _AbstractModel {
   @Column(name = "server_details_list", columnDefinition = "JSON")
   private List<ServerDetails> serverDetailsList;
 
-  @ManyToMany(mappedBy = "server", fetch = FetchType.EAGER)
-  private Set<Dummy> dummies;
+  @ManyToMany(fetch = FetchType.EAGER)
+  private Collection<Dummy> dummies;
+
+//  @OneToMany(mappedBy = "server", cascade = CascadeType.PERSIST)
+//  private Collection<Port> ports;
+
+
+  @ManyToMany
+  private Collection<Port> ports;
+
+
 
   @Transient// Ignoring Fields With the JPA @Transient Annotation > https://www.baeldung.com/jpa-transient-ignore-field
   private String description;
