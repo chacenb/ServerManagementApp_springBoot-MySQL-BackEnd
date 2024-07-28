@@ -1,10 +1,7 @@
 package com.chace.serverManagement.Model.dto;
 
-import com.chace.serverManagement.Model.entity.Dummy;
-import com.chace.serverManagement.Model.entity.Port;
 import com.chace.serverManagement.Model.enumeration.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -43,8 +40,6 @@ public class ServerDTO extends _AbstractDto {
   @NotEmpty(message = "Server details list can't be empty")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   @NotNull(message = "Server details list can't be  null")   // a request MUST have an IP Address otherwise an exception will be thrown w/ the message
   private List<Object> serverDetailsList; // List<ServerDetails> serverDetailsList;
-
-  private Collection<Dummy> dummies;
 
   private Collection<Object> portsUnidir;
 

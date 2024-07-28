@@ -31,7 +31,7 @@ public interface PortRepo extends JpaRepository<Port, Long> {
   /* list all the specifications here to construct queries with criterias  */
 
   static Specification<Port> isNotDeleted() {
-    return (T, cq, cb) -> cb.isTrue(T.get(Port_.IS_NOTDELETED));
+    return (T, cq, cb) -> cb.isTrue(T.get(Port_.IS_NOT_DELETED));
   }
 
 }
