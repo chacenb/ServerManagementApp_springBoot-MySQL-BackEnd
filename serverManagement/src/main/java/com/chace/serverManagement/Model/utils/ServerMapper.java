@@ -65,14 +65,14 @@ public class ServerMapper {
   }
 
   public PortDTO portToDTO(Port entity) {
-    PortDTO map = this.modelMapper.map(entity, PortDTO.class);
+//    PortDTO map = this.modelMapper.map(entity, PortDTO.class);
 
     /* Or use  the method below :: WORKS TOO */
-    //    PortDTO map = setCommonFields(entity, PortDTO.builder()
-    //        .name(entity.getName())
-    //        .details(entity.getDetails())
-    //        .serverBidir(entity.getServerBidir().getId())
-    //        .build());
+    PortDTO map = setCommonFields(entity, PortDTO.builder()
+        .name(entity.getName())
+        .details(entity.getDetails())
+        .serverBidir(Objects.isNull(entity.getServerBidir()) ? null : entity.getServerBidir().getId())
+        .build());
 
     log.info("portToDTO: {}", map);
     return map;
