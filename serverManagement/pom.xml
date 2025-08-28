@@ -14,7 +14,7 @@
     <version>1.1</version>
 
     <!-- for wildfly deployment -->
-    <packaging>war</packaging>
+<!--    <packaging>war</packaging>-->
     <!-- END for wildfly deployment -->
 
     <name>serverManagement</name>
@@ -75,11 +75,11 @@
         </dependency>
 
         <!-- wildfly deploy : SINCE wildfly 28 USES JAKARTA  -->
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>jakarta.servlet</groupId>-->
+<!--            <artifactId>jakarta.servlet-api</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <!-- end wildfly deploy -->
 
         <!--  use  log4j2 logger    -->
@@ -175,11 +175,11 @@
         <plugins>
 
             <!--wildfly deploy -->
-            <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
-                <version>4.0.0.Final</version>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.wildfly.plugins</groupId>-->
+<!--                <artifactId>wildfly-maven-plugin</artifactId>-->
+<!--                <version>4.0.0.Final</version>-->
+<!--            </plugin>-->
             <!-- end wildfly deploy -->
 
             <plugin>
