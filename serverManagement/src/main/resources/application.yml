@@ -13,7 +13,9 @@ security:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres_database:5432/serverdb  # using the container db #    url: jdbc:postgresql://localhost:5432/serverdb  # url: jdbc:mysql://localhost:3306/serverdb
+    # url: jdbc:postgresql://localhost:5432/serverdb  
+    # url: jdbc:mysql://localhost:3306/serverdb
+    url: jdbc:postgresql://postgres_db_container:5432/serverdb  # uses the container db
     username: postgres
     password: postgre
 #    url:  @SPRING_DATASOURCE_URL@
